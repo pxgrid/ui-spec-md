@@ -7,6 +7,8 @@ UI Spec MD compiles special markdown with following features
 - Github-flavored Markdown
 - UI Flows code blocks
 
+👉[Quick Start Example](https://github.com/pxgrid/ui-spec-md-example)
+
 ## UI Flow codeblock
 
 When you make UI documentation, you may need to have UI Flows Graph
