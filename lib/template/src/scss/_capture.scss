@@ -1,0 +1,59 @@
+
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+
+/* Sub-section comment block
+   ========================================================================== */
+
+/* Basic comment */
+
+
+svg.UISP-capture{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+  g.UISP-rect{}
+  rect.UISP-fillrect{
+    stroke: red;
+    stroke-width: 2;
+    fill: red;
+    fill-opacity: 0.25;
+  }
+  rect.UISP-outlinerect{
+    stroke: #fff;
+    stroke-width: 2;
+    fill :none;
+  }
+  text{
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    stroke: #fff;
+    stroke-width: 1;
+    fill: red;
+  }
+
+}
+
+
+
+.UISP-captureContainer--zoom-true{
+  .UISP-captureContainer__inner svg{
+    position: static;
+    max-width: none;
+    max-height: none;
+    margin: 20px;
+  }
+}
+
+.UISP-captureContainer--annotation-false{
+  .UISP-captureContainer__inner svg{
+    g.UISP-rect{display: none;}
+  }
+}

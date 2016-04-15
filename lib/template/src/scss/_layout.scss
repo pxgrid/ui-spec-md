@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+
+/* Sub-section comment block
+   ========================================================================== */
+
+/* Basic comment */
+
+html{
+  color: $color-black;
+  font-family: $fontSansSerif;
+  font-size: 16px;
+  line-height: 1.8;
+  // -moz-osx-font-smoothing: grayscale;
+  // -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+.UISP{
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+}
+.UISP-inner{
+  table-layout: fixed;
+  position: relative;
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+.UISP.UISP--dragging-true{
+  @include avoidselect();
+}
+
+
+/* ==========================================================================
+   separator
+   ========================================================================== */
+.UISP-separator{
+  cursor: col-resize;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  bottom: 0;
+  width: 4px;
+  margin-left: -3px;
+  background: #ccc;
+}
+
+.UISP--dragging-true .UISP-separator,
+.UISP-separator:hover{
+  background: $color-link;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.UISP-header{
+  display: table-row;
+}
+.UISP-header__inner{
+  font-size: 0;
+  line-height: 1.2;
+  display: table-cell;
+  height: 1%;
+  padding: 10px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.UISP-header__back{
+  display: inline-block;
+  vertical-align: middle;
+  svg{
+    display: block;
+  }
+  a:hover svg *{
+    fill: $color-link;
+    transition: fill .2s;
+  }
+}
+
+.UISP-header__title{
+  font-size: 1.2rem;
+  vertical-align: middle;
+  display: inline-block;
+  padding-left: 10px;
+}
+
+
+
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+.UISP-captureContainer{
+  overflow-y: auto;
+  vertical-align: middle;
+  position: relative;
+  display: table-cell;
+  width: 50%;
+  height: 100%;
+  padding: 5px;
+  background: $image-checkered;
+}
+.UISP-captureContainer__inner{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+}
+.UISP-captureContainer__toolbar{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  opacity: 0.5;
+}
+.UISP-captureContainer__toolbar:hover{
+  opacity: 1;
+}
+
+
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+.UISP-mdContainer{
+  display: table-cell;
+  width: 50%;
+  height: 100%;
+  vertical-align: top;
+}
+.UISP-mdContainer__inner{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 20px;
+}
+

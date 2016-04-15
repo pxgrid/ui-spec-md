@@ -1,0 +1,124 @@
+
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+
+/* Sub-section comment block
+   ========================================================================== */
+
+/* Basic comment */
+
+.UISP-md{
+  font-size: 1rem;
+  word-wrap: break-word;
+  overflow-wrap : break-word;
+  hyphens: auto;
+  @include mediaSmall {
+    line-height: 2;
+  }
+  & > *:first-child{
+    margin-top: 0;
+  }
+  & > *:last-child{
+    margin-bottom: 0;
+  }
+  a {
+    color: $color-link;
+    text-decoration: none;
+  }
+  a:hover,
+  a:active {
+    text-decoration: underline;
+  }
+  h2{
+    font-size: 1.75em;
+    font-family: $fontSerif;
+    font-weight: normal;
+    line-height: 1.2;
+    padding-bottom: .5em;
+    border-bottom: 1px solid $color-gray1;
+    margin: $spacing1 * 2 0 $spacing1;
+    &:first-child{
+      margin-top: 0;
+    }
+    @include mediaSmall {
+      padding: 0 10px 10px;
+      margin: 20px -10px;
+    }
+  }
+  h3{
+    font-size: 1.25em;
+    font-weight: normal;
+    margin: $spacing1 0;
+    @include mediaSmall {
+      margin-top: 1.6em;
+    }
+  }
+  h4{
+    font-size: 1em;
+    font-weight: bold;
+    margin: $spacing1 0;
+    @include mediaSmall {
+      font-size: 14px;
+      margin-top: 1.6em;
+    }
+  }
+  p{
+    margin: $spacing1 0;
+    @include mediaSmall {
+      margin: 1.6em 0;
+    }
+  }
+  ul{
+    margin: $spacing1 0;
+    padding: 0 0 0 20px;
+  }
+  ol{
+    margin: $spacing1 0;
+    padding: 0 0 0 30px;
+  }
+  li{
+    margin: 0.5em 0;
+  }
+  table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    word-break: break-word; // Non standard for webkit
+    word-break: break-all;
+    margin: $spacing2 0;
+    th, td{
+      padding: .3em 10px;
+      border: 1px solid $color-gray1;
+    }
+    th{
+      background: $color-gray2;
+    }
+    td{
+    }
+  }
+  blockquote{
+    color: lighten( $color-black, 30% );
+    padding: 0 15px;
+    margin: $spacing2 0;
+    border-left: 4px solid $color-gray1;
+  }
+  pre{
+    line-height: 1.6;
+    margin: $spacing2 0;
+  }
+  pre[class*="language-"] {
+    margin: $spacing2 0;
+  }
+  code{
+    font-family: $fontCode;
+    padding: 2px;
+    background: $color-gray2;
+  }
+  hr{
+    border: 0 none;
+    height: 4px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: $color-gray2;
+  }
+}

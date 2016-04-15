@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= title %></title>
+<link rel="stylesheet" href="<%= toRoot %>_template/_template.css">
+<script src="<%= toRoot %>_template/_template.js"></script>
+</head>
+<body>
+
+<div class="UISP">
+	<div class="UISP-inner">
+
+		<header class="UISP-header">
+			<div class="UISP-header__inner">
+				<div class="UISP-header__back">
+					<a href="index.html">
+						<svg width="20" height="20" viewBox="0 0 20 20">
+							<polygon fill="#1A1A1A" points="11.446,5.785 8.527,5.785 4.501,9.996 4.501,10.031 8.527,14.242 11.446,14.242 8.378,11.104 15.051,11.104 15.051,8.923 8.378,8.923"/>
+							<path fill="#1A1A1A" d="M10.001,0c-5.522,0-10,4.477-10,9.999c0,5.523,4.478,10,10,10S20,15.522,20,9.999C20,4.477,15.523,0,10.001,0z M10,18c-4.418,0-8-3.582-8-8c0-4.419,3.582-8,8-8s8,3.582,8,8C18,14.418,14.418,18,10,18z"/>
+						</svg>
+					</a>
+				</div>
+				<div class="UISP-header__title">
+					<%= title %>
+				</div>
+			</div>
+		</header>
+
+		<div class="UISP-captureContainer">
+			<div class="UISP-captureContainer__inner">
+				<%= svgCanvas %>
+			</div>
+			<div class="UISP-captureContainer__toolbar">
+				<button data-UISP-button="zoom">Zoom</button>
+				<button data-UISP-button="hide">Hide Annotations</button>
+				<button data-UISP-button="editor">Editor</button>
+			</div>
+		</div>
+
+		<div class="UISP-mdContainer">
+			<div class="UISP-mdContainer__inner">
+				<div class="UISP-md">
+					<%= body %>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="UISP-separator"></div>
+</div>
+
+</body>
+</html>
