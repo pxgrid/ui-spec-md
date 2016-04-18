@@ -1,197 +1,290 @@
-var EventDispatcher = require( './EventDispatcher.js' );
+// const EventDispatcher = require( './EventDispatcher.js' );
+const MINIMUM_SIZE = 20;
 
-var model = new ( class extends EventDispatcher {
+const createStore = function ( reducer ) {
 
-	constructor () {
+	let state;
+	let listeners = [];
 
-		super();
+	const getState = function () {
 
-		this.width    = 300;
-		this.height   = 150;
-		this.src      = '';
-		this.filename = '';
-		this.coords   = [];
-		this.selectedItem = null;
-		this.toolbarFocus = null;
-		this.zoom     = 1.0;
+		return state;
 
-		var url = window.location.search;
-		var queries = url.slice( 1 ).split( '&' );
+	}
 
-		queries.forEach( function ( query ) {
+	const dispatch = function ( action ) {
 
-			var pair = query.split( '=' );
-			var key = pair[ 0 ];
-			var val = pair[ 1 ];
+		let result = reducer( state, action );
 
-			if ( key === 'src' ) {
+		if ( result instanceof Promise ) {
 
-				this.src = val;
-				this.filename = val;
+			result.then( function ( newState ) {
+
+				state = newState;
+				listeners.forEach( function ( listener ) { listener() } );
+
+			} );
+
+		} else {
+
+			state = result;
+			listeners.forEach( function ( listener ) { listener() } );
+
+		}
+
+	}
+
+	const subscribe = function ( listener ) {
+
+		listeners.push( listener );
+
+		// return removeEventListener
+		return function () {
+
+			listeners = listeners.fister( l => l !== listener );
+
+		}
+
+	}
+
+	dispatch( {} );
+
+	return { getState, dispatch, subscribe }
+
+}
+
+
+const _initialState = function () {
+
+	let initialState = {
+		width        : 300,
+		height       : 150,
+		src          : '',
+		filename     : '',
+		coords       : [],
+		selectedItem : null,
+		zoom         : 1.0
+	};
+
+	let url = window.location.search;
+	let queries = url.slice( 1 ).split( '&' );
+
+	queries.forEach( function ( query ) {
+
+		let pair = query.split( '=' );
+		let key = pair[ 0 ];
+		let val = pair[ 1 ];
+
+		if ( key === 'src' ) {
+
+			initialState.src = val;
+			initialState.filename = val;
+
+		}
+
+		if ( key === 'highlight' ) {
+
+			initialState.coords = JSON.parse( val );
+
+		}
+
+	} );
+
+	return initialState;
+
+}();
+
+const reducer = function ( state = _initialState, action ) {
+
+	switch ( action.type ) {
+
+		case 'SET_IMAGE': {
+
+			return new Promise( function ( resolve, reject ) {
+
+				let img = new Image();
+				let width  = 0;
+				let height = 0;
+				let filename = action.filename;
+				let src      = action.src;
+
+				img.onload = function () {
+
+					width  = img.naturalWidth;
+					height = img.naturalHeight;
+					img = null;
+					resolve( Object.assign( {}, state, { filename, src, width, height } ) );
+
+				};
+
+				img.onerror = function () {
+
+					filename = '';
+					src = '';
+					width  = 0;
+					height = 0;
+					img = null;
+					resolve( Object.assign( {}, state, { filename, src, width, height } ) );
+
+				};
+
+				img.src = src;
+
+			} );
+
+		}
+
+		case 'SET_COORDS': {
+
+			let order  = action.order;
+			let values = action.coord;
+
+			let x = values[ 0 ];
+			let y = values[ 1 ];
+			let w = Math.max( values[ 2 ], MINIMUM_SIZE );
+			let h = Math.max( values[ 3 ], MINIMUM_SIZE );
+
+			if ( x < 0 ) {
+
+				w = state.coords[ order ][ 2 ];
 
 			}
 
-			if ( key === 'highlight' ) {
+			if ( x + state.coords[ order ][ 2 ] >= state.width ) {
 
-				this.coords = JSON.parse( val );
+				w = Math.min( w, state.coords[ order ][ 2 ] );
 
 			}
 
-		}.bind( this ) );
+			if ( y < 0 ) {
 
-		if ( this.src !== '' ) {
+				h = state.coords[ order ][ 3 ];
 
-			this.setImage( this.filename, this.src );
+			}
 
-		}
+			if ( y + state.coords[ order ][ 3 ] >= state.height ) {
 
-	}
+				h = Math.min( h, state.coords[ order ][ 3 ] );
 
-	MINIMUM_SIZE () {
+			}
 
-		return 20;
+			x = Math.min( x, state.width  - w );
+			y = Math.min( y, state.height - h );
 
-	}
+			x = Math.max( x, 0 );
+			y = Math.max( y, 0 );
 
-	addHighlight ( coord ) {
+			// FIXME not deep copied
+			let coordsClone = state.coords.concat();
 
-		this.coords.push( coord );
-		this.selectedItem = this.coords.length - 1;
-		this.dispatchEvent( { 'type': 'change' } );
+			coordsClone[ order ][ 0 ] = x | 0;
+			coordsClone[ order ][ 1 ] = y | 0;
+			coordsClone[ order ][ 2 ] = w | 0;
+			coordsClone[ order ][ 3 ] = h | 0;
 
-	}
-
-	removeHighlight ( n ) {}
-
-	setSelected ( itemOrder ) {
-
-		this.selectedItem = itemOrder;
-		this.dispatchEvent( { 'type': 'change' } );
-
-	}
-
-	setImage ( filename, src ) {
-
-		this.filename = filename;
-		this.src = src;
-
-		var img = new Image();
-
-		img.onload = function () {
-
-			this.width  = img.naturalWidth;
-			this.height = img.naturalHeight;
-			this.dispatchEvent( { 'type': 'change' } );
-			img = null;
-
-		}.bind( this );
-
-		img.onerror = function () {
-
-			this.filename = '';
-			this.src = '';
-			this.dispatchEvent( { 'type': 'change' } );
-			img = null;
-
-		}.bind( this );
-
-		img.src = this.src;
-
-	}
-
-	setCoords ( order, values ) {
-
-		var x = Math.max( values[ 0 ] );
-		var y = Math.max( values[ 1 ] );
-		var w = Math.max( values[ 2 ], this.MINIMUM_SIZE() );
-		var h = Math.max( values[ 3 ], this.MINIMUM_SIZE() );
-
-		if ( x < 0 ) {
-
-			w = this.coords[ order ][ 2 ];
+			return Object.assign( {}, state, {
+				coords: coordsClone
+			} );
 
 		}
 
-		if ( x + this.coords[ order ][ 2 ] >= this.width ) {
+		case 'HIGHLIGHT_ADD': {
 
-			w = Math.min( w, this.coords[ order ][ 2 ] );
+			// FIXME not deep copied
+			let coordsClone = state.coords.concat();
+			coordsClone.push( action.coord );
 
-		}
-
-		if ( y < 0 ) {
-
-			h = this.coords[ order ][ 3 ];
-
-		}
-
-		if ( y + this.coords[ order ][ 3 ] >= this.height ) {
-
-			h = Math.min( h, this.coords[ order ][ 3 ] );
+			return Object.assign( {}, state, {
+				coords: coordsClone,
+				selectedItem: state.coords.length
+			} );
 
 		}
 
-		x = Math.min( x, this.width  - w );
-		y = Math.min( y, this.height - h );
+		case 'HIGHLIGHT_REMOVE': {
 
-		x = Math.max( x, 0 );
-		y = Math.max( y, 0 );
+			if ( state.selectedItem === null ) { return state; }
 
-		this.coords[ order ][ 0 ] = x | 0;
-		this.coords[ order ][ 1 ] = y | 0;
-		this.coords[ order ][ 2 ] = w | 0;
-		this.coords[ order ][ 3 ] = h | 0;
-		this.dispatchEvent( { 'type': 'change' } );
+			let coordsClone = state.coords.concat();
+			coordsClone.splice( state.selectedItem, 1 );
+
+			return Object.assign( {}, state, {
+				coords: coordsClone,
+				selectedItem: null
+			} );
+
+		}
+
+		case 'HIGHLIGHT_SELECT': {
+
+			return Object.assign( {}, state, {
+				selectedItem: action.selectedItem
+			} );
+
+		}
+
+		case 'HIGHLIGHT_SHIFT': {
+
+			if ( state.selectedItem === null ) { return state; }
+			if ( state.selectedItem === 0 )    { return state; }
+
+			let index = state.selectedItem;
+			let coordsClone = state.coords.concat();
+
+			[
+				coordsClone[ index ],
+				coordsClone[ index - 1 ]
+			] = [
+				coordsClone[ index - 1 ],
+				coordsClone[ index ]
+			];
+
+			return Object.assign( {}, state, {
+				selectedItem: index - 1,
+				coords: coordsClone
+			} );
+
+		}
+
+		case 'HIGHLIGHT_UNSHIFT': {
+
+			if ( state.selectedItem === null ) { return state; }
+			if ( state.selectedItem === state.coords.length - 1 ) { return state; }
+
+			let index = state.selectedItem + 1;
+			let coordsClone = state.coords.concat();
+
+			[
+				coordsClone[ index ],
+				coordsClone[ index - 1 ]
+			] = [
+				coordsClone[ index - 1 ],
+				coordsClone[ index ]
+			];
+
+			return Object.assign( {}, state, {
+				selectedItem: index,
+				coords: coordsClone
+			} );
+
+		}
+
+		case 'ZOOM': {
+
+			return Object.assign( {}, state, {
+				zoom: action.zoom
+			} );
+
+		}
+
+		default:
+			return state;
 
 	}
 
-	shiftSelected () {
+}
 
-		if ( this.selectedItem === null ) { return; }
-		if ( this.selectedItem === 0 )    { return; }
-
-		var index = this.selectedItem;
-
-		this.coords.splice( index - 1, 2, this.coords[ index ], this.coords[ index - 1 ] );
-		this.selectedItem -= 1
-		this.dispatchEvent( { 'type': 'change' } );
-
-	}
-
-	unshiftSelected () {
-
-		if ( this.selectedItem === null ) { return; }
-		if ( this.selectedItem === this.coords.length - 1 ) { return; }
-
-		var index = this.selectedItem + 1;
-
-		this.coords.splice( index - 1, 2, this.coords[ index ], this.coords[ index - 1 ] );
-		this.selectedItem += 1;
-		this.dispatchEvent( { 'type': 'change' } );
-
-	}
-
-	deleteSelected () {
-
-		if ( this.selectedItem === null ) { return; }
-
-		this.coords.splice( this.selectedItem, 1 );
-		this.selectedItem = null;
-		this.dispatchEvent( { 'type': 'change' } );
-
-	}
-
-	setZoom ( val ) {
-
-		this.zoom = val;
-		this.dispatchEvent( { 'type': 'change' } );
-
-	}
-
-} );
-
-
-
-
+const store = createStore( reducer );
 
 
 
@@ -203,58 +296,40 @@ class Editor extends React.Component {
 
 	static _onchange () {
 
-		this.setState( {
-			filename : model.filename,
-			src      : model.src,
-			width    : model.width,
-			height   : model.height,
-			zoom     : model.zoom,
-			coords   : model.coords,
-			selectedItem: model.selectedItem,
-			toolbarFocus: model.toolbarFocus
-		} );
+		let state = this.props.store.getState();
+		this.setState( state );
 
 	}
 
 	constructor( props, context ) {
 
 		super( props, context );
-
-		this.state = {
-			filename : model.filename,
-			src      : model.src,
-			width    : model.width,
-			height   : model.height,
-			coords   : model.coords,
-			zoom     : model.zoom,
-			selectedItem: model.selectedItem,
-			toolbarFocus: model.toolbarFocus
-		};
+		this.state = Object.assign( {}, this.props.store.getState() );
+		this.listener = Editor._onchange.bind( this );
 
 	}
 
 	componentDidMount () {
 
-		this.onchange = Editor._onchange.bind( this );
-		model.addEventListener( 'change', this.onchange );
+		this.unsubscribe = this.props.store.subscribe( this.listener );
 
 	}
 
 	componentWillUnmount() {
 
-		model.removeEventListener( 'change', this.onchange );
+		this.unsubscribe();
 
 	}
 
 	render () {
 
-		var { filename, src, zoom, coords, selectedItem, toolbarFocus } = this.state,
+		let { filename, src, zoom, coords, selectedItem } = this.state,
 				w = this.state.width,
 				h = this.state.height;
 
 		return (
 			<div className="EDT-Editor">
-				<EditorToolbar filename={ filename } width={ w } height={ h } coords={ coords } selectedItem={ selectedItem } toolbarFocus={ toolbarFocus } />
+				<EditorToolbar filename={ filename } width={ w } height={ h } coords={ coords } selectedItem={ selectedItem } />
 				<EditorViewport src={ src } width={ w } height={ h } zoom={ zoom } coords={ coords } selectedItem={ selectedItem } />
 			</div>
 		);
@@ -270,33 +345,39 @@ class EditorToolbar extends React.Component {
 
 		super( props, context );
 
-		this.state = {
-			shiftkey: false
-		}
-
 	}
 
 	onvaluechange ( key, e ) {
 
-		if ( model.selectedItem === null ) {
+		let state = store.getState();
+
+		if ( state.selectedItem === null ) {
 
 			e.preventDefault();
 			return;
 
 		}
 
-		var lookup   = { x: 0, y: 1, w: 2, h: 3 };
-		var selected = model.selectedItem;
-		var coords   = model.coords[ selected ].concat();
+		let lookup   = { x: 0, y: 1, w: 2, h: 3 };
+		let selected = state.selectedItem;
+		let coords   = state.coords[ selected ].concat();
 
 		coords[ lookup[ key ] ] = e.target.value;
-		model.setCoords( selected, coords );
+
+		store.dispatch( {
+			type: 'SET_COORDS',
+			order: selected,
+			coord: coords
+		} );
 
 	}
 
 	onzoomchange ( e ) {
 
-		model.setZoom( +e.target.value );
+		store.dispatch( {
+			type: 'ZOOM',
+			zoom: +e.target.value
+		} );
 
 	}
 
@@ -310,17 +391,18 @@ class EditorToolbar extends React.Component {
 
 	render () {
 
-		var focus    = this.props.toolbarFocus;
-		var selected = this.props.selectedItem;
-		var url      = ( !!this.props.filename ) ? `${ this.props.filename }?highlight=${ JSON.stringify( this.props.coords ) }` : '';
-		var x, y, w, h;
+		let selected = this.props.selectedItem;
+		let url      = ( !!this.props.filename ) ? `${ this.props.filename }?highlight=${ JSON.stringify( this.props.coords ) }` : '';
+		let x, y, w, h;
 
 		if ( typeof selected === 'number' ) {
 
-			x = model.coords[ selected ][ 0 ];
-			y = model.coords[ selected ][ 1 ];
-			w = model.coords[ selected ][ 2 ];
-			h = model.coords[ selected ][ 3 ];
+			// FIXME
+			let state = store.getState();
+			x = state.coords[ selected ][ 0 ];
+			y = state.coords[ selected ][ 1 ];
+			w = state.coords[ selected ][ 2 ];
+			h = state.coords[ selected ][ 3 ];
 
 		}
 
@@ -347,13 +429,17 @@ class EditorToolbar extends React.Component {
 							</div>
 							<div className="EDT-EditorToolbar__control">
 								<button className="EDT-EditorToolbar__button"
-									onClick={ model.shiftSelected.bind( model ) }
+									onClick={ function () {
+										store.dispatch( { type: 'HIGHLIGHT_SHIFT' } )
+									} }
 								>
 									&lt;&lt;
 								</button>
 								<output className="EDT-EditorToolbar__output EDT-EditorToolbar__output--xshort">{ selected + 1 }</output>
 								<button className="EDT-EditorToolbar__button"
-									onClick={ model.unshiftSelected.bind( model ) }
+									onClick={ function () {
+										store.dispatch( { type: 'HIGHLIGHT_UNSHIFT' } )
+									} }
 								>
 									&gt;&gt;
 								</button>
@@ -402,7 +488,9 @@ class EditorToolbar extends React.Component {
 						<div className="EDT-EditorToolbar__item">
 							<div className="EDT-EditorToolbar__control">
 								<button className="EDT-EditorToolbar__button"
-									onClick={ model.deleteSelected.bind( model ) }
+									onClick={ function () {
+										store.dispatch( { type: 'HIGHLIGHT_REMOVE' } )
+									} }
 								>
 									X
 								</button>
@@ -445,30 +533,32 @@ class Highlight extends React.Component {
 
 	static _handleDrag ( e ) {
 
+		let state = store.getState();
+
 		// FIXME
 		// 親コンポーネントのSVG要素にアクセスしたいけどどうする？
 		// right wey to get parent SVG element?
-		var svg = document.querySelector( 'svg' );
-		var p   = svg.createSVGPoint();
+		let svg = document.querySelector( 'svg' );
+		let p   = svg.createSVGPoint();
 		p.x = e.x | 0;
 		p.y = e.y | 0;
-		var svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
+		let svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
 
-		var _svgCoordX = svgCoord.x;
-		var _svgCoordY = svgCoord.y;
+		let _svgCoordX = svgCoord.x;
+		let _svgCoordY = svgCoord.y;
 		_svgCoordX = Math.max( _svgCoordX, 0 );
 		_svgCoordY = Math.max( _svgCoordY, 0 );
-		_svgCoordX = Math.min( _svgCoordX, model.width );
-		_svgCoordY = Math.min( _svgCoordY, model.height );
+		_svgCoordX = Math.min( _svgCoordX, state.width );
+		_svgCoordY = Math.min( _svgCoordY, state.height );
 
-		var prevBox = {
-			x: model.coords[ this.props.order ][ 0 ],
-			y: model.coords[ this.props.order ][ 1 ],
-			w: model.coords[ this.props.order ][ 2 ],
-			h: model.coords[ this.props.order ][ 3 ]
+		let prevBox = {
+			x: state.coords[ this.props.order ][ 0 ],
+			y: state.coords[ this.props.order ][ 1 ],
+			w: state.coords[ this.props.order ][ 2 ],
+			h: state.coords[ this.props.order ][ 3 ]
 		}
 
-		var newBox = {
+		let newBox = {
 			x: prevBox.x,
 			y: prevBox.y,
 			w: prevBox.w,
@@ -477,13 +567,13 @@ class Highlight extends React.Component {
 
 		if ( /r/.test( this.draggingEl ) ) {
 
-			newBox.w = Math.max( _svgCoordX - prevBox.x, model.MINIMUM_SIZE() );
+			newBox.w = Math.max( _svgCoordX - prevBox.x, MINIMUM_SIZE );
 
 		} else if ( /l/.test( this.draggingEl ) ) {
 
 			let left  = _svgCoordX;
 			let right = prevBox.w + prevBox.x;
-			let maxLeft = right - model.MINIMUM_SIZE();
+			let maxLeft = right - MINIMUM_SIZE;
 
 			newBox.x = Math.min( left, maxLeft );
 			newBox.w = prevBox.w + ( prevBox.x - newBox.x );
@@ -492,13 +582,13 @@ class Highlight extends React.Component {
 
 		if ( /b/.test( this.draggingEl ) ) {
 
-			newBox.h = Math.max( _svgCoordY - prevBox.y, model.MINIMUM_SIZE() );
+			newBox.h = Math.max( _svgCoordY - prevBox.y, MINIMUM_SIZE );
 
 		} else if ( /t/.test( this.draggingEl ) ) {
 
 			let top    = _svgCoordY;
 			let bottom = prevBox.h + prevBox.y;
-			let maxTop = bottom - model.MINIMUM_SIZE();
+			let maxTop = bottom - MINIMUM_SIZE;
 
 			newBox.y = Math.min( top, maxTop );
 			newBox.h = prevBox.h + ( prevBox.y - newBox.y );
@@ -512,8 +602,11 @@ class Highlight extends React.Component {
 
 		}
 
-		// model
-		model.setCoords( this.props.order, [ newBox.x, newBox.y, newBox.w, newBox.h ] );
+		store.dispatch( {
+			type: 'SET_COORDS',
+			order: this.props.order,
+			coord: [ newBox.x, newBox.y, newBox.w, newBox.h ]
+		} );
 
 	}
 
@@ -543,14 +636,16 @@ class Highlight extends React.Component {
 		// e.nativeEvent.preventDefault();
 		e.nativeEvent.stopPropagation();
 
-		var svg = document.querySelector( 'svg' );
-		var p   = svg.createSVGPoint();
+		let state = store.getState();
+
+		let svg = document.querySelector( 'svg' );
+		let p   = svg.createSVGPoint();
 		p.x = e.nativeEvent.x | 0;
 		p.y = e.nativeEvent.y | 0;
-		var svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
+		let svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
 
-		this._dragStartOffsetX = svgCoord.x - model.coords[ this.props.order ][ 0 ];
-		this._dragStartOffsetY = svgCoord.y - model.coords[ this.props.order ][ 1 ];
+		this._dragStartOffsetX = svgCoord.x - state.coords[ this.props.order ][ 0 ];
+		this._dragStartOffsetY = svgCoord.y - state.coords[ this.props.order ][ 1 ];
 		this.draggingEl = ref;
 
 		document.body.classList.add( '--dragging' );
@@ -561,13 +656,17 @@ class Highlight extends React.Component {
 
 	onselect ( e ) {
 
-		model.setSelected( this.props.order );
+		let state = store.getState();
+		store.dispatch( {
+			type: 'HIGHLIGHT_SELECT',
+			selectedItem: this.props.order
+		} );
 
 	}
 
 	render () {
 
-		var { x, y, order, selected } = this.props,
+		let { x, y, order, selected } = this.props,
 				w = this.props.width,
 				h = this.props.height;
 
@@ -634,7 +733,7 @@ class EditorViewport extends React.Component {
 
 	render () {
 
-		var { src, width, height, zoom, coords, selectedItem } = this.props;
+		let { src, width, height, zoom, coords, selectedItem } = this.props;
 
 		return (
 			<div className="EDT-EditorViewport">
@@ -675,19 +774,24 @@ class EditorCanvas extends React.Component {
 
 		if ( !e.target.classList.contains( 'EDT-EditorCanvas__image' ) ) { return; }
 
-		var svg = document.querySelector( 'svg' );
-		var p   = svg.createSVGPoint();
+		// FIXME
+		let svg = document.querySelector( 'svg' );
+		let p   = svg.createSVGPoint();
 		p.x = e.nativeEvent.x | 0;
 		p.y = e.nativeEvent.y | 0;
-		var svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
+		let svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
 
-		model.addHighlight( [ svgCoord.x, svgCoord.y, 100, 100 ] );
+		// FIXME
+		store.dispatch( {
+			type: 'HIGHLIGHT_ADD',
+			coord: [ svgCoord.x, svgCoord.y, 100, 100 ]
+		} );
 
 	}
 
 	render () {
 
-		var { src, zoom, coords, selectedItem } = this.props,
+		let { src, zoom, coords, selectedItem } = this.props,
 				w = this.props.width,
 				h = this.props.height,
 				viewbox = `0 0 ${ w } ${ h }`;
@@ -698,7 +802,7 @@ class EditorCanvas extends React.Component {
 
 				{ coords.map( function ( coord, i ) {
 
-					var isSelected = ( i === selectedItem );
+					let isSelected = ( i === selectedItem );
 					return (
 						<Highlight key={ i } order={ i } x={ coord[ 0 ] } y={ coord[ 1 ] } width={ coord[ 2 ] } height={ coord[ 3 ] } selected={ isSelected } />
 					);
@@ -744,7 +848,7 @@ class EditorDrop extends React.Component {
 		this.classList.remove( 'EDT-EditorDrop--dragging' );
 
 		// drop an element currently not supported
-		// var urlList = e.dataTransfer.getData( 'text/uri-list' );
+		// let urlList = e.dataTransfer.getData( 'text/uri-list' );
 
 		// if ( /\.(gif|png|jpg|jpeg|svg)($|\?)/i.test( urlList ) ) {
 
@@ -752,7 +856,7 @@ class EditorDrop extends React.Component {
 
 		// }
 
-		var file = e.dataTransfer.files[ 0 ];
+		let file = e.dataTransfer.files[ 0 ];
 
 		if ( !/image/.test( file.type ) ) {
 
@@ -760,12 +864,16 @@ class EditorDrop extends React.Component {
 
 		}
 
-		var reader = new FileReader();
+		let reader = new FileReader();
 
 		reader.onload = function ( e ) {
 
-			var src = this.result;
-			model.setImage( file.name, src );
+			let src = this.result;
+			store.dispatch( {
+				type: 'SET_IMAGE',
+				filename: file.name,
+				src: src
+			} );
 
 		}
 
@@ -775,7 +883,7 @@ class EditorDrop extends React.Component {
 
 	componentDidMount () {
 
-		var dropTarget = this.refs.EditorDrop;
+		let dropTarget = this.refs.EditorDrop;
 		dropTarget.addEventListener( 'dragenter', this.handleDragEnter );
 		dropTarget.addEventListener( 'dragover',  this.handleDragOver );
 		dropTarget.addEventListener( 'dragleave', this.handleDragLeave );
@@ -785,7 +893,7 @@ class EditorDrop extends React.Component {
 
 	componentWillUnmount () {
 
-		var dropTarget = this.refs.EditorDrop;
+		let dropTarget = this.refs.EditorDrop;
 		dropTarget.removeEventListener( 'dragenter', this.handleDragEnter );
 		dropTarget.removeEventListener( 'dragover',  this.handleDragOver );
 		dropTarget.removeEventListener( 'dragleave', this.handleDragLeave );
@@ -810,8 +918,20 @@ class EditorDrop extends React.Component {
 }
 
 
+
+
+
+{
+	const state = store.getState();
+	store.dispatch( {
+		type: 'SET_IMAGE',
+		filename: state.filename,
+		src: state.src
+	} );
+}
+
 // main
 ReactDOM.render(
-	<Editor />,
+	<Editor store={ store } />,
 	document.body
 );
