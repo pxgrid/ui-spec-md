@@ -30,7 +30,6 @@ function uiSpecMd( options ) {
 
 	var fileinfoPool = [];
 	var rootDir = options.srcRoot;
-
 	var stream = new Stream.Transform( { objectMode: true } );
 
 	stream._transform = function( file, unused, done ) {
@@ -76,7 +75,6 @@ function uiSpecMd( options ) {
 				}
 
 				contents.body = content;
-
 				var pageHtmlSource = makePageHtml( contents );
 				file.contents = new Buffer( pageHtmlSource );
 				file.path = path.resolve( contents.dir, contents.filename );

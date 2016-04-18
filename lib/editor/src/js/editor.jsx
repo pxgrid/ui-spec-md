@@ -300,6 +300,14 @@ class EditorToolbar extends React.Component {
 
 	}
 
+	copyUrl ( e ) {
+
+		this.refs.url.focus();
+		this.refs.url.select();
+		document.execCommand( 'copy' );
+
+	}
+
 	render () {
 
 		var focus    = this.props.toolbarFocus;
@@ -325,7 +333,10 @@ class EditorToolbar extends React.Component {
 								src
 							</div>
 							<div className="EDT-EditorToolbar__control">
-								<output className="EDT-EditorToolbar__output">{ url }</output>
+								<input className="EDT-EditorToolbar__output" readonly="" ref="url" value={ url } />
+							</div>
+							<div className="EDT-EditorToolbar__subControl">
+								<button className="EDT-EditorToolbar__button" onClick={ this.copyUrl.bind( this ) }>copy</button>
 							</div>
 						</div>
 					</div>
@@ -340,7 +351,7 @@ class EditorToolbar extends React.Component {
 								>
 									&lt;&lt;
 								</button>
-								<output className="EDT-EditorToolbar__output EDT-EditorToolbar__output--xshort">{ selected }</output>
+								<output className="EDT-EditorToolbar__output EDT-EditorToolbar__output--xshort">{ selected + 1 }</output>
 								<button className="EDT-EditorToolbar__button"
 									onClick={ model.unshiftSelected.bind( model ) }
 								>
@@ -564,7 +575,7 @@ class Highlight extends React.Component {
 			<g className="EDT-Highlight" aria-selected={ selected } onMouseDown={ this.onselect.bind( this ) }>
 				<rect x={ x     } y={ y     } width={ w     } height={ h     } className="EDT-Highlight__fill" />
 				<rect x={ x - 2 } y={ y - 2 } width={ w + 4 } height={ h + 4 } className="EDT-Highlight__outline" />
-				<text x={ x + 2 } y={ y - 2 } dy={ h - 2 } className="EDT-Highlight__label">{ order }</text>
+				<text x={ x + 2 } y={ y - 2 } dy={ h - 2 } className="EDT-Highlight__label">{ order + 1 }</text>
 
 				<rect x={ x     } y={ y     } width={ w     } height={ h     } className="EDT-Highlight__clickableArea"
 				ref="c"

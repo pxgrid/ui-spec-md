@@ -88,6 +88,11 @@ body.--dragging{
 	margin: 3px;
 	overflow-x: auto;
 }
+.EDT-EditorToolbar__subControl{
+	font-size: .75em;
+	align-self: center;
+	margin: 3px 3px 3px -3px;
+}
 
 .EDT-EditorToolbar__input,
 .EDT-EditorToolbar__output,
@@ -162,7 +167,9 @@ body.--dragging{
 
 .EDT-Highlight__ctrl {
 	fill: #66f;
-	fill-opacity: 0.5;
+	fill-opacity: 0.6;
+	stroke: #66f;
+	stroke-width: 1.5;
 	cursor: pointer;
 	.EDT-Highlight[aria-selected="true"] & {
 		fill-opacity: 1;
