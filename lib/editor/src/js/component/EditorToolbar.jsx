@@ -1,41 +1,16 @@
 const React = require( 'react' );
 const store = require( '../store' );
 
-const ItemSrcControl  = require( './EditorToolbar/ItemSrcControl.jsx' );
-const ItemZoomControl = require( './EditorToolbar/ItemZoomControl.jsx' );
+const ItemSrcControl   = require( './EditorToolbar/ItemSrcControl.jsx' );
+const ItemZoomControl  = require( './EditorToolbar/ItemZoomControl.jsx' );
+const ItemOrderControl = require( './EditorToolbar/ItemOrderControl.jsx' );
 
 class EditorToolbar extends React.Component {
 
-	onvaluechange ( key, e ) {
-
-		let { selectedItem, coords } = this.props;
-
-		if ( selectedItem === null ) {
-
-			e.preventDefault();
-			return;
-
-		}
-
-		const LOOKUP    = { x: 0, y: 1, w: 2, h: 3 };
-		let selected    = selectedItem;
-		let coordsClone = coords[ selected ].concat();
-
-		coordsClone[ LOOKUP[ key ] ] = e.target.value;
-
-		store.dispatch( {
-			type: 'SET_COORDS',
-			order: selected,
-			coord: coordsClone
-		} );
-
-	}
-
-
 	render () {
 
-		let { selectedItem, coords } = this.props;
-		let url = ( !!this.props.filename ) ? `${ this.props.filename }?highlight=${ JSON.stringify( this.props.coords ) }` : ``;
+		const { filename, selectedItem, coords } = this.props;
+		const url = ( !!filename ) ? `${ filename }?highlight=${ JSON.stringify( coords ) }` : ``;
 		let x, y, w, h;
 
 		if ( typeof selectedItem === `number` ) {
@@ -56,28 +31,9 @@ class EditorToolbar extends React.Component {
 					</div>
 
 					<div className="EDT-EditorToolbar__row EDT-EditorToolbar__row--fit-true">
-						<div className="EDT-EditorToolbar__item">
-							<div className="EDT-EditorToolbar__label">
-								label
-							</div>
-							<div className="EDT-EditorToolbar__control">
-								<button className="EDT-EditorToolbar__button"
-									onClick={ () => {
-										store.dispatch( { type: 'HIGHLIGHT_SHIFT' } );
-									} }
-								>
-									&lt;&lt;
-								</button>
-								<output className="EDT-EditorToolbar__output EDT-EditorToolbar__output--xshort">{ selectedItem + 1 }</output>
-								<button className="EDT-EditorToolbar__button"
-									onClick={ () => {
-										store.dispatch( { type: 'HIGHLIGHT_UNSHIFT' } );
-									} }
-								>
-									&gt;&gt;
-								</button>
-							</div>
-						</div>
+
+						<ItemOrderControl selectedItem={ selectedItem } />
+
 						<div className="EDT-EditorToolbar__item">
 							<div className="EDT-EditorToolbar__label">
 								x
@@ -136,6 +92,31 @@ class EditorToolbar extends React.Component {
 				</div>
 			</div>
 		);
+
+	}
+
+	onvaluechange ( key, e ) {
+
+		let { selectedItem, coords } = this.props;
+
+		if ( selectedItem === null ) {
+
+			e.preventDefault();
+			return;
+
+		}
+
+		const LOOKUP    = { x: 0, y: 1, w: 2, h: 3 };
+		let selected    = selectedItem;
+		let coordsClone = coords[ selected ].concat();
+
+		coordsClone[ LOOKUP[ key ] ] = e.target.value;
+
+		store.dispatch( {
+			type: 'SET_COORDS',
+			order: selected,
+			coord: coordsClone
+		} );
 
 	}
 
