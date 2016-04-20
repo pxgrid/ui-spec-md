@@ -1,6 +1,9 @@
 const React = require( 'react' );
 const store = require( '../store' );
 
+const ItemSrcControl  = require( './EditorToolbar/ItemSrcControl.jsx' );
+const ItemZoomControl = require( './EditorToolbar/ItemZoomControl.jsx' );
+
 class EditorToolbar extends React.Component {
 
 	onvaluechange ( key, e ) {
@@ -28,22 +31,6 @@ class EditorToolbar extends React.Component {
 
 	}
 
-	onzoomchange ( e ) {
-
-		store.dispatch( {
-			type: 'ZOOM',
-			zoom: +e.target.value
-		} );
-
-	}
-
-	copyUrl ( ) {
-
-		this.refs.url.focus();
-		this.refs.url.select();
-		document.execCommand( 'copy' );
-
-	}
 
 	render () {
 
@@ -65,18 +52,9 @@ class EditorToolbar extends React.Component {
 			<div className="EDT-EditorToolbar">
 				<div className="EDT-EditorToolbar__inner">
 					<div className="EDT-EditorToolbar__row">
-						<div className="EDT-EditorToolbar__item">
-							<div className="EDT-EditorToolbar__label">
-								src
-							</div>
-							<div className="EDT-EditorToolbar__control">
-								<input className="EDT-EditorToolbar__output" readonly="" ref="url" value={ url } />
-							</div>
-							<div className="EDT-EditorToolbar__subControl">
-								<button className="EDT-EditorToolbar__button" onClick={ this.copyUrl.bind( this ) }>copy</button>
-							</div>
-						</div>
+						<ItemSrcControl url={ url } />
 					</div>
+
 					<div className="EDT-EditorToolbar__row EDT-EditorToolbar__row--fit-true">
 						<div className="EDT-EditorToolbar__item">
 							<div className="EDT-EditorToolbar__label">
@@ -151,17 +129,9 @@ class EditorToolbar extends React.Component {
 								</button>
 							</div>
 						</div>
-						<div className="EDT-EditorToolbar__item">
-							<div className="EDT-EditorToolbar__label">
-								zoom
-							</div>
-							<div className="EDT-EditorToolbar__control">
-								<input className="EDT-EditorToolbar__range EDT-EditorToolbar__input--zoom" type="range" step="0.25" min="0.5" max="1.5"
-									ref="zoom"
-									onChange={ this.onzoomchange }
-								/>
-							</div>
-						</div>
+
+						<ItemZoomControl />
+
 					</div>
 				</div>
 			</div>

@@ -15,14 +15,14 @@ class Editor extends React.Component {
 	constructor() {
 
 		super();
+
 		this.state = store.getState();
-		this.listener = this._onchange.bind( this );
 
 	}
 
 	componentDidMount () {
 
-		this.unsubscribe = store.subscribe( this.listener );
+		this.unsubscribe = store.subscribe( this._onchange.bind( this ) );
 
 	}
 
