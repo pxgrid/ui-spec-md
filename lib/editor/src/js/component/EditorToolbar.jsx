@@ -1,9 +1,10 @@
 const React = require( 'react' );
 const store = require( '../store' );
 
-const ItemSrcControl   = require( './EditorToolbar/ItemSrcControl.jsx' );
-const ItemZoomControl  = require( './EditorToolbar/ItemZoomControl.jsx' );
-const ItemOrderControl = require( './EditorToolbar/ItemOrderControl.jsx' );
+const ItemSrcControl    = require( './EditorToolbar/ItemSrcControl.jsx' );
+const ItemOrderControl  = require( './EditorToolbar/ItemOrderControl.jsx' );
+const ItemRemoveControl = require( './EditorToolbar/ItemRemoveControl.jsx' );
+const ItemZoomControl   = require( './EditorToolbar/ItemZoomControl.jsx' );
 
 class EditorToolbar extends React.Component {
 
@@ -74,17 +75,8 @@ class EditorToolbar extends React.Component {
 								/>
 							</div>
 						</div>
-						<div className="EDT-EditorToolbar__item">
-							<div className="EDT-EditorToolbar__control">
-								<button className="EDT-EditorToolbar__button"
-									onClick={ () => {
-										store.dispatch( { type: 'HIGHLIGHT_REMOVE' } );
-									} }
-								>
-									X
-								</button>
-							</div>
-						</div>
+
+						<ItemRemoveControl />
 
 						<ItemZoomControl />
 
