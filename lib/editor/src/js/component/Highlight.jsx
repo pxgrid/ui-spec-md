@@ -1,3 +1,4 @@
+const React = require( 'react' );
 const store = require( './store.js' );
 const MINIMUM_SIZE = 20;
 
@@ -5,7 +6,7 @@ class Highlight extends React.Component {
 
 	// FIXME
 	// イベントでthisをバインドしたいけどこれでいいの？
-	static _dragEnd ( e ) {
+	static _dragEnd () {
 
 		this.draggingEl = null;
 		this._dragStartOffsetX = null;
@@ -40,14 +41,14 @@ class Highlight extends React.Component {
 			y: this.props.coord[ 1 ],
 			w: this.props.coord[ 2 ],
 			h: this.props.coord[ 3 ]
-		}
+		};
 
 		let newBox = {
 			x: prevBox.x,
 			y: prevBox.y,
 			w: prevBox.w,
 			h: prevBox.h
-		}
+		};
 
 		if ( /r/.test( this.draggingEl ) ) {
 
@@ -136,7 +137,7 @@ class Highlight extends React.Component {
 
 	}
 
-	onselect ( e ) {
+	onselect () {
 
 		store.dispatch( {
 			type: 'HIGHLIGHT_SELECT',
