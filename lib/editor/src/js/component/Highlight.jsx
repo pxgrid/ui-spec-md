@@ -1,5 +1,5 @@
 const React = require( 'react' );
-const store = require( './store.js' );
+const store = require( '../store.js' );
 const MINIMUM_SIZE = 20;
 
 class Highlight extends React.Component {
@@ -95,12 +95,6 @@ class Highlight extends React.Component {
 
 	}
 
-	constructor( props, context ) {
-
-		super( props, context );
-
-	}
-
 	componentDidMount () {
 
 		this.handleDrag = Highlight._handleDrag.bind( this );
@@ -118,14 +112,12 @@ class Highlight extends React.Component {
 
 	dragStart ( ref, e ) {
 
+		const { getCoordByXY } = this.props;
+
 		// e.nativeEvent.preventDefault();
 		e.nativeEvent.stopPropagation();
 
-		let svg = document.querySelector( 'svg' );
-		let p   = svg.createSVGPoint();
-		p.x = e.nativeEvent.x | 0;
-		p.y = e.nativeEvent.y | 0;
-		let svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
+		let svgCoord = getCoordByXY(e.nativeEvent);
 
 		this._dragStartOffsetX = svgCoord.x - this.props.coord[ 0 ];
 		this._dragStartOffsetY = svgCoord.y - this.props.coord[ 1 ];
@@ -148,11 +140,8 @@ class Highlight extends React.Component {
 
 	render () {
 
-		let { order, coord, selected } = this.props,
-				x = coord[ 0 ],
-				y = coord[ 1 ],
-				w = coord[ 2 ],
-				h = coord[ 3 ];
+		let { order, coord, selected } = this.props;
+		let [ x, y, w, h ] = coord;
 
 		return (
 			<g className="EDT-Highlight" aria-selected={ selected } onMouseDown={ this.onselect.bind( this ) }>
