@@ -6,48 +6,47 @@ const ItemCoordsControl = require( './EditorToolbar/ItemCoordsControl.jsx' );
 const ItemRemoveControl = require( './EditorToolbar/ItemRemoveControl.jsx' );
 const ItemZoomControl   = require( './EditorToolbar/ItemZoomControl.jsx' );
 
+const EditorToolbar = ( props ) => {
 
-class EditorToolbar extends React.Component {
+	const { filename, selectedItem, coords } = props;
 
-	render () {
+	return (
+		<div className="EDT-EditorToolbar">
+			<div className="EDT-EditorToolbar__inner">
+				<div className="EDT-EditorToolbar__row">
 
-		const { filename, selectedItem, coords } = this.props;
-		const url = ( !!filename ) ? `${ filename }?highlight=${ JSON.stringify( coords ) }` : ``;
+					<ItemSrcControl
+						filename={ filename }
+						coords={ coords }
+					/>
 
-		return (
-			<div className="EDT-EditorToolbar">
-				<div className="EDT-EditorToolbar__inner">
-					<div className="EDT-EditorToolbar__row">
-						<ItemSrcControl url={ url } />
-					</div>
+				</div>
 
-					<div className="EDT-EditorToolbar__row EDT-EditorToolbar__row--fit-true">
+				<div className="EDT-EditorToolbar__row EDT-EditorToolbar__row--fit-true">
 
-						<ItemOrderControl selectedItem={ selectedItem } />
+					<ItemOrderControl selectedItem={ selectedItem } />
 
-						{
-							['x', 'y', 'w', 'h'].map((target) => {
-								return (
-									<ItemCoordsControl
-										target={target}
-										selectedItem={ selectedItem }
-										coords={ coords }
-									/>
-								);
-							})
-						}
+					{
+						[ 'x', 'y', 'w', 'h' ].map(( target, idx ) => {
+							return (
+								<ItemCoordsControl
+									key={ idx }
+									target={ target }
+									selectedItem={ selectedItem }
+									coords={ coords }
+								/>
+							);
+						})
+					}
 
-						<ItemRemoveControl />
+					<ItemRemoveControl />
 
-						<ItemZoomControl />
+					<ItemZoomControl />
 
-					</div>
 				</div>
 			</div>
-		);
-
-	}
-
-}
+		</div>
+	);
+};
 
 module.exports = EditorToolbar;
