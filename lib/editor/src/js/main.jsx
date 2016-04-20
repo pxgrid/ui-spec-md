@@ -1,6 +1,5 @@
-const store  = require( './store.js' );
+const store  = require( './store' );
 const Editor = require( './Editor.jsx' );
-
 
 // main
 {
@@ -13,6 +12,6 @@ const Editor = require( './Editor.jsx' );
 }
 
 ReactDOM.render(
-	<Editor store={ store } />,
+	<Editor />,
 	document.body
 );

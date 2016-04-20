@@ -1,12 +1,7 @@
-const store = require( './store.js' );
+const React = require( 'react' );
+const store = require( '../store' );
 
 class EditorToolbar extends React.Component {
-
-	constructor( props, context ) {
-
-		super( props, context );
-
-	}
 
 	onvaluechange ( key, e ) {
 
@@ -42,7 +37,7 @@ class EditorToolbar extends React.Component {
 
 	}
 
-	copyUrl ( e ) {
+	copyUrl ( ) {
 
 		this.refs.url.focus();
 		this.refs.url.select();
@@ -89,16 +84,16 @@ class EditorToolbar extends React.Component {
 							</div>
 							<div className="EDT-EditorToolbar__control">
 								<button className="EDT-EditorToolbar__button"
-									onClick={ function () {
-										store.dispatch( { type: 'HIGHLIGHT_SHIFT' } )
+									onClick={ () => {
+										store.dispatch( { type: 'HIGHLIGHT_SHIFT' } );
 									} }
 								>
 									&lt;&lt;
 								</button>
 								<output className="EDT-EditorToolbar__output EDT-EditorToolbar__output--xshort">{ selectedItem + 1 }</output>
 								<button className="EDT-EditorToolbar__button"
-									onClick={ function () {
-										store.dispatch( { type: 'HIGHLIGHT_UNSHIFT' } )
+									onClick={ () => {
+										store.dispatch( { type: 'HIGHLIGHT_UNSHIFT' } );
 									} }
 								>
 									&gt;&gt;
@@ -148,8 +143,8 @@ class EditorToolbar extends React.Component {
 						<div className="EDT-EditorToolbar__item">
 							<div className="EDT-EditorToolbar__control">
 								<button className="EDT-EditorToolbar__button"
-									onClick={ function () {
-										store.dispatch( { type: 'HIGHLIGHT_REMOVE' } )
+									onClick={ () => {
+										store.dispatch( { type: 'HIGHLIGHT_REMOVE' } );
 									} }
 								>
 									X
