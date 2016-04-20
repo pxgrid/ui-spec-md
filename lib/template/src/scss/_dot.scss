@@ -11,11 +11,24 @@
 		height: auto;
 		margin: auto;
 	}
+	g.node polygon{
+		fill: rgba( 0, 0, 0, 0 );
+	}
+	g.node a:hover{
+		text-decoration: none;
+	}
 	g.node text{
 		font-family: Tahoma, Geneva, $fontSansSerif;
 		font-size: 12px;
 	}
 	g.node text:first-of-type {
 		font-weight: bold;
+	}
+	g.node a text:first-of-type {
+		text-decoration: underline;
+		transition: fill .2s;
+	}
+	g.node a:hover text:first-of-type {
+		fill: #00BCD4;
 	}
 }

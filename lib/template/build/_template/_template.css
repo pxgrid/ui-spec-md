@@ -800,8 +800,17 @@ svg.UISP-capture {
     max-height: 100%;
     height: auto;
     margin: auto; }
+  .UISP-dot g.node polygon {
+    fill: transparent; }
+  .UISP-dot g.node a:hover {
+    text-decoration: none; }
   .UISP-dot g.node text {
     font-family: Tahoma, Geneva, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
     font-size: 12px; }
   .UISP-dot g.node text:first-of-type {
     font-weight: bold; }
+  .UISP-dot g.node a text:first-of-type {
+    text-decoration: underline;
+    transition: fill .2s; }
+  .UISP-dot g.node a:hover text:first-of-type {
+    fill: #00BCD4; }
