@@ -17,7 +17,8 @@ html {
 }
 
 html,
-body {
+body,
+#app {
 	height: 100%;
 	margin: 0;
 }
@@ -245,7 +246,7 @@ overflow: auto;
 		height: 100%;
 	}
 }
-	
+
 	.EDT-EditorDrop__target{
 		pointer-events: none;
 		vertical-align: middle;
