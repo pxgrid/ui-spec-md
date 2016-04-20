@@ -5,12 +5,17 @@ const LOOKUP = { x: 0, y: 1, w: 2, h: 3 };
 
 class ItemCoordsControl extends React.Component {
 
+	constructor() {
+
+		super();
+
+		this.state = { val: '' };
+
+	}
+
 	render () {
 
-		const { target, selectedItem, coords } = this.props;
-		const val = typeof selectedItem === 'number'
-			? coords[selectedItem][LOOKUP[target]]
-			: undefined;
+		const { target } = this.props;
 
 		return (
 			<div className="EDT-EditorToolbar__item">
@@ -21,8 +26,8 @@ class ItemCoordsControl extends React.Component {
 					<input
 						className="EDT-EditorToolbar__input"
 						type="number" min="0" max="10000"
-						value={ val }
-						onChange={ this.onValuechange.bind( this ) }
+						value={ this.state.val }
+						onChange={this.onChange.bind(this)}
 					/>
 				</div>
 			</div>
@@ -30,7 +35,7 @@ class ItemCoordsControl extends React.Component {
 
 	}
 
-	onValuechange( e ) {
+	onChange( e ) {
 
 		const { target, selectedItem, coords } = this.props;
 
@@ -41,9 +46,10 @@ class ItemCoordsControl extends React.Component {
 
 		}
 
+		const val = e.target.value | 0;
 		let coordsClone = coords[ selectedItem ].concat();
 
-		coordsClone[ LOOKUP[ target ] ] = e.target.value | 0;
+		coordsClone[ LOOKUP[ target ] ] = val;
 
 		store.dispatch( {
 			type: 'SET_COORDS',
@@ -51,6 +57,17 @@ class ItemCoordsControl extends React.Component {
 			coord: coordsClone
 		} );
 
+		this.setState( { val: val } );
+
+	}
+
+	componentWillReceiveProps ( nextProps ) {
+		const { target, selectedItem, coords } = nextProps;
+		const val = typeof selectedItem === 'number'
+			? coords[selectedItem][LOOKUP[target]]
+			: undefined;
+
+		val && this.setState( { val: val } );
 	}
 
 };
