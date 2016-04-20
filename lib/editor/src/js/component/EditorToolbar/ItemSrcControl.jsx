@@ -3,6 +3,7 @@ const React = require( 'react' );
 class ItemSrcControl extends React.Component {
 
 	render () {
+		const url = this._getUrl();
 
 		return (
 			<div className="EDT-EditorToolbar__item">
@@ -13,7 +14,7 @@ class ItemSrcControl extends React.Component {
 					<input
 						className="EDT-EditorToolbar__output"
 						onClick={ this.selectUrl.bind( this ) }
-						readOnly={true} ref="url" value={ this._getUrl.bind( this ) }
+						readOnly={true} ref="url" value={ url }
 					/>
 				</div>
 				<div className="EDT-EditorToolbar__subControl">
@@ -45,7 +46,7 @@ class ItemSrcControl extends React.Component {
 
 		const { filename, coords } = this.props;
 
-		if ( !!filename ) { return ''; }
+		if ( filename.length === 0 ) { return ''; }
 		return `${ filename }?highlight=${ JSON.stringify( coords ) }`;
 
 	}
