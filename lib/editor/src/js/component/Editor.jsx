@@ -1,4 +1,4 @@
-const store          = require( './store.js' );
+const store          = require( '../store.js' );
 const EditorToolbar  = require( './EditorToolbar.jsx' );
 const EditorViewport = require( './EditorViewport.jsx' );
 
