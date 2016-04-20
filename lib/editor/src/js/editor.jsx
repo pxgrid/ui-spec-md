@@ -6,7 +6,7 @@ class Editor extends React.Component {
 
 	static _onchange () {
 
-		let state = this.props.store.getState();
+		let state = store.getState();
 		this.setState( state );
 
 	}
@@ -14,14 +14,14 @@ class Editor extends React.Component {
 	constructor( props, context ) {
 
 		super( props, context );
-		this.state = Object.assign( {}, this.props.store.getState() );
+		this.state = store.getState();
 		this.listener = Editor._onchange.bind( this );
 
 	}
 
 	componentDidMount () {
 
-		this.unsubscribe = this.props.store.subscribe( this.listener );
+		this.unsubscribe = store.subscribe( this.listener );
 
 	}
 

@@ -13,6 +13,6 @@ const Editor = require( './Editor.jsx' );
 }
 
 ReactDOM.render(
-	<Editor store={ store } />,
+	<Editor />,
 	document.body
 );
