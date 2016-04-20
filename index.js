@@ -1,17 +1,18 @@
+'use strict';
 
-var File   = require( 'vinyl' )
-var Stream = require( 'stream' );
-var fs     = require( 'fs' );
-var path   = require( 'path' );
-var marked = require( 'marked' );
+const File   = require( 'vinyl' )
+const Stream = require( 'stream' );
+const fs     = require( 'fs' );
+const path   = require( 'path' );
+const marked = require( 'marked' );
 
-var UiflowMDRenderer   = require( './lib/UiflowMDRenderer.js' );
-var splitInput         = require( './lib/splitInput.js' );
-var makePageHtml       = require( './lib/makePageHtml.js' );
-var makeIndex          = require( './lib/makeIndex.js' );
-var copyTemplateAssets = require( './lib/copyTemplateAssets.js' );
+const UiflowMDRenderer   = require( './lib/UiflowMDRenderer.js' );
+const splitInput         = require( './lib/splitInput.js' );
+const makePageHtml       = require( './lib/makePageHtml.js' );
+const makeIndex          = require( './lib/makeIndex.js' );
+const copyTemplateAssets = require( './lib/copyTemplateAssets.js' );
 
-var PLUGIN_NAME = 'ui-spec-md';
+const PLUGIN_NAME = 'ui-spec-md';
 
 marked.setOptions( {
 	renderer: new UiflowMDRenderer(),
@@ -26,11 +27,11 @@ marked.setOptions( {
 	highlight: function ( code, lang ) {}
 } );
 
-function uiSpecMd( options ) {
+const uiSpecMd = function ( options ) {
 
-	var fileinfoPool = [];
-	var rootDir = options.srcRoot;
-	var stream = new Stream.Transform( { objectMode: true } );
+	let fileinfoPool = [];
+	let rootDir = options.srcRoot;
+	let stream = new Stream.Transform( { objectMode: true } );
 
 	stream._transform = function( file, unused, done ) {
 
@@ -55,7 +56,7 @@ function uiSpecMd( options ) {
 		if ( file.isBuffer () ) {
 
 			file.path = file.path.replace( /\.md$/, '.html' );
-			var contents = splitInput( file, rootDir );
+			let contents = splitInput( file, rootDir );
 
 			fileinfoPool.push( {
 				relativePath: contents.fromRoot + contents.filename,
@@ -75,7 +76,7 @@ function uiSpecMd( options ) {
 				}
 
 				contents.body = content;
-				var pageHtmlSource = makePageHtml( contents );
+				let pageHtmlSource = makePageHtml( contents );
 				file.contents = new Buffer( pageHtmlSource );
 				file.path = path.resolve( contents.dir, contents.filename );
 				stream.push( file );
