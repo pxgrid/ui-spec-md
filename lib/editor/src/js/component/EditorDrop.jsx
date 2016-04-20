@@ -1,12 +1,7 @@
+const React = require( 'react' );
 const store = require( './store.js' );
 
 class EditorDrop extends React.Component {
-
-	constructor ( props, context ) {
-
-		super( props, context );
-
-	}
 
 	handleDragEnter ( e ) {
 
@@ -49,7 +44,7 @@ class EditorDrop extends React.Component {
 
 		let reader = new FileReader();
 
-		reader.onload = function ( e ) {
+		reader.onload = function () {
 
 			let src = this.result;
 			store.dispatch( {
@@ -58,7 +53,7 @@ class EditorDrop extends React.Component {
 				src: src
 			} );
 
-		}
+		};
 
 		reader.readAsDataURL( file );
 
