@@ -1,21 +1,22 @@
+const React          = require( 'react' );
 const store          = require( '../store.js' );
 const EditorToolbar  = require( './EditorToolbar.jsx' );
 const EditorViewport = require( './EditorViewport.jsx' );
 
 class Editor extends React.Component {
 
-	static _onchange () {
+	_onchange () {
 
 		let state = store.getState();
 		this.setState( state );
 
 	}
 
-	constructor( props, context ) {
+	constructor() {
 
-		super( props, context );
+		super();
 		this.state = store.getState();
-		this.listener = Editor._onchange.bind( this );
+		this.listener = this._onchange.bind( this );
 
 	}
 
@@ -33,14 +34,10 @@ class Editor extends React.Component {
 
 	render () {
 
-		let { filename, src, zoom, coords, selectedItem } = this.state,
-				w = this.state.width,
-				h = this.state.height;
-
 		return (
 			<div className="EDT-Editor">
-				<EditorToolbar filename={ filename } width={ w } height={ h } coords={ coords } selectedItem={ selectedItem } />
-				<EditorViewport src={ src } width={ w } height={ h } zoom={ zoom } coords={ coords } selectedItem={ selectedItem } />
+				<EditorToolbar {...this.state} />
+				<EditorViewport {...this.state} />
 			</div>
 		);
 
