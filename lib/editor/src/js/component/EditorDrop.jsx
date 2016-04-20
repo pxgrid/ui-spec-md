@@ -1,5 +1,5 @@
 const React = require( 'react' );
-const store = require( './store.js' );
+const store = require( '../store.js' );
 
 class EditorDrop extends React.Component {
 

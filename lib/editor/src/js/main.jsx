@@ -1,5 +1,7 @@
-const store  = require( './store' );
-const Editor = require( './Editor.jsx' );
+const React    = require('react');
+const ReactDOM = require('react-dom');
+const store    = require( './store' );
+const Editor   = require( './component/Editor.jsx' );
 
 // main
 {
@@ -13,5 +15,5 @@ const Editor = require( './Editor.jsx' );
 
 ReactDOM.render(
 	<Editor />,
-	document.body
+	document.getElementById( 'app' )
 );
