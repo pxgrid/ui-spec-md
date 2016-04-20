@@ -374,7 +374,8 @@ html {
   line-height: 1.8; }
 
 html,
-body {
+body,
+#app {
   height: 100%;
   margin: 0; }
 
