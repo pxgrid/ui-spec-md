@@ -28,6 +28,7 @@
     "js-yaml": "^3.5.5",
     "lodash": "^4.8.2",
     "marked": "^0.3.5",
+    "natural-compare-lite": "^1.4.0",
     "vinyl": "^1.1.1",
     "viz.js": "^1.3.0"
   }

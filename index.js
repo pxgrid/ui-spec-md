@@ -59,6 +59,7 @@ const uiSpecMd = function ( options ) {
 			let contents = splitInput( file, rootDir );
 
 			fileinfoPool.push( {
+				filename: contents.filename,
 				relativePath: contents.fromRoot + contents.filename,
 				title: contents.title
 			} );
