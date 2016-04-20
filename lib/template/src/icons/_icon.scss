@@ -1,0 +1,59 @@
+
+@font-face {
+  font-family: "<%= fontName %>";
+  src: url('<%= fontPath %><%= fontName %>.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="<%= prefix %>-"], [class*=" <%= prefix %>-"] {
+  font-family: "<%= fontName %>";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: middle;
+  display: inline-block;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* For With CJK Text =========== */
+  position: relative;
+  top: -0.1em;
+}
+
+<% glyphs.forEach( function( glyph ) { %>.<%= prefix %>--<%= glyph.name %>:before { content: "\<%= glyph.unicode.toString( 16 ).toUpperCase() %>"; }
+<% } ); %>
+
+@function getValue ( $assoc, $key ) {
+  @each $pair in $assoc {
+    @if nth( $pair, 1 ) == $key {
+      @return nth( $pair, 2 );
+    }
+  }
+  @return null;
+}
+
+$icons: (
+  <% glyphs.forEach( function( glyph ) { %><%= glyph.name %> "\<%= glyph.unicode.toString( 16 ).toUpperCase() %>",
+  <% } ); %>
+);
+
+@mixin icon ( $name ) {
+  content: getValue( $icons, $name );
+  font-family: "<%= fontName %>";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: middle;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
