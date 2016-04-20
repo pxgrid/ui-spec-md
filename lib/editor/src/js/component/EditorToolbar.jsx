@@ -105,7 +105,7 @@ class EditorToolbar extends React.Component {
 								x
 							</div>
 							<div className="EDT-EditorToolbar__control">
-								<input className="EDT-EditorToolbar__input" type="number" min="0" max="10000" defaultValue={ x }
+								<input className="EDT-EditorToolbar__input" type="number" min="0" max="10000" value={ x }
 									onChange={ this.onvaluechange.bind( this, 'x' ) }
 								/>
 							</div>
@@ -115,7 +115,7 @@ class EditorToolbar extends React.Component {
 								y
 							</div>
 							<div className="EDT-EditorToolbar__control">
-								<input className="EDT-EditorToolbar__input" type="number" min="0" max="10000" defaultValue={ y }
+								<input className="EDT-EditorToolbar__input" type="number" min="0" max="10000" value={ y }
 									onChange={ this.onvaluechange.bind( this, 'y' ) }
 								/>
 							</div>
@@ -125,7 +125,7 @@ class EditorToolbar extends React.Component {
 								width
 							</div>
 							<div className="EDT-EditorToolbar__control">
-								<input className="EDT-EditorToolbar__input" type="number" min="0" max="10000" defaultValue={ w }
+								<input className="EDT-EditorToolbar__input" type="number" min="0" max="10000" value={ w }
 									onChange={ this.onvaluechange.bind( this, 'w' ) }
 								/>
 							</div>
@@ -135,7 +135,7 @@ class EditorToolbar extends React.Component {
 								height
 							</div>
 							<div className="EDT-EditorToolbar__control">
-								<input className="EDT-EditorToolbar__input" type="number" min="0" max="10000" defaultValue={ h }
+								<input className="EDT-EditorToolbar__input" type="number" min="0" max="10000" value={ h }
 									onChange={ this.onvaluechange.bind( this, 'h' ) }
 								/>
 							</div>
