@@ -6,11 +6,16 @@ class EditorViewport extends React.Component {
 
 	render () {
 
-    let El;
+		let El;
+
 		if ( !!this.props.src ) {
+
 			El = <EditorCanvas {...this.props} />;
+
 		} else {
+
 			El = <EditorDrop />;
+
 		}
 
 		return (
