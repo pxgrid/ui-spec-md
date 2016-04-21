@@ -3,6 +3,9 @@ const store          = require( '../store.js' );
 const EditorToolbar  = require( './EditorToolbar.jsx' );
 const EditorViewport = require( './EditorViewport.jsx' );
 
+const ToolBarAction  = require( '../action/EditorToolbar' );
+const ViewportAction  = require( '../action/EditorViewport' );
+
 class Editor extends React.Component {
 
 	_onchange () {
@@ -36,8 +39,14 @@ class Editor extends React.Component {
 
 		return (
 			<div className="EDT-Editor">
-				<EditorToolbar {...this.state} />
-				<EditorViewport {...this.state} />
+				<EditorToolbar
+					{ ...this.state }
+					{ ...ToolBarAction }
+				/>
+				<EditorViewport
+					{ ...this.state }
+					{ ...ViewportAction }
+				/>
 			</div>
 		);
 

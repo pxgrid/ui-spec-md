@@ -1,5 +1,4 @@
 const React = require( 'react' );
-const store = require( '../../store' );
 
 const LOOKUP = { x: 0, y: 1, w: 2, h: 3 };
 
@@ -37,7 +36,7 @@ class ItemCoordsControl extends React.Component {
 
 	onChange( e ) {
 
-		const { target, selectedItem, coords } = this.props;
+		const { target, selectedItem, coords, coordsAction } = this.props;
 
 		if ( selectedItem === null ) {
 
@@ -51,12 +50,7 @@ class ItemCoordsControl extends React.Component {
 
 		coordsClone[ LOOKUP[ target ] ] = val;
 
-		store.dispatch( {
-			type: 'SET_COORDS',
-			order: selectedItem,
-			coord: coordsClone
-		} );
-
+		coordsAction(selectedItem, coordsClone);
 		this.setState( { val: val } );
 
 	}
@@ -69,6 +63,12 @@ class ItemCoordsControl extends React.Component {
 
 		val && this.setState( { val: val } );
 	}
+
+};
+
+ItemCoordsControl.propTypes = {
+
+	coordsAction: React.PropTypes.func.isRequired,
 
 };
 

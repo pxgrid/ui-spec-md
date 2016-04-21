@@ -1,8 +1,10 @@
 const React = require( 'react' );
-const store = require( '../../store' );
 
 const ItemOrderControl = ( props ) => {
-	const { selectedItem } = props;
+	const {
+		selectedItem,
+		shiftAction, unshiftAction,
+	} = props;
 
 	return (
 		<div className="EDT-EditorToolbar__item">
@@ -11,9 +13,7 @@ const ItemOrderControl = ( props ) => {
 			</div>
 			<div className="EDT-EditorToolbar__control">
 				<button className="EDT-EditorToolbar__button"
-					onClick={ () => {
-						store.dispatch( { type: 'HIGHLIGHT_SHIFT' } );
-					} }
+					onClick={ shiftAction }
 				>
 					&lt;&lt;
 				</button>
@@ -21,15 +21,19 @@ const ItemOrderControl = ( props ) => {
 				<output className="EDT-EditorToolbar__output EDT-EditorToolbar__output--xshort">{ selectedItem + 1 }</output>
 
 				<button className="EDT-EditorToolbar__button"
-					onClick={ () => {
-						store.dispatch( { type: 'HIGHLIGHT_UNSHIFT' } );
-					} }
+					onClick={ unshiftAction }
 				>
 					&gt;&gt;
 				</button>
 			</div>
 		</div>
 	);
+};
+
+ItemOrderControl.propTypes = {
+
+	shiftAction:   React.PropTypes.func.isRequired,
+	unshiftAction: React.PropTypes.func.isRequired,
 };
 
 module.exports = ItemOrderControl;

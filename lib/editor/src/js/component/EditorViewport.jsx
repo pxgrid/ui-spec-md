@@ -10,11 +10,11 @@ class EditorViewport extends React.Component {
 
 		if ( !!this.props.src ) {
 
-			El = <EditorCanvas {...this.props} />;
+			El = <EditorCanvas { ...this.props } />;
 
 		} else {
 
-			El = <EditorDrop />;
+			El = <EditorDrop { ...this.props } />;
 
 		}
 
@@ -31,5 +31,12 @@ class EditorViewport extends React.Component {
 	}
 
 }
+
+EditorViewport.propTypes = {
+
+	addHighlightAction: React.PropTypes.func.isRequired,
+	dropImageAction:    React.PropTypes.func.isRequired,
+
+};
 
 module.exports = EditorViewport;

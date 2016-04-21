@@ -8,7 +8,13 @@ const ItemZoomControl   = require( './EditorToolbar/ItemZoomControl.jsx' );
 
 const EditorToolbar = ( props ) => {
 
-	const { filename, selectedItem, coords } = props;
+	const {
+		filename, selectedItem, coords,
+		shiftAction, unshiftAction,
+		coordsAction,
+		removeAction,
+		zoomAction,
+	} = props;
 
 	return (
 		<div className="EDT-EditorToolbar">
@@ -24,7 +30,11 @@ const EditorToolbar = ( props ) => {
 
 				<div className="EDT-EditorToolbar__row EDT-EditorToolbar__row--fit-true">
 
-					<ItemOrderControl selectedItem={ selectedItem } />
+					<ItemOrderControl
+						selectedItem={ selectedItem }
+						shiftAction={ shiftAction }
+						unshiftAction={ unshiftAction }
+					/>
 
 					{
 						[ 'x', 'y', 'w', 'h' ].map(( target, idx ) => {
@@ -34,19 +44,34 @@ const EditorToolbar = ( props ) => {
 									target={ target }
 									selectedItem={ selectedItem }
 									coords={ coords }
+									coordsAction={ coordsAction }
 								/>
 							);
 						})
 					}
 
-					<ItemRemoveControl />
+					<ItemRemoveControl
+						removeAction={ removeAction }
+					/>
 
-					<ItemZoomControl />
+					<ItemZoomControl
+						zoomAction={ zoomAction }
+					/>
 
 				</div>
 			</div>
 		</div>
 	);
+};
+
+EditorToolbar.propTypes = {
+
+	shiftAction:   React.PropTypes.func.isRequired,
+	unshiftAction: React.PropTypes.func.isRequired,
+	coordsAction:  React.PropTypes.func.isRequired,
+	zoomAction:    React.PropTypes.func.isRequired,
+	removeAction:  React.PropTypes.func.isRequired,
+
 };
 
 module.exports = EditorToolbar;

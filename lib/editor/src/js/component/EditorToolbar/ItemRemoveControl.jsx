@@ -1,15 +1,14 @@
 const React = require( 'react' );
-const store = require( '../../store' );
 
-const ItemOrderControl = () => {
+const ItemRemoveControl = ( props ) => {
+
+	const { removeAction } = props;
 
 	return (
 		<div className="EDT-EditorToolbar__item">
 			<div className="EDT-EditorToolbar__control">
 				<button className="EDT-EditorToolbar__button"
-					onClick={ () => {
-						store.dispatch( { type: 'HIGHLIGHT_REMOVE' } );
-					} }
+					onClick={ () => { removeAction(); } }
 				>
 					X
 				</button>
@@ -19,4 +18,10 @@ const ItemOrderControl = () => {
 
 };
 
-module.exports = ItemOrderControl;
+ItemRemoveControl.propTypes = {
+
+	removeAction: React.PropTypes.func.isRequired,
+
+};
+
+module.exports = ItemRemoveControl;

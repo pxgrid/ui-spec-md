@@ -1,10 +1,11 @@
 const React     = require( 'react' );
-const store     = require( '../store.js' );
 const Highlight = require( './Highlight.jsx' );
 
 class EditorCanvas extends React.Component {
 
 	addHighlight ( e ) {
+
+		const { addHighlightAction } = this.props;
 
 		e.nativeEvent.preventDefault();
 		e.nativeEvent.stopPropagation();
@@ -13,10 +14,7 @@ class EditorCanvas extends React.Component {
 
 		let svgCoord = this.getCoordByXY( e.nativeEvent );
 
-		store.dispatch( {
-			type: 'HIGHLIGHT_ADD',
-			coord: [ svgCoord.x, svgCoord.y, 100, 100 ]
-		} );
+		addHighlightAction( svgCoord );
 
 	}
 
@@ -70,5 +68,11 @@ class EditorCanvas extends React.Component {
 	}
 
 }
+
+EditorCanvas.propTypes = {
+
+	addHighlightAction: React.PropTypes.func.isRequired,
+
+};
 
 module.exports = EditorCanvas;
