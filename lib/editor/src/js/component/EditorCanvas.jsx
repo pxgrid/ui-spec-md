@@ -11,11 +11,7 @@ class EditorCanvas extends React.Component {
 
 		if ( !e.target.classList.contains( 'EDT-EditorCanvas__image' ) ) { return; }
 
-		let svg = this.refs.svg;
-		let p   = svg.createSVGPoint();
-		p.x = e.nativeEvent.x | 0;
-		p.y = e.nativeEvent.y | 0;
-		let svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
+		let svgCoord = this.getCoordByXY( e.nativeEvent );
 
 		store.dispatch( {
 			type: 'HIGHLIGHT_ADD',
@@ -60,6 +56,8 @@ class EditorCanvas extends React.Component {
 							key={ i } order={ i }
 							coord={ coord }
 							selected={ i === selectedItem }
+							width={ w }
+							height={ h }
 							getCoordByXY={ getCoordByXY }
 						/>
 					);
