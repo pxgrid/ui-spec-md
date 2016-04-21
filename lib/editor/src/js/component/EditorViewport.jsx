@@ -1,6 +1,6 @@
 const React        = require( 'react' );
-const EditorCanvas = require( './EditorCanvas.jsx' );
-const EditorDrop   = require( './EditorDrop.jsx' );
+const EditorCanvas = require( './EditorViewport/EditorCanvas.jsx' );
+const EditorDrop   = require( './EditorViewport/EditorDrop.jsx' );
 
 class EditorViewport extends React.Component {
 
