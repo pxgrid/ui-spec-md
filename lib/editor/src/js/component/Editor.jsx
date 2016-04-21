@@ -3,8 +3,8 @@ const store          = require( '../store.js' );
 const EditorToolbar  = require( './EditorToolbar.jsx' );
 const EditorViewport = require( './EditorViewport.jsx' );
 
-const ToolBarAction  = require( '../action/EditorToolbar' );
-const ViewportAction  = require( '../action/EditorViewport' );
+const HighlightAction = require( '../action/Highlight' );
+const EditorAction    = require( '../action/Editor' );
 
 class Editor extends React.Component {
 
@@ -41,11 +41,12 @@ class Editor extends React.Component {
 			<div className="EDT-Editor">
 				<EditorToolbar
 					{ ...this.state }
-					{ ...ToolBarAction }
+					{ ...HighlightAction }
 				/>
 				<EditorViewport
 					{ ...this.state }
-					{ ...ViewportAction }
+					{ ...EditorAction }
+					{ ...HighlightAction }
 				/>
 			</div>
 		);

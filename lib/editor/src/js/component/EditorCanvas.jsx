@@ -31,10 +31,13 @@ class EditorCanvas extends React.Component {
 
 	render () {
 
-		let { src, zoom, coords, selectedItem } = this.props,
-				w = this.props.width,
-				h = this.props.height,
-				viewbox = `0 0 ${ w } ${ h }`;
+		let {
+			src, zoom, coords, selectedItem,
+			coordsAction, selectHighlightAction,
+	 	} = this.props,
+			w = this.props.width,
+			h = this.props.height,
+			viewbox = `0 0 ${ w } ${ h }`;
 
 		let getCoordByXY = this.getCoordByXY.bind( this );
 
@@ -57,6 +60,8 @@ class EditorCanvas extends React.Component {
 							width={ w }
 							height={ h }
 							getCoordByXY={ getCoordByXY }
+							selectHighlightAction={ selectHighlightAction }
+							coordsAction={ coordsAction }
 						/>
 					);
 

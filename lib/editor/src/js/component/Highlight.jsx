@@ -1,5 +1,4 @@
 const React = require( 'react' );
-const store = require( '../store.js' );
 const MINIMUM_SIZE = 20;
 
 class Highlight extends React.Component {
@@ -23,19 +22,14 @@ class Highlight extends React.Component {
 
 	render () {
 
-		let { order, coord, selected } = this.props;
+		let { order, coord, selected, selectHighlightAction } = this.props;
 		let [ x, y, w, h ] = coord;
 
 		return (
 			<g
 				className="EDT-Highlight"
 				aria-selected={ selected }
-				onMouseDown={ () => {
-
-						store.dispatch( {
-							type: 'HIGHLIGHT_SELECT',
-							selectedItem: this.props.order
-						} );
+				onMouseDown={ () => { selectHighlightAction( order );
 
 				} }
 			>
@@ -124,7 +118,7 @@ class Highlight extends React.Component {
 	_handleDrag ( e ) {
 
 		const { draggingEl, dragStartOffsetX, dragStartOffsetY } = this.state;
-		const { getCoordByXY, width, height } = this.props;
+		const { coord, order, coordsAction, getCoordByXY, width, height } = this.props;
 
 		let svgCoord = getCoordByXY(e);
 
@@ -136,10 +130,10 @@ class Highlight extends React.Component {
 		_svgCoordY = Math.min( _svgCoordY, height );
 
 		let prevBox = {
-			x: this.props.coord[ 0 ],
-			y: this.props.coord[ 1 ],
-			w: this.props.coord[ 2 ],
-			h: this.props.coord[ 3 ]
+			x: coord[ 0 ],
+			y: coord[ 1 ],
+			w: coord[ 2 ],
+			h: coord[ 3 ]
 		};
 
 		let newBox = {
@@ -186,11 +180,7 @@ class Highlight extends React.Component {
 
 		}
 
-		store.dispatch( {
-			type: 'SET_COORDS',
-			order: this.props.order,
-			coord: [ newBox.x, newBox.y, newBox.w, newBox.h ]
-		} );
+		coordsAction( order, [ newBox.x, newBox.y, newBox.w, newBox.h ] );
 
 	}
 
@@ -207,5 +197,13 @@ class Highlight extends React.Component {
 	}
 
 }
+
+Highlight.propTypes = {
+
+	getCoordByXY:          React.PropTypes.func.isRequired,
+	selectHighlightAction: React.PropTypes.func.isRequired,
+	coordsAction:          React.PropTypes.func.isRequired,
+
+};
 
 module.exports = Highlight;
