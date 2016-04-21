@@ -1,17 +1,13 @@
 const React    = require('react');
 const ReactDOM = require('react-dom');
-const store    = require( './store' );
-const Editor   = require( './component/Editor.jsx' );
+
+const EditorAction = require( './action/Editor' );
+const parseInitUrl = require( './util/parseInitUrl' );
+const Editor       = require( './component/Editor.jsx' );
 
 // main
-{
-	const state = store.getState();
-	store.dispatch( {
-		type: 'SET_IMAGE',
-		filename: state.filename,
-		src: state.src
-	} );
-}
+const { src, highlight } = parseInitUrl();
+EditorAction.initAction( src, highlight );
 
 ReactDOM.render(
 	<Editor />,

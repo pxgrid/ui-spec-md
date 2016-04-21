@@ -46,7 +46,7 @@ class ItemSrcControl extends React.Component {
 
 		const { filename, coords } = this.props;
 
-		if ( filename.length === 0 ) { return ''; }
+		if ( !filename || filename.length === 0 ) { return ''; }
 		return `${ filename }?highlight=${ JSON.stringify( coords ) }`;
 
 	}

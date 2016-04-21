@@ -1,19 +1,14 @@
 const React          = require( 'react' );
 const store          = require( '../store.js' );
-const EditorToolbar  = require( './EditorToolbar.jsx' );
-const EditorViewport = require( './EditorViewport.jsx' );
 
 const HighlightAction = require( '../action/Highlight' );
 const EditorAction    = require( '../action/Editor' );
 
+const EditorToolbar  = require( './EditorToolbar.jsx' );
+const EditorViewport = require( './EditorViewport.jsx' );
+
+
 class Editor extends React.Component {
-
-	_onchange () {
-
-		let state = store.getState();
-		this.setState( state );
-
-	}
 
 	constructor() {
 
@@ -50,6 +45,12 @@ class Editor extends React.Component {
 				/>
 			</div>
 		);
+
+	}
+
+	_onchange () {
+
+		this.setState( store.getState() );
 
 	}
 
