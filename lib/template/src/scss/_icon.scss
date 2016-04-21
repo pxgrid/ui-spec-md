@@ -1,0 +1,71 @@
+
+@font-face {
+  font-family: "_template";
+  src: url('./_template.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="UISP-icon-"], [class*=" UISP-icon-"] {
+  font-family: "_template";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: middle;
+  display: inline-block;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* For With CJK Text =========== */
+  position: relative;
+  top: -0.1em;
+}
+
+.UISP-icon--bars:before { content: "\"; }
+.UISP-icon--down:before { content: "\"; }
+.UISP-icon--fit:before { content: "\"; }
+.UISP-icon--home:before { content: "\"; }
+.UISP-icon--zoom:before { content: "\"; }
+.UISP-icon--zoomin:before { content: "\"; }
+.UISP-icon--zoomout:before { content: "\"; }
+
+
+@function getValue ( $assoc, $key ) {
+  @each $pair in $assoc {
+    @if nth( $pair, 1 ) == $key {
+      @return nth( $pair, 2 );
+    }
+  }
+  @return null;
+}
+
+$icons: (
+  bars "\",
+  down "\",
+  fit "\",
+  home "\",
+  zoom "\",
+  zoomin "\",
+  zoomout "\",
+  
+);
+
+@mixin icon ( $name ) {
+  content: getValue( $icons, $name );
+  font-family: "_template";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: middle;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

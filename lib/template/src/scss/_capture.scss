@@ -9,51 +9,66 @@
 /* Basic comment */
 
 
-svg.UISP-capture{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 100%;
-  max-height: 100%;
-  margin: auto;
-  g.UISP-rect{}
-  rect.UISP-fillrect{
-    stroke: red;
-    stroke-width: 2;
-    fill: red;
-    fill-opacity: 0.25;
-  }
-  rect.UISP-outlinerect{
-    stroke: #fff;
-    stroke-width: 2;
-    fill :none;
-  }
-  text{
-    font-family: sans-serif;
-    font-weight: bold;
-    font-size: 36px;
-    stroke: #fff;
-    stroke-width: 1;
-    fill: red;
-  }
-
+.UISP-Screen{
+	display: inline-block; // shrink to fit
+	padding: 20px;
+}
+.UISP-Screen svg.UISP-Screen__svgRoot{
+	display: block;
+	transition: width .2s, height .2s;
 }
 
-
-
-.UISP-captureContainer--zoom-true{
-  .UISP-captureContainer__inner svg{
-    position: static;
-    max-width: none;
-    max-height: none;
-    margin: 20px;
-  }
+.UISP-Screen--fit{
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 0;
 }
 
-.UISP-captureContainer--annotation-false{
-  .UISP-captureContainer__inner svg{
-    g.UISP-rect{display: none;}
-  }
+.UISP-Screen--fit svg.UISP-Screen__svgRoot{
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+	// height: auto;
+	max-height: 100%;
+	margin: auto;
+}
+
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+
+.UISP-Highlight{}
+	.UISP-Highlight__fill{
+		stroke: red;
+		stroke-width: 2;
+		fill: red;
+		fill-opacity: 0.25;
+	}
+	.UISP-Highlight__outline{
+		stroke: #fff;
+		stroke-width: 2;
+		fill :none;
+	}
+	.UISP-Highlight__label{
+		font-family: sans-serif;
+		font-weight: bold;
+		font-size: 36px;
+		stroke: #fff;
+		stroke-width: 1;
+		fill: red;
+	}
+
+
+.UISP-Highlight{
+	display: none;
+	.UISP-Screen--highlight &{
+		display: inline;
+	}
 }

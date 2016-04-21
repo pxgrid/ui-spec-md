@@ -10,11 +10,13 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "autoprefixer": "^6.3.6",
     "ejs": "^2.4.1",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-consolidate": "^0.2.0",
     "gulp-iconfont": "^6.0.0",
+    "gulp-postcss": "^6.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.2.0"
   }
