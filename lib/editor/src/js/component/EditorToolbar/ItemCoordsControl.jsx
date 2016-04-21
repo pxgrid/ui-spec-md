@@ -57,11 +57,11 @@ class ItemCoordsControl extends React.Component {
 
 	componentWillReceiveProps ( nextProps ) {
 		const { target, selectedItem, coords } = nextProps;
-		const val = typeof selectedItem === 'number'
+		const val = coords.length && typeof selectedItem === 'number'
 			? coords[selectedItem][LOOKUP[target]]
-			: undefined;
+			: '';
 
-		val && this.setState( { val: val } );
+		this.setState( { val: val } );
 	}
 
 };
