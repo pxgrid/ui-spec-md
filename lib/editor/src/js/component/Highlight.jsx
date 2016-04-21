@@ -4,137 +4,20 @@ const MINIMUM_SIZE = 20;
 
 class Highlight extends React.Component {
 
-	// FIXME
-	// イベントでthisをバインドしたいけどこれでいいの？
-	static _dragEnd () {
+	constructor () {
 
-		this.draggingEl = null;
-		this._dragStartOffsetX = null;
-		this._dragStartOffsetY = null;
-		document.body.classList.remove( '--dragging' );
-		document.removeEventListener( 'mousemove', this.handleDrag );
+		super();
 
-	}
+		this.state = {
 
-	static _handleDrag ( e ) {
+			draggingEl: null,
+			dragStartOffsetX: null,
+			dragStartOffsetY: null,
 
-		let state = store.getState();
-
-		// FIXME
-		// 親コンポーネントのSVG要素にアクセスしたいけどどうする？
-		// right wey to get parent SVG element?
-		let svg = document.querySelector( 'svg' );
-		let p   = svg.createSVGPoint();
-		p.x = e.x | 0;
-		p.y = e.y | 0;
-		let svgCoord = p.matrixTransform( svg.getScreenCTM().inverse() );
-
-		let _svgCoordX = svgCoord.x;
-		let _svgCoordY = svgCoord.y;
-		_svgCoordX = Math.max( _svgCoordX, 0 );
-		_svgCoordY = Math.max( _svgCoordY, 0 );
-		_svgCoordX = Math.min( _svgCoordX, state.width );
-		_svgCoordY = Math.min( _svgCoordY, state.height );
-
-		let prevBox = {
-			x: this.props.coord[ 0 ],
-			y: this.props.coord[ 1 ],
-			w: this.props.coord[ 2 ],
-			h: this.props.coord[ 3 ]
 		};
 
-		let newBox = {
-			x: prevBox.x,
-			y: prevBox.y,
-			w: prevBox.w,
-			h: prevBox.h
-		};
-
-		if ( /r/.test( this.draggingEl ) ) {
-
-			newBox.w = Math.max( _svgCoordX - prevBox.x, MINIMUM_SIZE );
-
-		} else if ( /l/.test( this.draggingEl ) ) {
-
-			let left  = _svgCoordX;
-			let right = prevBox.w + prevBox.x;
-			let maxLeft = right - MINIMUM_SIZE;
-
-			newBox.x = Math.min( left, maxLeft );
-			newBox.w = prevBox.w + ( prevBox.x - newBox.x );
-
-		}
-
-		if ( /b/.test( this.draggingEl ) ) {
-
-			newBox.h = Math.max( _svgCoordY - prevBox.y, MINIMUM_SIZE );
-
-		} else if ( /t/.test( this.draggingEl ) ) {
-
-			let top    = _svgCoordY;
-			let bottom = prevBox.h + prevBox.y;
-			let maxTop = bottom - MINIMUM_SIZE;
-
-			newBox.y = Math.min( top, maxTop );
-			newBox.h = prevBox.h + ( prevBox.y - newBox.y );
-
-		}
-
-		if ( /c/.test( this.draggingEl ) ) {
-
-			newBox.x = _svgCoordX - this._dragStartOffsetX;
-			newBox.y = _svgCoordY - this._dragStartOffsetY;
-
-		}
-
-		store.dispatch( {
-			type: 'SET_COORDS',
-			order: this.props.order,
-			coord: [ newBox.x, newBox.y, newBox.w, newBox.h ]
-		} );
-
-	}
-
-	componentDidMount () {
-
-		this.handleDrag = Highlight._handleDrag.bind( this );
-		this.dragEnd    = Highlight._dragEnd.bind( this );
-		this.draggingEl = null;
-		document.addEventListener( 'mouseup', this.dragEnd );
-
-	}
-
-	componentWillUnmount () {
-
-		document.removeEventListener( 'mouseup', this.dragEnd );
-
-	}
-
-	dragStart ( ref, e ) {
-
-		const { getCoordByXY } = this.props;
-
-		// e.nativeEvent.preventDefault();
-		e.nativeEvent.stopPropagation();
-
-		let svgCoord = getCoordByXY(e.nativeEvent);
-
-		this._dragStartOffsetX = svgCoord.x - this.props.coord[ 0 ];
-		this._dragStartOffsetY = svgCoord.y - this.props.coord[ 1 ];
-		this.draggingEl = ref;
-
-		document.body.classList.add( '--dragging' );
-		document.removeEventListener( 'mousemove', this.handleDrag );
-		document.addEventListener( 'mousemove', this.handleDrag );
-
-	}
-
-	onselect () {
-
-		store.dispatch( {
-			type: 'HIGHLIGHT_SELECT',
-			selectedItem: this.props.order
-		} );
+		this._handleDrag = this._handleDrag.bind( this );
+		this._dragEnd    = this._dragEnd.bind( this );
 
 	}
 
@@ -144,7 +27,18 @@ class Highlight extends React.Component {
 		let [ x, y, w, h ] = coord;
 
 		return (
-			<g className="EDT-Highlight" aria-selected={ selected } onMouseDown={ this.onselect.bind( this ) }>
+			<g
+				className="EDT-Highlight"
+				aria-selected={ selected }
+				onMouseDown={ () => {
+
+						store.dispatch( {
+							type: 'HIGHLIGHT_SELECT',
+							selectedItem: this.props.order
+						} );
+
+				} }
+			>
 				<rect x={ x     } y={ y     } width={ w     } height={ h     } className="EDT-Highlight__fill" />
 				<rect x={ x - 2 } y={ y - 2 } width={ w + 4 } height={ h + 4 } className="EDT-Highlight__outline" />
 				<text x={ x + 2 } y={ y - 2 } dy={ h - 2 } className="EDT-Highlight__label">{ order + 1 }</text>
@@ -189,6 +83,126 @@ class Highlight extends React.Component {
 				/>
 			</g>
 		);
+
+	}
+
+	dragStart ( ref, e ) {
+
+		const { getCoordByXY } = this.props;
+
+		// e.nativeEvent.preventDefault();
+		e.nativeEvent.stopPropagation();
+
+		let svgCoord = getCoordByXY(e.nativeEvent);
+
+		this.setState( {
+			draggingEl: ref,
+			dragStartOffsetX: svgCoord.x - this.props.coord[ 0 ],
+			dragStartOffsetY: svgCoord.y - this.props.coord[ 1 ],
+		} );
+
+		document.body.classList.add( '--dragging' );
+		document.removeEventListener( 'mousemove', this._handleDrag );
+		document.addEventListener( 'mousemove', this._handleDrag );
+
+	}
+
+
+	_dragEnd () {
+
+		this.setState( {
+			draggingEl: null,
+			dragStartOffsetX: null,
+			dragStartOffsetY: null,
+		} );
+
+		document.body.classList.remove( '--dragging' );
+		document.removeEventListener( 'mousemove', this._handleDrag );
+
+	}
+
+	_handleDrag ( e ) {
+
+		const { draggingEl, dragStartOffsetX, dragStartOffsetY } = this.state;
+		const { getCoordByXY, width, height } = this.props;
+
+		let svgCoord = getCoordByXY(e);
+
+		let _svgCoordX = svgCoord.x;
+		let _svgCoordY = svgCoord.y;
+		_svgCoordX = Math.max( _svgCoordX, 0 );
+		_svgCoordY = Math.max( _svgCoordY, 0 );
+		_svgCoordX = Math.min( _svgCoordX, width );
+		_svgCoordY = Math.min( _svgCoordY, height );
+
+		let prevBox = {
+			x: this.props.coord[ 0 ],
+			y: this.props.coord[ 1 ],
+			w: this.props.coord[ 2 ],
+			h: this.props.coord[ 3 ]
+		};
+
+		let newBox = {
+			x: prevBox.x,
+			y: prevBox.y,
+			w: prevBox.w,
+			h: prevBox.h
+		};
+
+		if ( /r/.test( draggingEl ) ) {
+
+			newBox.w = Math.max( _svgCoordX - prevBox.x, MINIMUM_SIZE );
+
+		} else if ( /l/.test( draggingEl ) ) {
+
+			let left  = _svgCoordX;
+			let right = prevBox.w + prevBox.x;
+			let maxLeft = right - MINIMUM_SIZE;
+
+			newBox.x = Math.min( left, maxLeft );
+			newBox.w = prevBox.w + ( prevBox.x - newBox.x );
+
+		}
+
+		if ( /b/.test( draggingEl ) ) {
+
+			newBox.h = Math.max( _svgCoordY - prevBox.y, MINIMUM_SIZE );
+
+		} else if ( /t/.test( draggingEl ) ) {
+
+			let top    = _svgCoordY;
+			let bottom = prevBox.h + prevBox.y;
+			let maxTop = bottom - MINIMUM_SIZE;
+
+			newBox.y = Math.min( top, maxTop );
+			newBox.h = prevBox.h + ( prevBox.y - newBox.y );
+
+		}
+
+		if ( /c/.test( draggingEl ) ) {
+
+			newBox.x = _svgCoordX - dragStartOffsetX;
+			newBox.y = _svgCoordY - dragStartOffsetY;
+
+		}
+
+		store.dispatch( {
+			type: 'SET_COORDS',
+			order: this.props.order,
+			coord: [ newBox.x, newBox.y, newBox.w, newBox.h ]
+		} );
+
+	}
+
+	componentDidMount () {
+
+		document.addEventListener( 'mouseup', this._dragEnd );
+
+	}
+
+	componentWillUnmount () {
+
+		document.removeEventListener( 'mouseup', this._dragEnd );
 
 	}
 

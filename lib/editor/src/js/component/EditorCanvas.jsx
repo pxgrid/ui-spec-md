@@ -56,6 +56,8 @@ class EditorCanvas extends React.Component {
 							key={ i } order={ i }
 							coord={ coord }
 							selected={ i === selectedItem }
+							width={ w }
+							height={ h }
 							getCoordByXY={ getCoordByXY }
 						/>
 					);
