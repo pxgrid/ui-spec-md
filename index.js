@@ -60,8 +60,9 @@ const uiSpecMd = function ( options ) {
 
 			fileinfoPool.push( {
 				filename: contents.filename,
-				relativePath: contents.fromRoot + contents.filename,
-				title: contents.title
+				fromRoot: contents.fromRoot,
+				title: contents.title,
+				screen: contents.screen
 			} );
 
 			marked( contents.mdSouce, function ( err, content ) {
