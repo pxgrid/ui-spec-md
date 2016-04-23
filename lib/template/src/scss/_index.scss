@@ -52,6 +52,14 @@
 				width: 25%;
 				padding: 0 5px;
 				margin-bottom: 30px;
+				transition: width .2s, padding .2s;
+				overflow: hidden;
+				&[ aria-hidden="true" ] {
+					font-size: 0;
+					line-height: 0;
+					padding: 0;
+					width: 0;
+				}
 				a{
 					color: inherit;
 					text-decoration: none;

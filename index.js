@@ -29,8 +29,12 @@ marked.setOptions( {
 
 const uiSpecMd = function ( options ) {
 
-	let fileinfoPool = [];
 	let rootDir = options.srcRoot;
+	let indexData = {
+		title: '',
+		readmeSrc: '',
+		pageDataList: []
+	}
 	let stream = new Stream.Transform( { objectMode: true } );
 
 	stream._transform = function( file, unused, done ) {
@@ -55,17 +59,15 @@ const uiSpecMd = function ( options ) {
 
 		if ( file.isBuffer () ) {
 
-			file.path = file.path.replace( /\.md$/, '.html' );
-			let contents = splitInput( file, rootDir );
+			let contents = {};
+			let isReadme = ( file.path === `${ rootDir }readme.md` );
 
-			fileinfoPool.push( {
-				filename: contents.filename,
-				fromRoot: contents.fromRoot,
-				title: contents.title,
-				screen: contents.screen
-			} );
+			file.path = file.path.replace( /\.md$/, '.html' );
+			contents = splitInput( file, rootDir );
 
 			marked( contents.mdSouce, function ( err, content ) {
+
+				let pageHtmlSource;
 
 				if ( err ) {
 
@@ -73,16 +75,38 @@ const uiSpecMd = function ( options ) {
 					//   'error',
 					//   new gutil.PluginError( PLUGIN_NAME, err, { showStack: true } )
 					// );
-					return done();
+					done();
+					return;
 
 				}
 
-				contents.body = content;
-				let pageHtmlSource = makePageHtml( contents );
-				file.contents = new Buffer( pageHtmlSource );
-				file.path = path.resolve( contents.dir, contents.filename );
-				stream.push( file );
-				done();
+				if ( isReadme ) {
+
+					indexData.readmeSrc = content;
+					indexData.title = contents.title;
+					done();
+					return;
+
+				} else {
+
+					contents.body = content;
+					pageHtmlSource = makePageHtml( contents );
+
+					file.contents = new Buffer( pageHtmlSource );
+					file.path = path.resolve( contents.dir, contents.filename );
+					stream.push( file );
+
+					indexData.pageDataList.push( {
+						filename: contents.filename,
+						fromRoot: contents.fromRoot,
+						title: contents.title,
+						screen: contents.screen
+					} );
+
+					done();
+					return;
+
+				}
 
 			} );
 
@@ -90,6 +114,7 @@ const uiSpecMd = function ( options ) {
 
 			console.log( 'not a buffer' );
 			done();
+			return;
 
 		}
 
@@ -97,7 +122,7 @@ const uiSpecMd = function ( options ) {
 
 	stream._flush = function ( done ) {
 
-		makeIndex( stream, fileinfoPool );
+		makeIndex( stream, indexData );
 		done();
 
 	};
