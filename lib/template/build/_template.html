@@ -25,40 +25,27 @@
 
 	<div class="UISP-Body">
 		<div class="UISP-Doc">
-			<div class="UISP-Doc__screen">
-				<div class="UISP-Doc__screenTools">
-					<ul>
-						<li><button class="UISP-Doc__screenButton" data-UISP-tool="zoomout"><span class="UISP-icon--zoomout"></span></button></li>
-						<li><output class="UISP-Doc__screenOutput" data-UISP-tool="zoomval">100</output></li>
-						<li><button class="UISP-Doc__screenButton" data-UISP-tool="zoomin"><span class="UISP-icon--zoomin"></span></button></li>
-						<li><button class="UISP-Doc__screenButton" data-UISP-tool="fit"><span class="UISP-icon--fit"></span></button></li>
-						<li><button class="UISP-Doc__screenButton" data-UISP-tool="highlight">highlight</button></li>
-					</ul>
-					<ul>
-						<li><button class="UISP-Doc__screenButton" data-UISP-tool="editor">Edit</button></li>
-					</ul>
-				</div>
-				<div class="UISP-Doc__screenMain">
-					<div class="UISP-Doc__screenMainInner">
-						<%= svgCanvas %>
-<!-- 		
-		<svg width="1200" height="600" viewBox="0 0 1200 600" class="UISP-Screen__svgRoot">
-			<image xlink:href="../../editor/build/img_01.jpg" width="1200" height="600" class="UISP-Screen__image" />
-			<g class="UISP-Highlight">
-						<rect x="216" y="193" width="150" height="70" class="UISP-fillrect"/>
-						<rect x="214" y="191" width="154" height="74" class="UISP-outlinerect"/>
-						<text x="218" y="191" dy="68">1</text>
-					</g><g class="UISP-Highlight">
-						<rect x="720" y="140" width="130" height="50" class="UISP-Highlight__fill"/>
-						<rect x="718" y="138" width="134" height="54" class="UISP-Highlight__outline"/>
-						<text x="722" y="138" dy="48" class="UISP-Highlight__label">2</text>
-					</g>
-		</svg>
-	</div> -->
-
+			<% if ( !!svgCanvas ) { %>
+				<div class="UISP-Doc__screen">
+					<div class="UISP-Doc__screenTools">
+						<ul>
+							<li><button class="UISP-Doc__screenButton" data-UISP-tool="zoomout"><span class="UISP-icon--zoomout"></span></button></li>
+							<li><output class="UISP-Doc__screenOutput" data-UISP-tool="zoomval">100</output></li>
+							<li><button class="UISP-Doc__screenButton" data-UISP-tool="zoomin"><span class="UISP-icon--zoomin"></span></button></li>
+							<li><button class="UISP-Doc__screenButton" data-UISP-tool="fit"><span class="UISP-icon--fit"></span></button></li>
+							<li><button class="UISP-Doc__screenButton" data-UISP-tool="highlight">highlight</button></li>
+						</ul>
+						<ul>
+							<li><button class="UISP-Doc__screenButton" data-UISP-tool="editor">Edit</button></li>
+						</ul>
+					</div>
+					<div class="UISP-Doc__screenMain">
+						<div class="UISP-Doc__screenMainInner">
+							<%= svgCanvas %>
+						</div>
 					</div>
 				</div>
-			</div>
+			<% } %>
 			<div class="UISP-Doc__mdContent">
 				<div class="UISP-Doc__mdContentInner">
 
@@ -67,7 +54,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="UISP-Separator"></div>
+		<% if ( !!svgCanvas ) { %><div class="UISP-Separator"></div><% } %>
 	</div>
 
 </div>

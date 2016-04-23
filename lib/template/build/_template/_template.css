@@ -807,6 +807,9 @@ body {
   width: 50%;
   overflow: auto; }
 
+.UISP-Doc__mdContent:first-child {
+  width: 100%; }
+
 .UISP-Doc__mdContentInner {
   padding: 40px; }
 
@@ -905,7 +908,15 @@ body {
   box-sizing: border-box;
   width: 25%;
   padding: 0 5px;
-  margin-bottom: 30px; }
+  margin-bottom: 30px;
+  -webkit-transition: width .2s, padding .2s;
+  transition: width .2s, padding .2s;
+  overflow: hidden; }
+  .UISP-Index__listItem[aria-hidden="true"] {
+    font-size: 0;
+    line-height: 0;
+    padding: 0;
+    width: 0; }
   .UISP-Index__listItem a {
     color: inherit;
     text-decoration: none;
