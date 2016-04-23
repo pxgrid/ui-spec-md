@@ -23,15 +23,18 @@
 	}
 		.UISP-Index__listHeader{}
 			.UISP-Index__search{
-				color: $color-main;
-				align-items: center;
-				display: flex;
-				border-bottom: 1px solid $color-main;
-				&:before{
-					@include icon( 'zoom' );
-					font-size: 16px;
-					display: block;
-					padding-right: 5px;
+				label{
+					color: $color-main;
+					cursor: pointer;
+					align-items: center;
+					display: flex;
+					border-bottom: 1px solid $color-main;
+					&:before{
+						@include icon( 'zoom' );
+						font-size: 16px;
+						display: block;
+						padding-right: 5px;
+					}
 				}
 				input{
 					color: inherit;
@@ -53,7 +56,6 @@
 				padding: 0 5px;
 				margin-bottom: 30px;
 				transition: width .2s, padding .2s;
-				overflow: hidden;
 				&[ aria-hidden="true" ] {
 					font-size: 0;
 					line-height: 0;
