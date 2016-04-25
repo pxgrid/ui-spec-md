@@ -907,6 +907,7 @@ body {
   margin: 30px -5px; }
 
 .UISP-Index__listItem {
+  overflow: hidden;
   box-sizing: border-box;
   width: 25%;
   padding: 0 5px;
@@ -1066,7 +1067,7 @@ body {
   .UISP-Md a:active {
     text-decoration: underline; }
   .UISP-Md img {
-    max-width: 100%; }
+    width: 100%; }
   .UISP-Md h2 {
     font-size: 1.75em;
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Klee", "游明朝体", "Yu Mincho", YuMincho, "ヒラギノ明朝ProN W3", "HiraMinProN-W3", "ヒラギノ明朝Pro W3", "Hiragino Mincho Pro", "HG正楷書体-PRO", "ＤＦ中楷書体", "ＭＳ 明朝", "MS Mincho", "メイリオ", Meiryo, serif;
