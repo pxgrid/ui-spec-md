@@ -510,7 +510,7 @@ pre.line-numbers > code {
   font-weight: normal;
   font-style: normal; }
 
-[class^="UISP-icon-"], [class*=" UISP-icon-"] {
+[class^="UISP-Icon-"], [class*=" UISP-Icon-"] {
   font-family: "_template";
   speak: none;
   font-style: normal;
@@ -527,25 +527,25 @@ pre.line-numbers > code {
   position: relative;
   top: -0.1em; }
 
-.UISP-icon--bars:before {
+.UISP-Icon--bars:before {
   content: "\"; }
 
-.UISP-icon--down:before {
+.UISP-Icon--down:before {
   content: "\"; }
 
-.UISP-icon--fit:before {
+.UISP-Icon--fit:before {
   content: "\"; }
 
-.UISP-icon--home:before {
+.UISP-Icon--home:before {
   content: "\"; }
 
-.UISP-icon--zoom:before {
+.UISP-Icon--zoom:before {
   content: "\"; }
 
-.UISP-icon--zoomin:before {
+.UISP-Icon--zoomin:before {
   content: "\"; }
 
-.UISP-icon--zoomout:before {
+.UISP-Icon--zoomout:before {
   content: "\"; }
 
 /* ==========================================================================
@@ -860,8 +860,9 @@ body {
   width: 60%;
   padding: 50px 30px 50px 50px; }
 
-.UISP-Index__search {
+.UISP-Index__search label {
   color: #204b69;
+  cursor: pointer;
   -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
@@ -871,7 +872,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   border-bottom: 1px solid #204b69; }
-  .UISP-Index__search:before {
+  .UISP-Index__search label:before {
     content: "";
     font-family: "_template";
     speak: none;
@@ -887,12 +888,13 @@ body {
     font-size: 16px;
     display: block;
     padding-right: 5px; }
-  .UISP-Index__search input {
-    color: inherit;
-    display: block;
-    width: 100%;
-    border: none;
-    background: none; }
+
+.UISP-Index__search input {
+  color: inherit;
+  display: block;
+  width: 100%;
+  border: none;
+  background: none; }
 
 .UISP-Index__listBody {
   -webkit-flex-wrap: wrap;
@@ -910,8 +912,7 @@ body {
   padding: 0 5px;
   margin-bottom: 30px;
   -webkit-transition: width .2s, padding .2s;
-  transition: width .2s, padding .2s;
-  overflow: hidden; }
+  transition: width .2s, padding .2s; }
   .UISP-Index__listItem[aria-hidden="true"] {
     font-size: 0;
     line-height: 0;
@@ -1064,6 +1065,8 @@ body {
   .UISP-Md a:hover,
   .UISP-Md a:active {
     text-decoration: underline; }
+  .UISP-Md img {
+    max-width: 100%; }
   .UISP-Md h2 {
     font-size: 1.75em;
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Klee", "游明朝体", "Yu Mincho", YuMincho, "ヒラギノ明朝ProN W3", "HiraMinProN-W3", "ヒラギノ明朝Pro W3", "Hiragino Mincho Pro", "HG正楷書体-PRO", "ＤＦ中楷書体", "ＭＳ 明朝", "MS Mincho", "メイリオ", Meiryo, serif;
@@ -1138,30 +1141,30 @@ body {
     margin: 16px 0;
     background-color: #f5f2f0; }
 
-.UISP-dot {
+.UISP-Dot {
   display: block;
   padding: 10px;
   border: 1px solid #ccc;
   margin: 2em 0;
   background: #fff; }
-  .UISP-dot svg {
+  .UISP-Dot svg {
     display: block;
     max-width: 100%;
     max-height: 100%;
     height: auto;
     margin: auto; }
-  .UISP-dot g.node polygon {
+  .UISP-Dot g.node polygon {
     fill: transparent; }
-  .UISP-dot g.node a:hover {
+  .UISP-Dot g.node a:hover {
     text-decoration: none; }
-  .UISP-dot g.node text {
+  .UISP-Dot g.node text {
     font-family: Tahoma, Geneva, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, sans-serif;
     font-size: 12px; }
-  .UISP-dot g.node text:first-of-type {
+  .UISP-Dot g.node text:first-of-type {
     font-weight: bold; }
-  .UISP-dot g.node a text:first-of-type {
+  .UISP-Dot g.node a text:first-of-type {
     text-decoration: underline;
     -webkit-transition: fill .2s;
     transition: fill .2s; }
-  .UISP-dot g.node a:hover text:first-of-type {
+  .UISP-Dot g.node a:hover text:first-of-type {
     fill: #00BCD4; }

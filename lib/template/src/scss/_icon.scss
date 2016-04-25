@@ -6,7 +6,7 @@
   font-style: normal;
 }
 
-[class^="UISP-icon-"], [class*=" UISP-icon-"] {
+[class^="UISP-Icon-"], [class*=" UISP-Icon-"] {
   font-family: "_template";
   speak: none;
   font-style: normal;
@@ -26,13 +26,13 @@
   top: -0.1em;
 }
 
-.UISP-icon--bars:before { content: "\"; }
-.UISP-icon--down:before { content: "\"; }
-.UISP-icon--fit:before { content: "\"; }
-.UISP-icon--home:before { content: "\"; }
-.UISP-icon--zoom:before { content: "\"; }
-.UISP-icon--zoomin:before { content: "\"; }
-.UISP-icon--zoomout:before { content: "\"; }
+.UISP-Icon--bars:before { content: "\"; }
+.UISP-Icon--down:before { content: "\"; }
+.UISP-Icon--fit:before { content: "\"; }
+.UISP-Icon--home:before { content: "\"; }
+.UISP-Icon--zoom:before { content: "\"; }
+.UISP-Icon--zoomin:before { content: "\"; }
+.UISP-Icon--zoomout:before { content: "\"; }
 
 
 @function getValue ( $assoc, $key ) {
