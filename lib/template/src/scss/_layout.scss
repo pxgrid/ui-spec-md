@@ -27,6 +27,7 @@ body {
 	 Section comment block
 	 ========================================================================== */
 .UISP{
+	overflow: hidden;
 	display: flex;
 	flex-wrap: nowrap;
 	flex-direction: column;
@@ -78,11 +79,15 @@ body {
 		padding: 0;
 		border: none;
 		background: none;
+		transition: background .3s;
 		[class^="UISP-icon"]{
 			font-size: 14px;
 			width: 100%;
 			display: block;
 		}
+	}
+	.UISP--menuShow .UISP-Header__button[data-uisp-button-type="menuToggler"]{
+		background: #12304a;
 	}
 	.UISP-Header__title{
 		font-size: 20px;

@@ -60,7 +60,7 @@ const uiSpecMd = function ( options ) {
 		if ( file.isBuffer () ) {
 
 			let contents = {};
-			let isReadme = ( file.path === `${ rootDir }readme.md` );
+			let isReadme = ( file.path === `${ rootDir }index.md` );
 
 			file.path = file.path.replace( /\.md$/, '.html' );
 			contents = splitInput( file, rootDir );

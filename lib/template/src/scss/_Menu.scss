@@ -1,0 +1,160 @@
+
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+
+/* Sub-section comment block
+   ========================================================================== */
+
+/* Basic comment */
+
+
+
+
+/* ==========================================================================
+   UISP-Menu
+   ========================================================================== */
+
+.UISP-Menu{
+  position: absolute;
+  top: 0;
+  left: -210px;
+  bottom: 0;
+  width: 210px;
+  box-shadow: 0 6px 6px rgba( 0, 0, 0, .3 );
+  background: #fafafa;
+  transition: left .3s;
+  .UISP--menuShow &{
+    left: 0;
+  }
+  iframe{
+    width: 210px;
+    height: 100%;
+    padding: 0;
+    border: none;
+  }
+}
+
+
+
+/* ==========================================================================
+   UISP-MenuContent
+   ========================================================================== */
+.UISP-MenuContent{
+  background: #fafafa;
+}
+  .UISP-MenuContent__search{
+    padding: 5px 10px;
+    background: #12304a;
+    label{
+      color: #FFF;
+      cursor: pointer;
+      align-items: center;
+      display: flex;
+      &:before{
+        @include icon( 'zoom' );
+        font-size: 16px;
+        display: block;
+        padding-right: 5px;
+      }
+    }
+    input{
+      color: inherit;
+      display: block;
+      width: 100%;
+      border: none;
+      background: none;
+    }
+  }
+
+  ul.UISP-MenuContent__list{
+    list-style: none;
+    margin: 0;
+    padding: 30px;
+  }
+      li.UISP-MenuContent__listItem{
+        overflow: hidden;
+        width: 100%;
+        margin: 30px auto 0;
+        transition: width .2s;
+        &:first-child{
+          margin-top: 0;
+        }
+        &[ aria-hidden="true" ] {
+          font-size: 0;
+          line-height: 0;
+          margin-top: 0;
+          padding: 0;
+          width: 0;
+        }
+      }
+        a{
+          color: inherit;
+          text-decoration: none;
+        }
+        .UISP-MenuContent__itemImage{
+          overflow: hidden;
+          position: relative;
+          width: 100%;
+          height: 0;
+          padding-top: 100%;
+          margin-bottom: 5px;
+          background: #666;
+          box-shadow: 0 1px 2px rgba( 0, 0, 0, 0.4 );
+          &:before{
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: block;
+            border: 4px solid transparent;
+            transition: border-color .2s;
+            a:hover &{
+              border-color: $color-link;
+            }
+          }
+        }
+          .UISP-MenuContent__itemImageInner{
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            transform: translate3d( 0, 0, 0 );
+            img{
+              display: block;
+              max-width: 100%;
+              height: auto;
+              margin: auto;
+            }
+          }
+        .UISP-MenuContent__itemTitle{
+          font-size: 14px;
+        }
+
+
+
+
+
+
+// <div class="UISP-MenuContent">
+
+//   <ul class="UISP-MenuContent__list">
+    
+//       <li class="UISP-MenuContent__listItem">
+//         <a href="page1_en.html">
+//           <div class="UISP-MenuContent__itemImage">
+//             <div class="UISP-MenuContent__itemImageInner">
+//               <img src="./images/screen.png?highlight=[[216,193,150,70],[720,140,130,50]]" alt="">
+//             </div>
+//           </div>
+//           <div class="UISP-MenuContent__itemTitle">
+//             doc title
+//           </div>
+//         </a>
+//       </li>

@@ -14,7 +14,7 @@
 	<header class="UISP-Header">
 		<div class="UISP-Header__buttons">
 			<ul>
-				<li><button class="UISP-Header__button"><span class="UISP-Icon--bars"></span></button></li>
+				<li><button class="UISP-Header__button" data-uisp-button-type="menuToggler"><span class="UISP-Icon--bars"></span></button></li>
 				<li><a class="UISP-Header__button" href="<%= toRoot %>index.html"><span class="UISP-Icon--home"></span></a></li>
 			</ul>
 		</div>
@@ -55,6 +55,11 @@
 			</div>
 		</div>
 		<% if ( !!svgCanvas ) { %><div class="UISP-Separator"></div><% } %>
+
+		<div class="UISP-Menu">
+			<iframe src="_menu.html"></iframe>
+		</div>
+
 	</div>
 
 </div>
