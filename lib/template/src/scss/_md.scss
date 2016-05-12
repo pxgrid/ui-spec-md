@@ -31,41 +31,56 @@
     text-decoration: underline;
   }
   img{
-    width: 100%;
+    max-width: 100%;
   }
-  h2{
-    font-size: 1.75em;
-    font-family: $fontSerif;
-    font-weight: normal;
+
+  h1 {
+    font-size: 2.25em;
     line-height: 1.2;
-    padding-bottom: .5em;
-    border-bottom: 1px solid $color-gray1;
-    margin: $spacing1 * 2 0 $spacing1;
-    &:first-child{
-      margin-top: 0;
-    }
-    @include mediaSmall {
-      padding: 0 10px 10px;
-      margin: 20px -10px;
-    }
+    padding-bottom: 0.3em;
+    margin-top: 1em;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee;
   }
-  h3{
+
+  h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    padding-bottom: 0.3em;
+    margin-top: 1em;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee;
+  }
+
+  h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+    margin-top: 1em;
+    margin-bottom: 16px;
+  }
+
+  h4 {
     font-size: 1.25em;
-    font-weight: normal;
-    margin: $spacing1 0;
-    @include mediaSmall {
-      margin-top: 1.6em;
-    }
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px;
   }
-  h4{
+
+  h5 {
     font-size: 1em;
-    font-weight: bold;
-    margin: $spacing1 0;
-    @include mediaSmall {
-      font-size: 14px;
-      margin-top: 1.6em;
-    }
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px;
   }
+
+  h6 {
+    color: #777;
+    font-size: 1em;
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px;
+  }
+
   p{
     margin: $spacing1 0;
     @include mediaSmall {
