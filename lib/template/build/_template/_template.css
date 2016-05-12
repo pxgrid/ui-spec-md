@@ -569,6 +569,7 @@ body {
 	 Section comment block
 	 ========================================================================== */
 .UISP {
+  overflow: hidden;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -651,11 +652,16 @@ body {
   width: 50px;
   padding: 0;
   border: none;
-  background: none; }
+  background: none;
+  -webkit-transition: background .3s;
+  transition: background .3s; }
   .UISP-Header__button [class^="UISP-icon"] {
     font-size: 14px;
     width: 100%;
     display: block; }
+
+.UISP--menuShow .UISP-Header__button[data-uisp-button-type="menuToggler"] {
+  background: #12304a; }
 
 .UISP-Header__title {
   font-size: 20px;
@@ -1046,6 +1052,146 @@ body {
 /* Sub-section comment block
    ========================================================================== */
 /* Basic comment */
+/* ==========================================================================
+   UISP-Menu
+   ========================================================================== */
+.UISP-Menu {
+  position: absolute;
+  top: 0;
+  left: -210px;
+  bottom: 0;
+  width: 210px;
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.3);
+  background: #fafafa;
+  -webkit-transition: left .3s;
+  transition: left .3s; }
+  .UISP--menuShow .UISP-Menu {
+    left: 0; }
+  .UISP-Menu iframe {
+    width: 210px;
+    height: 100%;
+    padding: 0;
+    border: none; }
+
+/* ==========================================================================
+   UISP-MenuContent
+   ========================================================================== */
+.UISP-MenuContent {
+  background: #fafafa; }
+
+.UISP-MenuContent__search {
+  padding: 5px 10px;
+  background: #12304a; }
+  .UISP-MenuContent__search label {
+    color: #FFF;
+    cursor: pointer;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex; }
+    .UISP-MenuContent__search label:before {
+      content: "";
+      font-family: "_template";
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+      vertical-align: middle;
+      display: inline-block;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-size: 16px;
+      display: block;
+      padding-right: 5px; }
+  .UISP-MenuContent__search input {
+    color: inherit;
+    display: block;
+    width: 100%;
+    border: none;
+    background: none; }
+
+ul.UISP-MenuContent__list {
+  list-style: none;
+  margin: 0;
+  padding: 30px; }
+
+li.UISP-MenuContent__listItem {
+  overflow: hidden;
+  width: 100%;
+  margin: 30px auto 0;
+  -webkit-transition: width .2s;
+  transition: width .2s; }
+  li.UISP-MenuContent__listItem:first-child {
+    margin-top: 0; }
+  li.UISP-MenuContent__listItem[aria-hidden="true"] {
+    font-size: 0;
+    line-height: 0;
+    margin-top: 0;
+    padding: 0;
+    width: 0; }
+
+a {
+  color: inherit;
+  text-decoration: none; }
+
+.UISP-MenuContent__itemImage {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 100%;
+  margin-bottom: 5px;
+  background: #666;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
+  .UISP-MenuContent__itemImage:before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    border: 4px solid transparent;
+    -webkit-transition: border-color .2s;
+    transition: border-color .2s; }
+    a:hover .UISP-MenuContent__itemImage:before {
+      border-color: #0088ff; }
+
+.UISP-MenuContent__itemImageInner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0); }
+  .UISP-MenuContent__itemImageInner img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto; }
+
+.UISP-MenuContent__itemTitle {
+  font-size: 14px; }
+
+/* ==========================================================================
+   Section comment block
+   ========================================================================== */
+/* Sub-section comment block
+   ========================================================================== */
+/* Basic comment */
 .UISP-Md {
   font-size: 1rem;
   word-wrap: break-word;
@@ -1067,36 +1213,42 @@ body {
   .UISP-Md a:active {
     text-decoration: underline; }
   .UISP-Md img {
-    width: 100%; }
+    max-width: 100%; }
+  .UISP-Md h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    padding-bottom: 0.3em;
+    margin-top: 1em;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee; }
   .UISP-Md h2 {
     font-size: 1.75em;
-    font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Klee", "游明朝体", "Yu Mincho", YuMincho, "ヒラギノ明朝ProN W3", "HiraMinProN-W3", "ヒラギノ明朝Pro W3", "Hiragino Mincho Pro", "HG正楷書体-PRO", "ＤＦ中楷書体", "ＭＳ 明朝", "MS Mincho", "メイリオ", Meiryo, serif;
-    font-weight: normal;
-    line-height: 1.2;
-    padding-bottom: .5em;
-    border-bottom: 1px solid #ccc;
-    margin: 2em 0 1em; }
-    .UISP-Md h2:first-child {
-      margin-top: 0; }
-    @media (max-width: 639px) {
-      .UISP-Md h2 {
-        padding: 0 10px 10px;
-        margin: 20px -10px; } }
+    line-height: 1.225;
+    padding-bottom: 0.3em;
+    margin-top: 1em;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee; }
   .UISP-Md h3 {
-    font-size: 1.25em;
-    font-weight: normal;
-    margin: 1em 0; }
-    @media (max-width: 639px) {
-      .UISP-Md h3 {
-        margin-top: 1.6em; } }
+    font-size: 1.5em;
+    line-height: 1.43;
+    margin-top: 1em;
+    margin-bottom: 16px; }
   .UISP-Md h4 {
+    font-size: 1.25em;
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px; }
+  .UISP-Md h5 {
     font-size: 1em;
-    font-weight: bold;
-    margin: 1em 0; }
-    @media (max-width: 639px) {
-      .UISP-Md h4 {
-        font-size: 14px;
-        margin-top: 1.6em; } }
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px; }
+  .UISP-Md h6 {
+    color: #777;
+    font-size: 1em;
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px; }
   .UISP-Md p {
     margin: 1em 0; }
     @media (max-width: 639px) {
