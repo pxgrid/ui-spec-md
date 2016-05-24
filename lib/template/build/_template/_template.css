@@ -569,7 +569,6 @@ body {
 	 Section comment block
 	 ========================================================================== */
 .UISP {
-  overflow: hidden;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1056,6 +1055,7 @@ body {
    UISP-Menu
    ========================================================================== */
 .UISP-Menu {
+  overflow: hidden;
   position: absolute;
   top: 0;
   left: -210px;
@@ -1295,17 +1295,14 @@ a {
     background-color: #f5f2f0; }
 
 .UISP-Dot {
+  overflow: auto;
   display: block;
   padding: 10px;
   border: 1px solid #ccc;
   margin: 2em 0;
   background: #fff; }
   .UISP-Dot svg {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    height: auto;
-    margin: auto; }
+    display: block; }
   .UISP-Dot g.node polygon {
     fill: transparent; }
   .UISP-Dot g.node a:hover {
@@ -1316,8 +1313,6 @@ a {
   .UISP-Dot g.node text:first-of-type {
     font-weight: bold; }
   .UISP-Dot g.node a text:first-of-type {
-    text-decoration: underline;
-    -webkit-transition: fill .2s;
-    transition: fill .2s; }
-  .UISP-Dot g.node a:hover text:first-of-type {
     fill: #00BCD4; }
+  .UISP-Dot g.node a:hover text:first-of-type {
+    text-decoration: underline; }
