@@ -1,4 +1,5 @@
 .UISP-Dot{
+	overflow: auto;
 	display: block;
 	padding: 10px;
 	border: 1px solid $color-gray1;
@@ -6,10 +7,6 @@
 	background: #fff;
 	svg{
 		display: block;
-		max-width: 100%;
-		max-height: 100%;
-		height: auto;
-		margin: auto;
 	}
 	g.node polygon{
 		fill: rgba( 0, 0, 0, 0 );
@@ -25,10 +22,9 @@
 		font-weight: bold;
 	}
 	g.node a text:first-of-type {
-		text-decoration: underline;
-		transition: fill .2s;
+		fill: #00BCD4;
 	}
 	g.node a:hover text:first-of-type {
-		fill: #00BCD4;
+		text-decoration: underline;
 	}
 }
