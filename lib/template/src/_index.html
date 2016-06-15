@@ -35,7 +35,9 @@
 							<a href="<%= item.fromRoot + item.filename %>">
 								<div class="UISP-Index__itemImage">
 									<div class="UISP-Index__itemImageInner">
-										<img src="<%= item.fromRoot + item.screen %>" alt="">
+										<% if ( !!item.screen ) { %>
+											<img src="<%= item.fromRoot + item.screen %>" alt="">
+										<% } %>
 									</div>
 								</div>
 								<div class="UISP-Index__itemTitle">
