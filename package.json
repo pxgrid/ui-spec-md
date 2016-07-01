@@ -1,6 +1,6 @@
 {
   "name": "ui-spec-md",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The efficient markdown compiler for UI documentation with UI Flows Graph",
   "homepage": "https://github.com/pxgrid/ui-spec-md",
   "main": "index.js",
