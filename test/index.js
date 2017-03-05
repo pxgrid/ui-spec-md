@@ -68,6 +68,8 @@ describe('uiSpecMd', () => {
 		});
 
 
+		// markedはmakePagesAndIndexData.jsで読み込んで呼ぶことになったから
+		// index.js内のmarkedをstubMarkedにしてるけど変えないとならない
 		it('正しくマークダウンファイルであればmarkedを呼ぶこと', () => {
 
 			stream._transform(new File({
