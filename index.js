@@ -34,7 +34,7 @@ const uiSpecMd = function ( options ) {
 		title: '',
 		readmeSrc: '',
 		pageDataList: []
-	}
+	};
 	let stream = new Stream.Transform( { objectMode: true } );
 
 	stream._transform = function( file, unused, done ) {
