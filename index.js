@@ -65,7 +65,7 @@ const uiSpecMd = function ( options ) {
 			file.path = file.path.replace( /\.md$/, '.html' );
 			contents = splitInput( file, rootDir );
 
-			marked( contents.mdSouce, function ( err, content ) {
+			marked( contents.mdSource, function ( err, content ) {
 
 				let pageHtmlSource;
 
