@@ -95,7 +95,7 @@ const uiSpecMd = function ( options ) {
 
 			// この辺りの処理を外部ファイルとかにして、makedのoption設定とかも
 			// まとめるとテストしやすいかも？
-			marked( contents.mdSouce, function ( err, content ) {
+			marked( contents.mdSource, function ( err, content ) {
 
 				let pageHtmlSource;
 
