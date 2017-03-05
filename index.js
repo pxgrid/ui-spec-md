@@ -27,16 +27,44 @@ marked.setOptions( {
 	highlight: function ( code, lang ) {}
 } );
 
+
+/**
+ * ui-spec-md本体
+ *
+ * 最初に、 copyTemplateAssets で必要なテンプレート群を作って、
+ * 次に Readableストリームからpipeされたデータを_transformしてHTML作る。
+ * 最後に、pipeされたすべてのデータから_flushでindexを作る
+ *
+ * @param {object} options
+ * @param {string} options.srcRoot
+ *
+ * @return {Stream.Transform}
+ */
 const uiSpecMd = function ( options ) {
 
 	let rootDir = options.srcRoot;
+
+	/**
+	 * index.htmlを作るためのデータ。
+	 *
+	 * @type {object}
+	 */
 	let indexData = {
 		title: '',
 		readmeSrc: '',
 		pageDataList: []
 	};
+
 	let stream = new Stream.Transform( { objectMode: true } );
 
+
+	/**
+	 * ストリームに対する処理。
+	 * 適切なファイルであれば、markedを用いてマークダウンからHTMLを生成する。
+	 *
+	 * @requires marked
+	 * @param {vinyl} file
+	 */
 	stream._transform = function( file, unused, done ) {
 
 		// Do nothing when null
@@ -65,6 +93,8 @@ const uiSpecMd = function ( options ) {
 			file.path = file.path.replace( /\.md$/, '.html' );
 			contents = splitInput( file, rootDir );
 
+			// この辺りの処理を外部ファイルとかにして、makedのoption設定とかも
+			// まとめるとテストしやすいかも？
 			marked( contents.mdSouce, function ( err, content ) {
 
 				let pageHtmlSource;
@@ -87,8 +117,12 @@ const uiSpecMd = function ( options ) {
 					done();
 					return;
 
+				// エラーでもREADMEファイルでもなければ、
+				// 各ページを作って、index用のデータもpush
 				} else {
 
+					// splitInputで取得したデータにmarkedで変換したコンテンツ部の
+					// html文字列を入れてmakePageHtmlでページ全体のHtml文字列を作成。
 					contents.body = content;
 					pageHtmlSource = makePageHtml( contents );
 
@@ -96,6 +130,8 @@ const uiSpecMd = function ( options ) {
 					file.path = path.resolve( contents.dir, contents.filename );
 					stream.push( file );
 
+					// indexDataは、このファイルの頭で空のデータ定義して、
+					// reademeの場合もtitleとか入れてる
 					indexData.pageDataList.push( {
 						filename: contents.filename,
 						fromRoot: contents.fromRoot,
@@ -120,6 +156,13 @@ const uiSpecMd = function ( options ) {
 
 	};
 
+
+	/**
+	 * すべてのデータが処理されたときの処理。
+	 * 目次ページを作成する。
+	 *
+	 * @requires ./lib/makeIndex
+	 */
 	stream._flush = function ( done ) {
 
 		makeIndex( stream, indexData );
