@@ -1,15 +1,15 @@
 const expect     = require('chai').expect;
 
 
-const UiflowMDRenderer = require('../../lib/UiflowMDRenderer.js');
+const UiflowsMDRenderer = require('../../lib/UiflowsMDRenderer.js');
 
 
-describe('UiflowMDRenderer', () => {
+describe('UiflowsMDRenderer', () => {
 
 
 	describe('#heading', () => {
 
-		const heading = UiflowMDRenderer.prototype.heading;
+		const heading = UiflowsMDRenderer.prototype.heading;
 
 		it('引数にそったhn要素の文字列を返すこと', () => {
 
