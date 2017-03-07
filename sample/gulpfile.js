@@ -158,7 +158,7 @@ gulp.task('watch', () => {
 		// mdなら
 		} else if ( /\.md$/.test(event.path) ) {
 
-			if ( /added|renamed/.test(event.type) ) {
+			if ( /added|renamed|changed/.test(event.type) ) {
 				// たまにイベント多すぎるって言われるけどいいんじゃなかろうか
 				// TODO できれば、全部作り直すタスク実行するんじゃなくて、
 				// 画像同様に変更したファイルだけ処理したいが、uiSpecMdの修正が必要。
