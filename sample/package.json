@@ -9,14 +9,12 @@
   },
   "devDependencies": {
     "browser-sync": "^2.18.8",
-    "connect": "^3.4.1",
     "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-load-plugins": "^1.2.0",
     "gulp-plumber": "^1.1.0",
     "gulp-util": "^3.0.7",
     "run-sequence": "^1.2.2",
-    "serve-static": "^1.10.2",
     "ui-spec-md": "../"
   }
 }
