@@ -2,9 +2,10 @@ const gulp = require('gulp');
 const plugins = require('gulp-load-plugins')();
 const runSequence = require('run-sequence').use(gulp);
 
-const connect = require('connect');
-const serveStatic = require('serve-static');
 const del = require('del');
+
+const browserSync = require('browser-sync');
+const reload = browserSync.reload;
 
 const uiSpecMd = require('ui-spec-md');
 
@@ -78,7 +79,7 @@ gulp.task('build', (callback) => {
 gulp.task('capture', [
 	'clean:capture'
 ], function () {
-	gulp.src('./src/**/*.@(png|jpg|jpeg|gif)')
+	return gulp.src('./src/**/*.@(png|jpg|jpeg|gif)')
 		.pipe(plugins.plumber())
 		.pipe(gulp.dest(BUILD_DIR));
 });
@@ -87,7 +88,7 @@ gulp.task('capture', [
 gulp.task('md', [
 	'clean:html'
 ], function () {
-	gulp.src('./src/**/*.md')
+	return gulp.src('./src/**/*.md')
 		.pipe(plugins.plumber())
 		.pipe(uiSpecMd({ srcRoot: __dirname + '/src/' }))
 		.pipe(gulp.dest(BUILD_DIR));
@@ -97,19 +98,14 @@ gulp.task('md', [
 
 /**
  * ビルドされた画面設計書を閲覧するための静的サーバーを建てる。
- *
- * @requires connect
- * @requires serveStatic
- * @requires BUILD_DIR   ルートとするディレクトリ。
  */
-gulp.task('connect', function () {
-	const app = connect();
+gulp.task('serve', () => {
 
-	app.use(serveStatic(BUILD_DIR, {
-		index: [ 'index.html' ]
-	}));
+	browserSync.init({
+		server: './build',
+		port: LISTEN
+	});
 
-	app.listen(LISTEN);
 });
 
 
@@ -144,6 +140,7 @@ gulp.task('watch', () => {
 					.pipe(gulp.dest('./build/' + filedir + '/'))
 					.on('end', () => {
 						log(colors.green('Image Updated!'));
+						reload();
 					});
 
 
@@ -168,6 +165,7 @@ gulp.task('watch', () => {
 					'md',
 					() => {
 						log(colors.green('HTML Updated!'));
+						reload();
 					}
 				);
 			}
@@ -190,13 +188,12 @@ gulp.task( 'start', [
 
 	runSequence(
 		'build',
-		'connect',
-		'watch',
+		[
+			'serve',
+			'watch'
+		],
 		() => {
 			console.log(`
-------------------------------
-Server started: ` + colors.green(LOCALHOST) + `
-------------------------------
 Watching files...
 `);
 		}
