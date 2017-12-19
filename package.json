@@ -27,6 +27,7 @@
     "image-size": "^0.5.0",
     "js-yaml": "^3.5.5",
     "lodash": "^4.8.2",
+    "luxon": "^0.2.9",
     "marked": "^0.3.5",
     "natural-compare-lite": "^1.4.0",
     "vinyl": "^1.1.1",
