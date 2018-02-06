@@ -818,6 +818,22 @@ body {
 .UISP-Doc__mdContentInner {
   padding: 40px; }
 
+.UISP-Doc__mdFileDate {
+  font-size: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  padding: 10px 40px; }
+
+.UISP-Doc__mdFileModifiedDate,
+.UISP-Doc__mdFileCreatedDate {
+  padding-left: 20px; }
+
 /* ==========================================================================
 	 separator
 	 ========================================================================== */
