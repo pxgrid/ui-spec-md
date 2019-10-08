@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+  <script src="/_screen-spec-md/handlebars.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/8f0f3a10ed.css">
+</head>
+<body>
+<div id="app"></div>
+<script id="body-template" type="text/x-handlebars-template">
+  {{{ body }}}
+</script>
+<script>
+  const bodySource = document.getElementById('body-template').innerHTML
+  const convertBodyFunction = Handlebars.compile(bodySource)
+  window.SCREEN_SPEC_MD = {
+    editable: '{{ editable }}',
+    treeData: null,
+    convertedHtml: convertBodyFunction(),
+    title: '{{ title }}',
+    screen: '{{{ screen }}}',
+    absolutesScreen: '{{{ absolutesScreen }}}',
+    updatedDate: '{{ updatedDate }}',
+    updatedAuthorName: '{{ updatedAuthorName }}',
+    createdDate: '{{ createdDate }}',
+    createdAuthorName: '{{ createdAuthorName }}',
+  }
+</script>
+</body>
+</html>

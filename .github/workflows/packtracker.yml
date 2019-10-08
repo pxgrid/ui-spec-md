@@ -1,0 +1,29 @@
+name: PackTracker - Analyze webpack bundle
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install
+        run: |
+          npm install
+      - name: Analyze webpack bundle
+        uses: packtracker/report@2.2.0
+        with:
+          PT_PROJECT_TOKEN: ${{ secrets.PACKTRACKER_TOKEN }}
+        env:
+          PT_PROJECT_TOKEN: ${{ secrets.PACKTRACKER_TOKEN }}
+          WEBPACK_CONFIG_PATH: "../../webpack.production.js"
