@@ -1,7 +1,3 @@
-./lib/template/src
-./lib/template/package.json
-./lib/template/gulpfile.js
-
-./lib/editor/src
-./lib/editor/package.json
-./lib/editor/gulpfile.js
+_spec/
+.idea/
+server/__uploads/
