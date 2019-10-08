@@ -60,7 +60,7 @@ typings/
 # next.js build output
 .next
 
-# screen-spec-md
+# ui-spec-md
 dist/
 built-in-template
 _spec/

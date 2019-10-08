@@ -1,9 +1,9 @@
 {
-  "name": "screen-spec-md",
+  "name": "ui-spec-md",
   "version": "0.2.0",
   "description": "The efficient markdown compiler for Application screen documentation with UI Flows Graph",
   "bin": {
-    "screen-spec-md": "./bin/cli.js"
+    "ui-spec-md": "./bin/cli.js"
   },
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js",
@@ -23,15 +23,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pxgrid/screen-spec-md.git"
+    "url": "git+https://github.com/pxgrid/ui-spec-md.git"
   },
   "keywords": [],
   "author": "tomof",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pxgrid/screen-spec-md/issues"
+    "url": "https://github.com/pxgrid/ui-spec-md/issues"
   },
-  "homepage": "https://github.com/pxgrid/screen-spec-md#readme",
+  "homepage": "https://github.com/pxgrid/ui-spec-md#readme",
   "dependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",

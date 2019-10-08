@@ -4,7 +4,7 @@ const merge = require('webpack-merge')
 const base = require('./webpack.base.js')
 module.exports = merge(base, {
   output: {
-    path: path.resolve(__dirname, BUILT_IN_TEMPLATE, '_screen-spec-md'),
+    path: path.resolve(__dirname, BUILT_IN_TEMPLATE, '_ui-spec-md'),
   },
   mode: 'production',
   devtool: 'source-map',

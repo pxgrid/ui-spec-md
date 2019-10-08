@@ -11,8 +11,8 @@ Screen Spec MD compiles special markdown with following features
 
 ## Example
 
--   [Top](https://screen-spec-md-example.netlify.com/)
--   [Product List](https://screen-spec-md-example.netlify.com/product/index.html)
+-   [Top](https://ui-spec-md-example.netlify.com/)
+-   [Product List](https://ui-spec-md-example.netlify.com/product/index.html)
 
 ## UI Flow codeblock
 
@@ -47,13 +47,13 @@ Here is a markdown example with the code block for UI Flows.
 
 ## Compile MD to HTML with cli
 
-screen-spec-md [options]
+ui-spec-md [options]
 
 Generate screen spec documentation files from markdown
 
 Commands:
-screen-spec-md edit-server [options] Serve editable server to edit spec markdown.
-screen-spec-md generate [options] Generate spec files from markdown [default]
+ui-spec-md edit-server [options] Serve editable server to edit spec markdown.
+ui-spec-md generate [options] Generate spec files from markdown [default]
 
 Options:
 --help Show help [boolean]
@@ -65,7 +65,7 @@ Options:
 
 ```
   "scripts": {
-    "generate": "screen-spec-md -m ./markdown -d ./spec",
-    "edit-server": "screen-spec-md edit-server -m ./markdown -d ./_spec"
+    "generate": "ui-spec-md -m ./markdown -d ./spec",
+    "edit-server": "ui-spec-md edit-server -m ./markdown -d ./_spec"
   },
 ```

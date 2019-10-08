@@ -15,8 +15,8 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist', '_screen-spec-md'),
-    publicPath: '/_screen-spec-md/',
+    path: path.resolve(__dirname, 'dist', '_ui-spec-md'),
+    publicPath: '/_ui-spec-md/',
   },
   resolve: {
     extensions: ['.js'],
