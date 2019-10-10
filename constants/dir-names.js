@@ -1,4 +1,4 @@
 module.exports = Object.freeze({
-  BUILT_IN_TEMPLATE: 'built-in-template',
-  TEMPLATE_ASSETS: 'assets',
+  DEFAULT_THEME: 'default-theme', // It also specified in .gitignore. If change this, please check .gitignore.
+  THEME_ASSETS: 'assets',
 })

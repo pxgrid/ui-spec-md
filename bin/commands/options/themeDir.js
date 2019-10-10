@@ -1,9 +1,9 @@
 module.exports = {
   t: {
-    alias: 'templateDir',
+    alias: 'themeDir',
     demandOption: false,
     requiresArg: true,
-    describe: 'Path of directory that include template files',
+    describe: 'Path of theme directory that include template files',
     type: 'string',
   },
 }

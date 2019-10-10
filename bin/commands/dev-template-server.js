@@ -1,6 +1,6 @@
 const mdDir = require('./options/mdDir')
 const destDir = require('./options/destDir')
-const templateDir = require('./options/templateDir')
+const themeDir = require('./options/themeDir')
 const port = require('./options/port')
 const devTemplateServer = require('../../server/dev-template-server')
 
@@ -12,7 +12,7 @@ exports.builder = yargs => {
   yargs.options({
     ...mdDir,
     ...destDir,
-    ...templateDir,
+    ...themeDir,
     ...port,
   })
 }
@@ -22,6 +22,6 @@ exports.handler = async argv => {
     mdDir: argv.mdDir,
     destDir: argv.destDir,
     port: argv.port,
-    templateDir: argv.templateDir,
+    themeDir: argv.themeDir,
   })
 }
