@@ -62,7 +62,7 @@ typings/
 
 # ui-spec-md
 dist/
-built-in-template
+default-theme/
 _spec/
 _standard/
 server/__uploads/*
