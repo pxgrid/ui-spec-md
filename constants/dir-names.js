@@ -1,4 +1,4 @@
 module.exports = Object.freeze({
-  BUILT_IN_TEMPLATE: 'built-in-template',
+  DEFAULT_THEME: 'default-theme',
   TEMPLATE_ASSETS: 'assets',
 })
