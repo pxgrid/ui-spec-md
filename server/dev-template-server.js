@@ -39,28 +39,28 @@ function restart({ destDir, port }) {
   })
 }
 
-const startDevTemplateServer = async ({ mdDir, destDir, port, templateDir }) => {
-  await generateSpecAndTree(mdDir, destDir, { templateDir })
+const startDevTemplateServer = async ({ mdDir, destDir, port, themeDir }) => {
+  await generateSpecAndTree(mdDir, destDir, { themeDir })
   start({ destDir, port })
 
-  const watcher = chokidar.watch(templateDir, {
+  const watcher = chokidar.watch(themeDir, {
     ignoreInitial: true,
     persistent: true,
   })
   watcher
     .on('add', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been added`)
-      await generateSpecAndTree(mdDir, destDir, { templateDir })
+      await generateSpecAndTree(mdDir, destDir, { themeDir })
       restart({ destDir, port })
     })
     .on('change', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been changed`)
-      await generateSpecAndTree(mdDir, destDir, { templateDir })
+      await generateSpecAndTree(mdDir, destDir, { themeDir })
       restart({ destDir, port })
     })
     .on('unlink', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been removed`)
-      await generateSpecAndTree(mdDir, destDir, { templateDir })
+      await generateSpecAndTree(mdDir, destDir, { themeDir })
       restart({ destDir, port })
     })
 }
