@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+.UISP-Dot {
+  overflow: auto;
+  display: block;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 2em 0;
+  background: #fff;
+  svg {
+    display: block;
+  }
+  g.node {
+    polygon {
+      fill: transparent;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    text {
+      font-family: Tahoma, Geneva, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, sans-serif;
+      font-size: 12px;
+    }
+    text:first-of-type {
+      font-weight: bold;
+    }
+    a text:first-of-type {
+      fill: #00bcd4;
+    }
+    a:hover text:first-of-type {
+      text-decoration: underline;
+    }
+  }
+}

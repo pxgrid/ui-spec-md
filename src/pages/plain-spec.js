@@ -1,8 +1,7 @@
 /**
  * 画面画像を持たないドキュメント中心のページ
  */
-import '../assets/common.scss'
-import '../assets/template.scss'
+import '../assets/style.scss'
 
 import Vue from 'vue'
 import store from '../store'

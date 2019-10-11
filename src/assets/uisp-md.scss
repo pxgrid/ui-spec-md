@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+.UISP-Md {
+  font-size: 1rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  h1 {
+    font-size: 2em;
+    line-height: 1.2;
+    padding-bottom: 0.3em;
+    margin-top: 64px;
+    margin-bottom: 32px;
+    border-bottom: 2px solid #e6e6e6;
+  }
+  h2 {
+    font-size: 1.5em;
+    line-height: 1.225;
+    padding-bottom: 0.3em;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee;
+  }
+  h3 {
+    font-size: 1.25em;
+    line-height: 1.43;
+    margin-top: 1em;
+    margin-bottom: 16px;
+  }
+  h4 {
+    font-size: 1em;
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px;
+  }
+  h5 {
+    font-size: 1em;
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px;
+  }
+  h6 {
+    color: #777;
+    font-size: 1em;
+    line-height: 1.4;
+    margin-top: 1em;
+    margin-bottom: 16px;
+  }
+  h1 a,
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    font-size: .6em;
+    width: 20px;
+    height: 20px;
+    margin-left: -20px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  h1 a i,
+  h2 a i,
+  h3 a i,
+  h4 a i,
+  h5 a i,
+  h6 a i {
+    visibility: hidden;
+    color: #bbb;
+  }
+  h1:hover a i,
+  h2:hover a i,
+  h3:hover a i,
+  h4:hover a i,
+  h5:hover a i,
+  h6:hover a i {
+    visibility: visible;
+  }
+  > *:first-child {
+    margin-top: 0;
+  }
+  > *:last-child {
+    margin-bottom: 0;
+  }
+  a {
+    color: #0088ff;
+    text-decoration: none;
+  }
+  a:hover,
+  a:active {
+    text-decoration: underline;
+  }
+  img {
+    max-width: 100%;
+  }
+  p {
+    margin: 1em 0;
+  }
+  ul {
+    margin: 1em 0;
+    padding: 0 0 0 20px;
+  }
+  ol {
+    margin: 1em 0;
+    padding: 0 0 0 30px;
+  }
+  li {
+    margin: 0.5em 0;
+  }
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    word-break: break-all;
+    margin: 20px 0;
+  }
+  table th,
+  table td {
+    padding: 0.3em 10px;
+    border: 1px solid #ccc;
+  }
+  table th {
+    background: #f5f2f0;
+  }
+  blockquote {
+    color: #6f6f6f;
+    padding: 0 15px;
+    margin: 2em 0;
+    border-left: 4px solid #ccc;
+  }
+  pre {
+    line-height: 1.6;
+    margin: 2em 0;
+  }
+  pre[class*='language-'] {
+    margin: 2em 0;
+  }
+  code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', 'Lucida Console', monospace;
+    padding: 2px;
+    background: #f5f2f0;
+  }
+  hr {
+    border: 0 none;
+    height: 4px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #f5f2f0;
+  }
+}
+
+@media (max-width: 639px) {
+  .UISP-Md {
+    line-height: 2;
+    p {
+      margin: 1.6em 0;
+    }
+  }
+}
