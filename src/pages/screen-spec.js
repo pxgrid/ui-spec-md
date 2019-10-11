@@ -1,4 +1,3 @@
-import '../assets/common.scss'
 import '../assets/style.scss'
 
 import Vue from 'vue'
