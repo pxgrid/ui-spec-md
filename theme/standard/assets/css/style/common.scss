@@ -18,3 +18,30 @@ a {
 button:focus {
   outline: none;
 }
+.main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.page-header {
+  margin-bottom: 40px;
+}
+.header {
+  top: 0;
+  left: 0;
+  z-index: 20;
+  position: fixed;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 40px;
+  width: 100%;
+  height: 40px;
+  color: #ffffff;
+  box-sizing: border-box;
+  background-color: #0f396e;
+  .logo {
+    padding: 5px 0;
+    height: 30px;
+  }
+}
