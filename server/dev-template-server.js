@@ -1,5 +1,8 @@
+const fs = require('fs')
+const path = require('path')
 const express = require('express')
 const chokidar = require('chokidar')
+const sass = require('node-sass')
 
 const generateSpecAndTree = require('../lib/generate-spec-and-tree')
 
@@ -39,27 +42,58 @@ function restart({ destDir, port }) {
   })
 }
 
+const compileScss = (absoluteFilePath, themeDir) => {
+  if (!/\.scss$/.test(absoluteFilePath)) {
+    return
+  }
+  const sourceDir = path.resolve(themeDir, './assets/css')
+  fs.readdir(sourceDir, (err, files) => {
+    if (err) throw err
+    const scssPaths = files
+      .map(file => {
+        return path.resolve(sourceDir, file)
+      })
+      .filter(file => {
+        return fs.statSync(file).isFile() && /.*\.scss$/.test(file)
+      })
+    scssPaths.map(scssPath => {
+      const outputCss = scssPath.replace(/\.scss$/, '.css')
+      console.log('outputCss', outputCss)
+      const result = sass.renderSync({
+        file: scssPath,
+        // outputStyle: 'compressed',
+        outFile: outputCss,
+      })
+      fs.writeFileSync(outputCss, result.css)
+    })
+  })
+}
+
 const startDevTemplateServer = async ({ mdDir, destDir, port, themeDir }) => {
   await generateSpecAndTree(mdDir, destDir, { themeDir })
   start({ destDir, port })
 
   const watcher = chokidar.watch(themeDir, {
+    ignored: /\.css$/,
     ignoreInitial: true,
     persistent: true,
   })
   watcher
     .on('add', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been added`)
+      compileScss(absoluteTemplatePath, themeDir)
       await generateSpecAndTree(mdDir, destDir, { themeDir })
       restart({ destDir, port })
     })
     .on('change', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been changed`)
+      compileScss(absoluteTemplatePath, themeDir)
       await generateSpecAndTree(mdDir, destDir, { themeDir })
       restart({ destDir, port })
     })
     .on('unlink', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been removed`)
+      compileScss(absoluteTemplatePath, themeDir)
       await generateSpecAndTree(mdDir, destDir, { themeDir })
       restart({ destDir, port })
     })
