@@ -1,9 +1,9 @@
-# Screen Spec MD
+# UI Spec MD
 
 This is the successor to [ui\-spec\-md](https://github.com/pxgrid/ui-spec-md).
 
-Screen Spec MD is the efficient markdown compiler for Application screen documentation with [UI Flows](https://signalvnoise.com/posts/1926-a-shorthand-for-designing-ui-flows) Graph.
-Screen Spec MD compiles special markdown with following features
+UI Spec MD is the efficient markdown compiler for Application screen documentation with [UI Flows](https://signalvnoise.com/posts/1926-a-shorthand-for-designing-ui-flows) Graph.
+UI Spec MD compiles special markdown with following features
 
 -   YAML header consists of the title and screen capture image path
 -   Github-flavored Markdown
@@ -18,7 +18,7 @@ Screen Spec MD compiles special markdown with following features
 
 When you make app screen documentation, you may need to have UI Flows Graph
 
-Screen Spec MD arrows to contain special code blocks to draw UI Flows with markdown friendly easy syntax.
+UI Spec MD arrows to contain special code blocks to draw UI Flows with markdown friendly easy syntax.
 Here is a markdown example with the code block for UI Flows.
 
     ---
