@@ -49,23 +49,31 @@ Here is a markdown example with the code block for UI Flows.
 
 ui-spec-md [options]
 
-Generate screen spec documentation files from markdown
+Generate spec files from markdown
 
 Commands:
-ui-spec-md edit-server [options] Serve editable server to edit spec markdown.
-ui-spec-md generate [options] Generate spec files from markdown [default]
+ui-spec-md dev-template-server [options] Serve server for developing
+templates.
+ui-spec-md edit-server [options] Serve editable server to edit spec
+markdown.
+ui-spec-md generate [options] Generate spec files from markdown
+[default]
+ui-spec-md theme-init [dirName] Copy theme directory to working
+directory.
 
 Options:
 --help Show help [boolean]
 --version Show version number [boolean]
 -m, --mdDir Path of the source(markdown) directory [string][required]
--d, --destDir Path of directory to generated spec files [string][required]
+-d, --destDir Path of directory to write out converted html
+[string][required]
+-t, --themeDir Path of theme directory that include template files [string]
 
 ### package.json scripts examples
 
 ```
   "scripts": {
-    "generate": "ui-spec-md -m ./markdown -d ./spec",
-    "edit-server": "ui-spec-md edit-server -m ./markdown -d ./_spec"
+    "generate": "ui-spec-md generate -m md -d dist/public -t theme/standard",
+    "edit-server": "ui-spec-md edit-server -m md -d dist/edit",
   },
 ```
