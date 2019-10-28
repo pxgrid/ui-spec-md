@@ -31,7 +31,7 @@ button:focus {
   left: 0;
   z-index: 20;
   position: fixed;
-  padding: 0 16px;
+  padding: 0 10px;
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: 40px;
@@ -41,7 +41,7 @@ button:focus {
   box-sizing: border-box;
   background-color: #0f396e;
   .logo {
-    padding: 5px 0;
+    padding: 9px 0;
     height: 30px;
   }
   .page-title {
