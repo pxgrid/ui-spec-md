@@ -1,0 +1,19 @@
+.spec {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-auto-rows: auto;
+  width: 90vw;
+  margin: 0 auto;
+}
+.spec .spec-svg {
+  height: 80vh;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 40px;
+}
+.spec .spec-document {
+  padding: 0 20px 20px 20px;
+}

@@ -1,0 +1,58 @@
+.UISP-Screen {
+  display: inline-block;
+  padding: 20px;
+}
+
+.UISP-Screen svg.UISP-Screen__svgRoot {
+  display: block;
+  -webkit-transition: width 0.2s, height 0.2s;
+  transition: width 0.2s, height 0.2s;
+}
+
+.UISP-Screen--fit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0;
+}
+
+.UISP-Screen--fit svg.UISP-Screen__svgRoot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  max-height: calc(100vh - 48px - 30px); // 30pxはScreen_Toolsクラスの高さ
+  margin: auto;
+  padding: 0;
+}
+.UISP-Screen--highlight {
+  .Screen_Highlight {
+    display: inline;
+  }
+}
+.Screen_Image {
+}
+.Screen_Highlight_Fill {
+  stroke: red;
+  stroke-width: 2;
+  fill: red;
+  fill-opacity: 0.25;
+}
+.Screen_Highlight_Outline {
+  stroke: #fff;
+  stroke-width: 2;
+  fill: none;
+}
+.Screen_Highlight_Label {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 36px;
+  stroke: #fff;
+  stroke-width: 1;
+  fill: red;
+}

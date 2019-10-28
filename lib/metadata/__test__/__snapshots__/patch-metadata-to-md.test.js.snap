@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Markdown metadata should be updated correctly with patch data. 1`] = `
+"---
+title: タイトル
+screen: ./patched-screen.png?highlight=[[11,12,13,14],[15,16,17,18]]
+---
+
+# 見出し1
+## 見出し2
+### 見出し3
+"
+`;
