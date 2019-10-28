@@ -15,7 +15,13 @@
     <div class="main">
       <div class="page-header">
         <header class="header">
-          <div class="logo">Logo</div>
+          <div class="logo">
+            <a href="/">Logo</a>
+          </div>
+          <div class="page-title">{{ title }}</div>
+          <div class="site-navigations">
+            <button id="show-site-tree"></button>
+          </div>
         </header>
       </div>
       <div class="spec">
@@ -24,5 +30,7 @@
         </div>
       </div>
     </div>
+    <div id="site-tree" class="site-tree"></div>
+    <script src="/assets/js/site-tree.js"></script>
   </body>
 </html>
