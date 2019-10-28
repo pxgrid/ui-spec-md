@@ -33,7 +33,7 @@ button:focus {
   position: fixed;
   padding: 0 16px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr;
   grid-template-rows: 40px;
   width: 100%;
   height: 40px;
@@ -43,5 +43,47 @@ button:focus {
   .logo {
     padding: 5px 0;
     height: 30px;
+  }
+  .page-title {
+    padding: 5px 0;
+    height: 30px;
+    text-align: center;
+  }
+  .site-navigations {
+    padding: 5px 0;
+    height: 30px;
+    text-align: right;
+  }
+}
+.site-tree {
+  transition: visibility 0.3s, opacity 0.3s;
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.1);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  z-index: 30;
+  user-select: none;
+  ul {
+    list-style: none;
+  }
+  & > ul {
+    padding: 30px;
+    background-color: #ffffff;
+    margin: 0 auto;
+    display: inline-flex;
+    flex-direction: column;
+    width: 600px;
+    height: 80vh;
+    overflow: scroll;
+  }
+  li > ul {
+    padding-left: 10px;
   }
 }
