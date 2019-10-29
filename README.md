@@ -1,3 +1,8 @@
+<p align="center" style="background-color:#0f396e; padding: 30px;">
+  <img src="https://ui-spec-md.netlify.com/assets/img/logo.png" width="120px" /></br>
+  Efficient markdown compiler for Application screen documentation.
+</p>
+
 # UI Spec MD
 
 This is the successor to [ui\-spec\-md](https://github.com/pxgrid/ui-spec-md).
