@@ -1,11 +1,7 @@
 <p align="center" style="background-color:#0f396e; padding: 30px;">
-  <img src="https://ui-spec-md.netlify.com/assets/img/logo.png" width="120px" /></br>
+  <img src="https://ui-spec-md.netlify.com/assets/img/top-logo.png" width="640px" /></br>
   Efficient markdown compiler for Application screen documentation.
 </p>
-
-# UI Spec MD
-
-This is the successor to [ui\-spec\-md](https://github.com/pxgrid/ui-spec-md).
 
 UI Spec MD is the efficient markdown compiler for Application screen documentation with [UI Flows](https://signalvnoise.com/posts/1926-a-shorthand-for-designing-ui-flows) Graph.
 UI Spec MD compiles special markdown with following features
