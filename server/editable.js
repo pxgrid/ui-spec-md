@@ -55,7 +55,9 @@ const editable = (app, mdDir) => {
       const mdSource = req.body.markdown
       const mdRootPath = path.resolve(process.cwd(), mdDir)
       const mdPath = htmlPath.replace(/\.html$/, '.md')
-      const absoluteMdPath = path.resolve(mdRootPath, mdPath)
+      const absoluteMdPath = /\.md$/.test(mdPath)
+        ? path.resolve(mdRootPath, mdPath)
+        : path.resolve(mdRootPath, mdPath, 'index.html')
 
       // マークダウンの更新
       fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
