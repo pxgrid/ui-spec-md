@@ -18,6 +18,7 @@
     "edit-server": "node ./bin/cli.js edit-server -m ./example -d ./_spec",
     "generate:spec": "node ./bin/cli.js -m ./example -d ./_spec",
     "generate:standard": "node ./bin/cli.js -m ./example -d ./_standard -t ./theme/standard",
+    "generate:standard-local": "node ./bin/cli.js -m ./example -d ./_standard -t ./theme/standard -l",
     "build-generate:spec": "npm run build && npm run generate:spec",
     "prepublishOnly": "npm run build"
   },
