@@ -1,6 +1,10 @@
 <template>
   <div class="ScreenSpec">
-    <TheHeader @openTreeDialog="onOpenTreeDialog" />
+    <TheHeader
+      :editable="editable"
+      @openTreeDialog="onOpenTreeDialog"
+      @createNewFile="onCreateNewFile"
+    />
     <div class="Spec">
       <Screen
         :editable="editable"
@@ -108,6 +112,7 @@ export default {
     ...mapActions('editable', {
       writeScreenMetadata: editableTypes.WRITE_SCREEN_METADATA,
       removeScreenMetadata: editableTypes.REMOVE_SCREEN_METADATA,
+      createNewFile: editableTypes.CREATE_NEW_FILE,
     }),
     onSeparatorDrag({ leftScreenRate }) {
       this.screenWidth = `${leftScreenRate * 100}%`
@@ -124,6 +129,11 @@ export default {
     },
     onCloseScreenEditor() {
       this.isShowScreenEditor = false
+    },
+    onCreateNewFile(newFilePath) {
+      this.createNewFile({ newFilePath }).then(() => {
+        location.href = newFilePath.replace(/\.md$/, '.html')
+      })
     },
     onUpdateFilenameWithCoordinates({ filenameWithCoordinates }) {
       this.filenameWithCoordinates = filenameWithCoordinates

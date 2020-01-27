@@ -62,4 +62,8 @@ export default {
     const res = await api.removeMetadataScreen({ path })
     commit(types.SET_PAGE_CONTEXT, res.data.context)
   },
+
+  async [types.CREATE_NEW_FILE]({ commit }, { newFilePath }) {
+    await api.createNewFile({ newFilePath })
+  },
 }

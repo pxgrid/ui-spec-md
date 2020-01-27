@@ -95,6 +95,17 @@ class API {
       data: formData,
     })
   }
+
+  createNewFile({ newFilePath }) {
+    const url = '/__createNewFile'
+    return this._request({
+      url,
+      method: 'POST',
+      data: {
+        newFilePath,
+      },
+    })
+  }
 }
 
 export default new API()

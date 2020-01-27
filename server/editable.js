@@ -93,6 +93,26 @@ const editable = (app, mdDir) => {
     })().catch(next)
   })
 
+  app.post('/__createNewFile', (req, res, next) => {
+    ;(async () => {
+      const newFilePath = req.body.newFilePath
+      const mdRootPath = path.resolve(process.cwd(), mdDir)
+      const absoluteMdPath = path.resolve(mdRootPath, newFilePath.replace(/^\//, ''))
+      const imageFileName = path.basename(newFilePath).replace(/\.md$/, '.png')
+      const mdSource = `---
+title: title
+screen: ./img/${imageFileName}
+---
+
+# heading1
+
+## heading2
+`
+      fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
+      res.json({})
+    })().catch(next)
+  })
+
   app.patch('/__removeScreenMetadata', (req, res, next) => {
     ;(async () => {
       const htmlPath = req.body.path

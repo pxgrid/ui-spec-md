@@ -1,6 +1,10 @@
 <template>
   <div>
-    <TheHeader @openTreeDialog="onOpenTreeDialog" />
+    <TheHeader
+      :editable="editable"
+      @openTreeDialog="onOpenTreeDialog"
+      @createNewFile="onCreateNewFile"
+    />
     <div class="PlainSpec">
       <Doc
         :editable="editable"
@@ -22,12 +26,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import TheHeader from '../TheHeader.vue'
 import OverlayScreen from '../Common/OverlayScreen.vue'
 import BaseDialog from '../Common/BaseDialog.vue'
 import Tree from '../Common/Tree.vue'
 import Doc from './Spec/Doc.vue'
+import editableTypes from '../../store/modules/editable/types'
 
 export default {
   name: 'PlainSpec',
@@ -57,11 +62,19 @@ export default {
     }),
   },
   methods: {
+    ...mapActions('editable', {
+      createNewFile: editableTypes.CREATE_NEW_FILE,
+    }),
     onOpenTreeDialog() {
       this.isShowTreeDialog = true
     },
     onCloseTreeDialog() {
       this.isShowTreeDialog = false
+    },
+    onCreateNewFile(newFilePath) {
+      this.createNewFile({ newFilePath }).then(() => {
+        location.href = newFilePath.replace(/\.md$/, '.html')
+      })
     },
   },
 }
