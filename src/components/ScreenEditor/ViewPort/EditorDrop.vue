@@ -41,14 +41,20 @@ export default {
     async onDrop(e) {
       const dataTransfer = e.dataTransfer
       if (!singleDTHandler.isSingleImageFile(dataTransfer)) return true
-      const imagePath = prompt('Please enter the image file path.', './img/undefined.png')
+      const imagePath = prompt(
+        'Please enter the image file path.',
+        `./img/${this._getImageFileName()}`,
+      )
       if (imagePath === null) return false
       await this._setImage(dataTransfer, imagePath)
     },
     async onPaste(e) {
       const clipboardData = e.clipboardData
       if (!singleDTHandler.isSingleImageFile(clipboardData)) return true
-      const imagePath = prompt('Please enter the image file path.', './img/undefined.png')
+      const imagePath = prompt(
+        'Please enter the image file path.',
+        `./img/${this._getImageFileName()}`,
+      )
       if (imagePath === null) return false
       await this._setImage(clipboardData, imagePath)
     },
@@ -69,6 +75,13 @@ export default {
         },
       )
       return true
+    },
+    _getImageFileName() {
+      const fileName = location.pathname.split('/').pop()
+      if (!/\.html$/.test(fileName)) {
+        return `index.png`
+      }
+      return fileName.replace(/\.html$/, '.png')
     },
   },
 }

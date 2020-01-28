@@ -7,6 +7,9 @@
       <a class="TheHeader_IconLink" href="/">
         <FontAwesomeIcon icon="home" size="lg" />
       </a>
+      <button v-if="editable" class="TheHeader_IconButton" @click="openNewFileDialog">
+        <FontAwesomeIcon icon="file" size="lg" />
+      </button>
     </nav>
     <span class="TheHeader_PageTitle">
       {{ title }}
@@ -21,6 +24,12 @@ export default {
   components: {
     FontAwesomeIcon,
   },
+  props: {
+    editable: {
+      type: Boolean,
+      required: true,
+    },
+  },
   computed: {
     title() {
       return window.SCREEN_SPEC_MD.title
@@ -29,6 +38,15 @@ export default {
   methods: {
     openTreeDialog() {
       this.$emit('openTreeDialog')
+    },
+    openNewFileDialog() {
+      const pathname = location.pathname
+      const defaultValue = /^.+\.html$/.test(pathname)
+        ? pathname.replace(/[^\/]+\.html$/, 'undefined.md')
+        : pathname.replace(/\/$/, '') + 'undefined.md'
+      const newFilePath = prompt('Please enter the new file path and name.', defaultValue)
+      if (!newFilePath) return
+      this.$emit('createNewFile', newFilePath)
     },
   },
 }
@@ -39,14 +57,14 @@ export default {
 .TheHeader {
   display: grid;
   grid-template-rows: $theHeaderHeight;
-  grid-template-columns: 100px 1fr auto;
+  grid-template-columns: 150px 1fr auto;
   position: relative;
   height: $theHeaderHeight;
   background-color: #2f6fad;
   &_MainNav {
     display: grid;
     grid-template-rows: $theHeaderHeight;
-    grid-template-columns: 50px 50px;
+    grid-template-columns: 50px 50px 50px;
     grid-column: 1 / 2;
     align-items: center;
   }

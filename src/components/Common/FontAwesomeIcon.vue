@@ -8,6 +8,7 @@ import {
   faHome,
   faEdit,
   faImage,
+  faFile,
   faSearch,
   faSearchPlus,
   faSearchMinus,
@@ -53,6 +54,8 @@ export default {
           return faHome
         case 'edit':
           return faEdit
+        case 'file':
+          return faFile
         case 'image':
           return faImage
         case 'search':
