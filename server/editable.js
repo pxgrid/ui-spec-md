@@ -21,7 +21,9 @@ const editable = (app, mdDir) => {
     // TODO: ファイルタイプのチェック req.file.mimetype => "image/png"
     const uploadedPath = req.file.path
     const { filePath, imagePath } = req.body
-    const dirPath = path.dirname(filePath).replace(/^\//, '') //ex. /path/to/index.html => path/to/
+    const dirPath = /\.html$/.test(filePath)
+      ? path.dirname(filePath).replace(/^\//, '') //ex. /path/to/index.html => path/to/
+      : filePath.replace(/^\//, '') //ex. /path/to/foo => path/to/foo
     const pathToMove = path.resolve(process.cwd(), mdDir, dirPath, imagePath)
 
     // TODO: ディレクトリトラバーサルチェック
@@ -57,7 +59,7 @@ const editable = (app, mdDir) => {
       const mdPath = htmlPath.replace(/\.html$/, '.md')
       const absoluteMdPath = /\.md$/.test(mdPath)
         ? path.resolve(mdRootPath, mdPath)
-        : path.resolve(mdRootPath, mdPath, 'index.html')
+        : path.resolve(mdRootPath, mdPath, 'index.md')
 
       // マークダウンの更新
       fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
@@ -77,7 +79,9 @@ const editable = (app, mdDir) => {
       const screenMetadata = req.body.screenMetadata
       const mdRootPath = path.resolve(process.cwd(), mdDir)
       const mdPath = htmlPath.replace(/\.html$/, '.md')
-      const absoluteMdPath = path.resolve(mdRootPath, mdPath)
+      const absoluteMdPath = /\.md$/.test(mdPath)
+        ? path.resolve(mdRootPath, mdPath)
+        : path.resolve(mdRootPath, mdPath, 'index.md')
 
       // マークダウンの読み込み
       const md = fs.readFileSync(absoluteMdPath, 'utf8')
@@ -90,6 +94,26 @@ const editable = (app, mdDir) => {
       const pageInfo = parsePageMd(mdSource, gitLog, mdRootPath, mdDir + '/' + mdPath)
       const context = await makeTemplateContext(pageInfo, { isEditable: true })
       res.json({ context: context })
+    })().catch(next)
+  })
+
+  app.post('/__createNewFile', (req, res, next) => {
+    ;(async () => {
+      const newFilePath = req.body.newFilePath
+      const mdRootPath = path.resolve(process.cwd(), mdDir)
+      const absoluteMdPath = path.resolve(mdRootPath, newFilePath.replace(/^\//, ''))
+      const imageFileName = path.basename(newFilePath).replace(/\.md$/, '.png')
+      const mdSource = `---
+title: title
+screen: ./img/${imageFileName}
+---
+
+# heading1
+
+## heading2
+`
+      fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
+      res.json({})
     })().catch(next)
   })
 

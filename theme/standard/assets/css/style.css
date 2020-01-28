@@ -416,8 +416,12 @@ body {
 }
 
 a {
-  color: inherit;
+  color: #0066ff;
   text-decoration: none;
+}
+a:hover {
+  color: #0047b2;
+  text-decoration: underline;
 }
 
 button:focus {
