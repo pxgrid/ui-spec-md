@@ -27,7 +27,7 @@
     <OverlayScreen v-show="isShowTreeDialog" @close="onCloseTreeDialog">
       <BaseDialog :overflowScroll="true" @close="onCloseTreeDialog">
         <div slot="main">
-          <Tree :treeData="treeData" />
+          <Tree :treeData="treeData" :toRoot="toRoot" />
         </div>
       </BaseDialog>
     </OverlayScreen>
@@ -102,6 +102,7 @@ export default {
     ...mapState('editable', {
       editable: 'editable',
       convertedHtml: 'body',
+      toRoot: 'toRoot',
       updatedDate: 'updatedDate',
       updatedAuthorName: 'updatedAuthorName',
       createdDate: 'createdDate',

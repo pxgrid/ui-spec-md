@@ -6,7 +6,11 @@
         <FontAwesomeIcon v-show="open" icon="minus-square" size="1x" />
       </span>
       <span v-else class="TreeItem_NodeIcon">└</span>
-      <a class="TreeItem_Title" :class="{ _match: !matchFilter }" :href="treeData.rootPath">
+      <a
+        class="TreeItem_Title"
+        :class="{ _match: !matchFilter }"
+        :href="toRelative(treeData.rootPath)"
+      >
         {{ treeData.title }}
       </a>
     </div>
@@ -17,6 +21,7 @@
         class="item"
         :filterWord="filterWord"
         :treeData="treeDataChild"
+        :toRoot="toRoot"
         @expand="onExpand"
       >
       </TreeItem>
@@ -42,6 +47,10 @@ export default {
     },
     treeData: {
       type: Object,
+      required: true,
+    },
+    toRoot: {
+      type: String,
       required: true,
     },
   },
@@ -81,6 +90,9 @@ export default {
       if (this.isDir) {
         this.open = !this.open
       }
+    },
+    toRelative(rootPath) {
+      return this.toRoot + rootPath.replace(/^\//, '')
     },
     onExpand() {
       this.open = true
