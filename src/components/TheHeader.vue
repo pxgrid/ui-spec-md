@@ -4,7 +4,7 @@
       <button class="TheHeader_IconButton" @click="openTreeDialog">
         <FontAwesomeIcon icon="search" size="lg" />
       </button>
-      <a class="TheHeader_IconLink" href="/">
+      <a class="TheHeader_IconLink" :href="topPath">
         <FontAwesomeIcon icon="home" size="lg" />
       </a>
       <button v-if="editable" class="TheHeader_IconButton" @click="openNewFileDialog">
@@ -29,8 +29,15 @@ export default {
       type: Boolean,
       required: true,
     },
+    toRoot: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
+    topPath() {
+      return `${this.toRoot}index.html`
+    },
     title() {
       return window.SCREEN_SPEC_MD.title
     },

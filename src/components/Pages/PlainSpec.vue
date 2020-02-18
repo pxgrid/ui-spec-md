@@ -2,6 +2,7 @@
   <div>
     <TheHeader
       :editable="editable"
+      :toRoot="toRoot"
       @openTreeDialog="onOpenTreeDialog"
       @createNewFile="onCreateNewFile"
     />

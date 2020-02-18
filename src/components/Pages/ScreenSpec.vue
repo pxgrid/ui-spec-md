@@ -2,6 +2,7 @@
   <div class="ScreenSpec">
     <TheHeader
       :editable="editable"
+      :toRoot="toRoot"
       @openTreeDialog="onOpenTreeDialog"
       @createNewFile="onCreateNewFile"
     />

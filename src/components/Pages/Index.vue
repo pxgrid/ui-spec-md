@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TheHeader @openTreeDialog="onOpenTreeDialog" />
+    <TheHeader :toRoot="toRoot" @openTreeDialog="onOpenTreeDialog" />
     <div class="Index">目次</div>
     <OverlayScreen v-show="isShowTreeDialog" @close="onCloseTreeDialog">
       <BaseDialog :overflowScroll="true" @close="onCloseTreeDialog">
@@ -35,6 +35,9 @@ export default {
   computed: {
     ...mapState({
       treeData: 'treeData',
+    }),
+    ...mapState('editable', {
+      toRoot: 'toRoot',
     }),
   },
   methods: {
