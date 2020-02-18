@@ -10,10 +10,9 @@ import Index from '../components/Pages/Index.vue'
 const storeInstance = store()
 Vue.config.productionTip = false
 
-storeInstance.dispatch(types.FETCH_TREE_DATA).then(() => {
-  new Vue({
-    el: '#app',
-    store: storeInstance,
-    render: h => h(Index),
-  })
+storeInstance.commit(types.SET_TREE_DATA, { treeData: SCREEN_SPEC_MD_TREE_DATA })
+new Vue({
+  el: '#app',
+  store: storeInstance,
+  render: h => h(Index),
 })

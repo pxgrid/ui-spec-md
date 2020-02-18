@@ -4,7 +4,13 @@
       <input class="Tree_FilterInput" type="text" @keyup="onKeyUpFilter" />
     </div>
     <ul class="Tree_List">
-      <TreeItem class="Tree_Item" :opened="true" :filterWord="filterWord" :treeData="treeData" />
+      <TreeItem
+        class="Tree_Item"
+        :opened="true"
+        :filterWord="filterWord"
+        :treeData="treeData"
+        :toRoot="toRoot"
+      />
     </ul>
   </div>
 </template>
@@ -19,6 +25,10 @@ export default {
   props: {
     treeData: {
       type: Object,
+      required: true,
+    },
+    toRoot: {
+      type: String,
       required: true,
     },
   },

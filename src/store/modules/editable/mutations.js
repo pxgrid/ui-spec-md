@@ -3,6 +3,7 @@ export default {
   [types.INIT_PAGE](state) {
     state.editable = window.SCREEN_SPEC_MD.editable === 'true'
     state.body = window.SCREEN_SPEC_MD.convertedHtml
+    state.toRoot = window.SCREEN_SPEC_MD.toRoot
     state.updatedDate = window.SCREEN_SPEC_MD.updatedDate
     state.updatedAuthorName = window.SCREEN_SPEC_MD.updatedAuthorName
     state.createdDate = window.SCREEN_SPEC_MD.createdDate
