@@ -153,18 +153,21 @@ export default {
           this.svgCanvasHtml = ''
           this.onCloseScreenEditor()
         })
-        return
+      } else {
+        this.writeScreenMetadata({
+          screenMetadata: this.filenameWithCoordinates,
+          fileToUpload: this.fileToUpload,
+          // ex. /path/to/image.png?highlight=[[1,2,3,4]] => /path/to/index.html
+          imagePath: this.filenameWithCoordinates.replace(/\?.+/, ''),
+        }).then(context => {
+          this.screen = context.screen
+          this.svgCanvasHtml = context.svgCanvas
+          this.onCloseScreenEditor()
+        })
       }
-      this.writeScreenMetadata({
-        screenMetadata: this.filenameWithCoordinates,
-        fileToUpload: this.fileToUpload,
-        // ex. /path/to/image.png?highlight=[[1,2,3,4]] => /path/to/index.html
-        imagePath: this.filenameWithCoordinates.replace(/\?.+/, ''),
-      }).then(context => {
-        this.screen = context.screen
-        this.svgCanvasHtml = context.svgCanvas
-        this.onCloseScreenEditor()
-      })
+      setTimeout(() => {
+        location.reload()
+      }, 500)
     },
   },
 }
