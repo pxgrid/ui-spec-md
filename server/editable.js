@@ -32,7 +32,7 @@ const editable = (app, mdDir) => {
 
     // make directory if not exists
     if (fs.existsSync(path.dirname(pathToMove)) === false) {
-      mkdirp(path.dirname(pathToMove))
+      mkdirp.sync(path.dirname(pathToMove))
     }
 
     fs.renameSync(uploadedPath, pathToMove)
@@ -112,6 +112,9 @@ screen: ./img/${imageFileName}
 
 ## heading2
 `
+      if (fs.existsSync(path.dirname(absoluteMdPath)) === false) {
+        mkdirp.sync(path.dirname(absoluteMdPath))
+      }
       fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
       res.json({})
     })().catch(next)
