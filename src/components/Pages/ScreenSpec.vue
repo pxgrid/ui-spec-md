@@ -134,7 +134,9 @@ export default {
     },
     onCreateNewFile(newFilePath) {
       this.createNewFile({ newFilePath }).then(() => {
-        location.href = newFilePath.replace(/\.md$/, '.html')
+        setTimeout(() => {
+          location.href = newFilePath.replace(/\.md$/, '.html')
+        }, 500)
       })
     },
     onUpdateFilenameWithCoordinates({ filenameWithCoordinates }) {
