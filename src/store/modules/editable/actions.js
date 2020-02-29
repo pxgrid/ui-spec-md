@@ -64,6 +64,6 @@ export default {
   },
 
   async [types.CREATE_NEW_FILE]({ commit }, { newFilePath }) {
-    await api.createNewFile({ newFilePath })
+    return api.createNewFile({ newFilePath })
   },
 }

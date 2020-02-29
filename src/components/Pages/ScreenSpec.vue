@@ -132,12 +132,11 @@ export default {
     onCloseScreenEditor() {
       this.isShowScreenEditor = false
     },
-    onCreateNewFile(newFilePath) {
-      this.createNewFile({ newFilePath }).then(() => {
-        setTimeout(() => {
-          location.href = newFilePath.replace(/\.md$/, '.html')
-        }, 500)
-      })
+    async onCreateNewFile(newFilePath) {
+      const { request } = await this.createNewFile({ newFilePath })
+      if (request && request.responseURL) {
+        location.href = request.responseURL
+      }
     },
     onUpdateFilenameWithCoordinates({ filenameWithCoordinates }) {
       this.filenameWithCoordinates = filenameWithCoordinates

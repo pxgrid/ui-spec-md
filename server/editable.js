@@ -12,7 +12,7 @@ const makeTemplateContext = require('../lib/build-page/make-template-context')
 const patchMetadataToMd = require('../lib/metadata/patch-metadata-to-md')
 const removeMetadataToMd = require('../lib/metadata/remove-metadata-to-md')
 
-const editable = (app, mdDir) => {
+const editable = (app, mdDir, serveDir, port) => {
   app.use(express.json())
   const uploads = multer({ dest: path.join(__dirname, '__uploads/') })
 
@@ -116,7 +116,22 @@ screen: ./img/${imageFileName}
         mkdirp.sync(path.dirname(absoluteMdPath))
       }
       fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
-      res.json({})
+
+      if (!serveDir) {
+        res.json({})
+        return
+      }
+
+      while (true) {
+        const absoluteHtmlPath = path
+          .resolve(serveDir, newFilePath.replace(/^\//, ''))
+          .replace(/\.md$/, '.html')
+        if (fs.existsSync(absoluteHtmlPath)) {
+          break
+        }
+        await new Promise(resolve => setTimeout(resolve, 200))
+      }
+      res.redirect(newFilePath.replace(/\.md$/, '.html'))
     })().catch(next)
   })
 
@@ -155,8 +170,8 @@ const devEditable = app => {
   editable(app, 'public/dummies')
 }
 
-const productionEditable = (app, mdDir) => {
-  editable(app, mdDir)
+const productionEditable = (app, mdDir, serveDir, port) => {
+  editable(app, mdDir, serveDir)
 }
 
 module.exports = {
