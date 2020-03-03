@@ -2,12 +2,9 @@
   <div class="DocEditor">
     <DocEditorTabBar @activeWrite="activeWrite" @activePreview="activePreview" />
     <div class="DocEditor_InputContainer">
-      <DocEditorMarkdown
-        v-show="isActiveWrite"
-        :markdown="editingMarkdown"
-        @updateMarkdown="onUpdateMarkdown"
-        @uploadImage="onUploadImage"
-      />
+      <div v-show="isActiveWrite" class="DocEditor_Markdown">
+        <textarea ref="textarea" :value="markdown" class="DocEditor_MarkdownTextArea"></textarea>
+      </div>
       <DocEditorPreview
         v-show="!isActiveWrite"
         class="DocEditor_Preview"
@@ -26,16 +23,19 @@
 </template>
 
 <script>
+import CodeMirror from 'codemirror/lib/codemirror.js'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/markdown/markdown.js'
+import 'codemirror/addon/display/autorefresh.js'
+
 import ActionButton from '../../../Common/Buttons/ActionButton.vue'
 import DocEditorTabBar from './DocEditorTabBar.vue'
-import DocEditorMarkdown from './DocEditorMarkdown.vue'
 import DocEditorPreview from './DocEditorPreview.vue'
 export default {
   name: 'DocEditor',
   components: {
     ActionButton,
     DocEditorTabBar,
-    DocEditorMarkdown,
     DocEditorPreview,
   },
   props: {
@@ -51,35 +51,43 @@ export default {
   data() {
     return {
       isActiveWrite: true,
-      editingMarkdown: '',
+      editor: null,
     }
   },
   watch: {
     markdown: function(newVal, oldVal) {
       // markdownの値は非同期で取得するためmounted時のpropsの値がnullになってしまうので、非同期後に取得できるようにwatchしている
-      this.editingMarkdown = newVal
+      this.editor.setValue(newVal)
     },
+  },
+  mounted() {
+    this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
+      mode: {
+        name: 'gfm',
+        gitHubSpice: false,
+      },
+      lineNumbers: true,
+      lineWrapping: true,
+      autoRefresh: true,
+    })
   },
   methods: {
     activeWrite() {
       this.isActiveWrite = true
     },
     activePreview() {
-      this.$emit('fetchConvertedHtml', { markdown: this.editingMarkdown })
+      this.$emit('fetchConvertedHtml', { markdown: this.editor.getValue() })
       this.isActiveWrite = false
-    },
-    onUpdateMarkdown(changedMarkdown) {
-      this.editingMarkdown = changedMarkdown
     },
     onUploadImage({ imageFile, imagePath, done }) {
       this.$emit('uploadImage', { imageFile, imagePath, done })
     },
     onWriteMarkdown() {
-      this.$emit('writeMarkdown', { markdown: this.editingMarkdown })
+      this.$emit('writeMarkdown', { markdown: this.editor.getValue() })
       this.$emit('closeEditor')
     },
     cancelEditMarkdown() {
-      this.editingMarkdown = this.markdown
+      this.editor.setValue(this.markdown)
       this.$emit('closeEditor')
     },
   },
@@ -105,6 +113,28 @@ export default {
   }
   &_ActionBar {
     padding: 10px;
+  }
+  &_Markdown {
+    position: relative;
+    box-sizing: border-box;
+    padding: 8px;
+    height: 100%;
+    /deep/ .CodeMirror {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+  &_MarkdownTextArea {
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 8px;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
   }
 }
 </style>
