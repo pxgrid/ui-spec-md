@@ -28,6 +28,8 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/markdown/markdown.js'
 import 'codemirror/addon/display/autorefresh.js'
 
+import singleDTHandler from '../../../../modules/singleDataTransferHandler'
+
 import ActionButton from '../../../Common/Buttons/ActionButton.vue'
 import DocEditorTabBar from './DocEditorTabBar.vue'
 import DocEditorPreview from './DocEditorPreview.vue'
@@ -70,6 +72,12 @@ export default {
       lineWrapping: true,
       autoRefresh: true,
     })
+    this.editor.on('drop', (codeMirror, e) => {
+      this._insertImage(e.dataTransfer, codeMirror)
+    })
+    this.editor.on('paste', (codeMirror, e) => {
+      this._insertImage(e.clipboardData, codeMirror)
+    })
   },
   methods: {
     activeWrite() {
@@ -79,7 +87,7 @@ export default {
       this.$emit('fetchConvertedHtml', { markdown: this.editor.getValue() })
       this.isActiveWrite = false
     },
-    onUploadImage({ imageFile, imagePath, done }) {
+    uploadImage({ imageFile, imagePath, done }) {
       this.$emit('uploadImage', { imageFile, imagePath, done })
     },
     onWriteMarkdown() {
@@ -89,6 +97,24 @@ export default {
     cancelEditMarkdown() {
       this.editor.setValue(this.markdown)
       this.$emit('closeEditor')
+    },
+
+    _insertImage(dataTransfer, codeMirror) {
+      if (!singleDTHandler.isSingleImageFile(dataTransfer)) return false
+      const imagePath = prompt(
+        'Please enter the image file path. If the width is specified, specify as \'! [./img/foo.png] (./img/foo.png "=100x")\'.',
+        './img/undefined.png',
+      )
+      if (imagePath === null) return false
+      const imageFile = singleDTHandler.getAsSingleFile(dataTransfer)
+      this.uploadImage({
+        imageFile,
+        imagePath,
+        done: () => {
+          const cursorPosition = codeMirror.getCursor()
+          codeMirror.replaceRange(`![${imagePath}](${imagePath})`, cursorPosition)
+        },
+      })
     },
   },
 }
