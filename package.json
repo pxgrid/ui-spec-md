@@ -5,6 +5,7 @@
   "bin": {
     "ui-spec-md": "./bin/cli.js"
   },
+  "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.production.js",

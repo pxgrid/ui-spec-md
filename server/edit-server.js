@@ -45,7 +45,7 @@ function restart(mdDir, serveDir, port) {
   })
 }
 
-const startEditServer = async (mdDir, serveDir, port) => {
+const startEditServer = async (mdDir, serveDir, port = 3001) => {
   await generateSpecAndTree(mdDir, serveDir, { isEditable: true })
   start(mdDir, serveDir, port)
 
