@@ -12,7 +12,7 @@ const makeTemplateContext = require('../lib/build-page/make-template-context')
 const patchMetadataToMd = require('../lib/metadata/patch-metadata-to-md')
 const removeMetadataToMd = require('../lib/metadata/remove-metadata-to-md')
 
-const editable = (app, mdDir, serveDir, port) => {
+const editable = (app, mdDir, destDir, port) => {
   app.use(express.json())
   const uploads = multer({ dest: path.join(__dirname, '__uploads/') })
 
@@ -117,14 +117,15 @@ screen: ./img/${imageFileName}
       }
       fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
 
-      if (!serveDir) {
+      // Don't pass destDir when `npm run dev`, because webpack-dev-server is running.
+      if (!destDir) {
         res.json({})
         return
       }
 
       while (true) {
         const absoluteHtmlPath = path
-          .resolve(serveDir, newFilePath.replace(/^\//, ''))
+          .resolve(destDir, newFilePath.replace(/^\//, ''))
           .replace(/\.md$/, '.html')
         if (fs.existsSync(absoluteHtmlPath)) {
           break
@@ -170,8 +171,8 @@ const devEditable = app => {
   editable(app, 'public/dummies')
 }
 
-const productionEditable = (app, mdDir, serveDir, port) => {
-  editable(app, mdDir, serveDir)
+const productionEditable = (app, mdDir, destDir, port) => {
+  editable(app, mdDir, destDir)
 }
 
 module.exports = {

@@ -17,8 +17,8 @@ const state = {
   sockets: [],
 }
 
-function start({ destDir, port }) {
-  const app = createServer(destDir)
+function start({ rootDir, port }) {
+  const app = createServer(rootDir)
   state.server = app.listen(port, () => {
     console.log(`dev-template-server: http://localhost:${port}`)
   })
@@ -28,7 +28,7 @@ function start({ destDir, port }) {
   })
 }
 
-function restart({ destDir, port }) {
+function restart({ rootDir, port }) {
   state.sockets.forEach((socket, index) => {
     console.log('Destroying socket', index + 1)
     if (socket.destroyed === false) {
@@ -38,7 +38,7 @@ function restart({ destDir, port }) {
   state.sockets = []
   state.server.close(() => {
     console.log('\n********* Restart dev-template-server *********')
-    start({ destDir, port })
+    start({ rootDir, port })
   })
 }
 
@@ -69,9 +69,9 @@ const compileScss = (absoluteFilePath, themeDir) => {
   })
 }
 
-const startDevTemplateServer = async ({ mdDir, destDir, port, themeDir }) => {
-  await generateSpecAndTree(mdDir, destDir, { themeDir })
-  start({ destDir, port })
+const startDevTemplateServer = async ({ mdDir, destDir, rootDir, port, themeDir }) => {
+  await generateSpecAndTree(mdDir, destDir, rootDir, { themeDir })
+  start({ rootDir, port })
 
   const watcher = chokidar.watch(themeDir, {
     ignored: /\.css$/,
@@ -82,20 +82,20 @@ const startDevTemplateServer = async ({ mdDir, destDir, port, themeDir }) => {
     .on('add', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been added`)
       compileScss(absoluteTemplatePath, themeDir)
-      await generateSpecAndTree(mdDir, destDir, { themeDir })
-      restart({ destDir, port })
+      await generateSpecAndTree(mdDir, destDir, rootDir, { themeDir })
+      restart({ rootDir, port })
     })
     .on('change', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been changed`)
       compileScss(absoluteTemplatePath, themeDir)
-      await generateSpecAndTree(mdDir, destDir, { themeDir })
-      restart({ destDir, port })
+      await generateSpecAndTree(mdDir, destDir, rootDir, { themeDir })
+      restart({ rootDir, port })
     })
     .on('unlink', async absoluteTemplatePath => {
       console.log(`File ${absoluteTemplatePath} has been removed`)
       compileScss(absoluteTemplatePath, themeDir)
-      await generateSpecAndTree(mdDir, destDir, { themeDir })
-      restart({ destDir, port })
+      await generateSpecAndTree(mdDir, destDir, rootDir, { themeDir })
+      restart({ rootDir, port })
     })
 }
 
