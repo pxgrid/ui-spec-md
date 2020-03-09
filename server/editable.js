@@ -12,6 +12,12 @@ const makeTemplateContext = require('../lib/build-page/make-template-context')
 const patchMetadataToMd = require('../lib/metadata/patch-metadata-to-md')
 const removeMetadataToMd = require('../lib/metadata/remove-metadata-to-md')
 
+const localPathToMdPath = (mdDir, destDir, serverRootDir, localPath) => {
+  const absoluteMdDirPath = path.resolve(process.cwd(), mdDir)
+  const absolutePath = serverRootDir + localPath
+  return absolutePath.replace(destDir, absoluteMdDirPath)
+}
+
 const editable = (app, mdDir, destDir, serverRootDir, port) => {
   app.use(express.json())
   const uploads = multer({ dest: path.join(__dirname, '__uploads/') })
@@ -97,12 +103,11 @@ const editable = (app, mdDir, destDir, serverRootDir, port) => {
     })().catch(next)
   })
 
+  // ページ（ファイル）の新規作成
   app.post('/__createNewFile', (req, res, next) => {
     ;(async () => {
       const newFilePath = req.body.newFilePath
-      const mdRootPath = path.resolve(process.cwd(), mdDir)
-      const absoluteNewFilePath = serverRootDir + newFilePath
-      const absoluteMdPath = absoluteNewFilePath.replace(destDir, mdRootPath)
+      const absoluteMdPath = localPathToMdPath(mdDir, destDir, serverRootDir, newFilePath)
       const imageFileName = path.basename(newFilePath).replace(/\.md$/, '.png')
       const mdSource = `---
 title: title
@@ -119,18 +124,24 @@ screen: ./img/${imageFileName}
       fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
 
       // Don't pass destDir when `npm run dev`, because webpack-dev-server is running.
-      if (!destDir) {
+      if (!serverRootDir) {
         res.json({})
         return
       }
 
+      let limitCount = 0
       while (true) {
         const absoluteHtmlPath = path
-          .resolve(destDir, newFilePath.replace(/^\//, ''))
+          .resolve(serverRootDir, newFilePath.replace(/^\//, ''))
           .replace(/\.md$/, '.html')
         if (fs.existsSync(absoluteHtmlPath)) {
           break
         }
+        if (limitCount > 20) {
+          console.log(`Cloud not find new file! ${absoluteHtmlPath}`)
+          break
+        }
+        limitCount++
         await new Promise(resolve => setTimeout(resolve, 200))
       }
       res.redirect(newFilePath.replace(/\.md$/, '.html'))
