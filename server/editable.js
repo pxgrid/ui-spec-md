@@ -14,7 +14,7 @@ const removeMetadataToMd = require('../lib/metadata/remove-metadata-to-md')
 
 const localPathToMdPath = (mdDir, destDir, serverRootDir, localPath) => {
   const absoluteMdDirPath = path.resolve(process.cwd(), mdDir)
-  const absolutePath = serverRootDir + localPath
+  const absolutePath = serverRootDir + (/^\//.test(localPath) ? localPath : `/${localPath}`)
   return absolutePath.replace(destDir, absoluteMdDirPath)
 }
 
@@ -30,7 +30,8 @@ const editable = (app, mdDir, destDir, serverRootDir, port) => {
     const dirPath = /\.html$/.test(filePath)
       ? path.dirname(filePath).replace(/^\//, '') //ex. /path/to/index.html => path/to/
       : filePath.replace(/^\//, '') //ex. /path/to/foo => path/to/foo
-    const pathToMove = path.resolve(process.cwd(), mdDir, dirPath, imagePath)
+    const absoluteDirPath = localPathToMdPath(mdDir, destDir, serverRootDir, dirPath)
+    const pathToMove = path.resolve(absoluteDirPath, imagePath)
 
     // TODO: ディレクトリトラバーサルチェック
     const regexp = new RegExp(`^${process.cwd()}`)
@@ -51,21 +52,22 @@ const editable = (app, mdDir, destDir, serverRootDir, port) => {
     const mdPath = /\.html$/.test(queryPath)
       ? queryPath.replace(/\.html$/, '.md') // ex. /path/to/index.html => /path/to/index.md
       : path.resolve(queryPath, 'index.md') // ex. /path/to/ => /path/to/index.md
-    const absoluteMdPath = path.resolve(process.cwd(), mdDir + '/' + mdPath)
+    const absoluteMdPath = localPathToMdPath(mdDir, destDir, serverRootDir, mdPath)
     const mdContent = fs.readFileSync(absoluteMdPath, { encoding: 'utf-8' })
     res.send(mdContent)
   })
 
-  // マークダウンの編集（書き込み）と変換したHTMLの出力
+  // マークダウンを編集（書き込み）し、変換したHTMLを返す
   app.post('/__markdown', (req, res, next) => {
     ;(async () => {
       const htmlPath = req.body.path
       const mdSource = req.body.markdown
       const mdRootPath = path.resolve(process.cwd(), mdDir)
       const mdPath = htmlPath.replace(/\.html$/, '.md')
-      const absoluteMdPath = /\.md$/.test(mdPath)
-        ? path.resolve(mdRootPath, mdPath)
-        : path.resolve(mdRootPath, mdPath, 'index.md')
+      let absoluteMdPath = localPathToMdPath(mdDir, destDir, serverRootDir, mdPath)
+      if (/\.md$/.test(absoluteMdPath) === false) {
+        absoluteMdPath = path.resolve(absoluteMdPath, 'index.md')
+      }
 
       // マークダウンの更新
       fs.writeFileSync(absoluteMdPath, mdSource, { encoding: 'utf-8' })
@@ -85,10 +87,10 @@ const editable = (app, mdDir, destDir, serverRootDir, port) => {
       const screenMetadata = req.body.screenMetadata
       const mdRootPath = path.resolve(process.cwd(), mdDir)
       const mdPath = htmlPath.replace(/\.html$/, '.md')
-      const absoluteMdPath = /\.md$/.test(mdPath)
-        ? path.resolve(mdRootPath, mdPath)
-        : path.resolve(mdRootPath, mdPath, 'index.md')
-
+      let absoluteMdPath = localPathToMdPath(mdDir, destDir, serverRootDir, mdPath)
+      if (/\.md$/.test(absoluteMdPath) === false) {
+        absoluteMdPath = path.resolve(absoluteMdPath, 'index.md')
+      }
       // マークダウンの読み込み
       const md = fs.readFileSync(absoluteMdPath, 'utf8')
       const mdSource = patchMetadataToMd({ screen: screenMetadata }, md)
@@ -153,7 +155,7 @@ screen: ./img/${imageFileName}
       const htmlPath = req.body.path
       const mdRootPath = path.resolve(process.cwd(), mdDir)
       const mdPath = htmlPath.replace(/\.html$/, '.md')
-      const absoluteMdPath = path.resolve(mdRootPath, mdPath)
+      const absoluteMdPath = localPathToMdPath(mdDir, destDir, serverRootDir, mdPath)
 
       // マークダウンの読み込み
       const md = fs.readFileSync(absoluteMdPath, 'utf8')
@@ -169,6 +171,7 @@ screen: ./img/${imageFileName}
     })().catch(next)
   })
 
+  // リクエストされたマークダウンをHTMLに変換
   app.post('/__html', (req, res, next) => {
     ;(async () => {
       const mdSource = req.body.markdown
