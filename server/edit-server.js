@@ -68,13 +68,11 @@ const startEditServer = async (mdDir, destDir, serverRootDir, port = 3001) => {
       const targetMdPath = path.relative(mdDir, absoluteMdPath)
       console.log(`File ${targetMdPath} has been changed`)
       await writeSpec(mdDir, destDir, serverRootDir, targetMdPath)
-      restart(mdDir, destDir, serverRootDir, port) // might not need restart
     })
     .on('unlink', async absoluteMdPath => {
       const targetMdPath = path.relative(mdDir, absoluteMdPath)
       console.log(`File ${targetMdPath} has been removed`)
       await generateTree(mdDir, destDir)
-      restart(mdDir, destDir, serverRootDir, port) // might not need restart
     })
 }
 
