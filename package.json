@@ -1,6 +1,6 @@
 {
   "name": "ui-spec-md",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "The efficient markdown compiler for Application screen documentation with UI Flows Graph",
   "bin": {
     "ui-spec-md": "./bin/cli.js"
