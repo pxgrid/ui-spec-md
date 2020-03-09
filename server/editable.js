@@ -12,7 +12,7 @@ const makeTemplateContext = require('../lib/build-page/make-template-context')
 const patchMetadataToMd = require('../lib/metadata/patch-metadata-to-md')
 const removeMetadataToMd = require('../lib/metadata/remove-metadata-to-md')
 
-const editable = (app, mdDir, destDir, port) => {
+const editable = (app, mdDir, destDir, serverRootDir, port) => {
   app.use(express.json())
   const uploads = multer({ dest: path.join(__dirname, '__uploads/') })
 
@@ -101,7 +101,8 @@ const editable = (app, mdDir, destDir, port) => {
     ;(async () => {
       const newFilePath = req.body.newFilePath
       const mdRootPath = path.resolve(process.cwd(), mdDir)
-      const absoluteMdPath = path.resolve(mdRootPath, newFilePath.replace(/^\//, ''))
+      const absoluteNewFilePath = serverRootDir + newFilePath
+      const absoluteMdPath = absoluteNewFilePath.replace(destDir, mdRootPath)
       const imageFileName = path.basename(newFilePath).replace(/\.md$/, '.png')
       const mdSource = `---
 title: title
@@ -171,8 +172,8 @@ const devEditable = app => {
   editable(app, 'public/dummies')
 }
 
-const productionEditable = (app, mdDir, destDir, port) => {
-  editable(app, mdDir, destDir)
+const productionEditable = (app, mdDir, destDir, serverRootDir, port) => {
+  editable(app, mdDir, destDir, serverRootDir, port)
 }
 
 module.exports = {

@@ -32,7 +32,7 @@ function start(mdDir, destDir, serverRootDir, port) {
     state.sockets.push(socket)
   })
 
-  productionEditable(app, mdDir, destDir, port)
+  productionEditable(app, mdDir, destDir, serverRootDir, port)
 }
 
 function restart(mdDir, destDir, serverRootDir, port) {
