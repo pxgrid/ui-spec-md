@@ -101,12 +101,12 @@ export default {
 
     _insertImage(dataTransfer, codeMirror) {
       if (!singleDTHandler.isSingleImageFile(dataTransfer)) return false
+      const imageFile = singleDTHandler.getAsSingleFile(dataTransfer)
       const imagePath = prompt(
         'Please enter the image file path. If the width is specified, specify as \'! [./img/foo.png] (./img/foo.png "=100x")\'.',
         './img/undefined.png',
       )
       if (imagePath === null) return false
-      const imageFile = singleDTHandler.getAsSingleFile(dataTransfer)
       this.uploadImage({
         imageFile,
         imagePath,
