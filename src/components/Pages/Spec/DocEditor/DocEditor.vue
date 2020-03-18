@@ -45,6 +45,10 @@ export default {
       type: String,
       default: '',
     },
+    screen: {
+      type: String,
+      default: '',
+    },
     previewedHtml: {
       type: String,
       default: '',
@@ -60,6 +64,11 @@ export default {
     markdown: function(newVal, oldVal) {
       // markdownの値は非同期で取得するためmounted時のpropsの値がnullになってしまうので、非同期後に取得できるようにwatchしている
       this.editor.setValue(newVal)
+    },
+    screen: function(newVal, oldVal) {
+      const markdown = this.editor.getValue()
+      const replacedMarkdown = markdown.replace(/\nscreen\:(.+)\n/, `\nscreen: ${newVal}\n`)
+      this.editor.setValue(replacedMarkdown)
     },
   },
   mounted() {

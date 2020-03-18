@@ -6,6 +6,7 @@ export default connect({
   stateToProps: {
     ...stateToProps('editable', {
       markdown: 'markdown',
+      screen: 'screen',
       previewedHtml: 'convertedHtml',
     }),
   },

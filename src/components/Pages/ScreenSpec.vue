@@ -164,9 +164,6 @@ export default {
           this.onCloseScreenEditor()
         })
       }
-      setTimeout(() => {
-        location.reload()
-      }, 500)
     },
   },
 }
