@@ -5,7 +5,7 @@
     <OverlayScreen v-show="isShowTreeDialog" @close="onCloseTreeDialog">
       <BaseDialog :overflowScroll="true" @close="onCloseTreeDialog">
         <div slot="main">
-          <Tree :treeData="treeData" />
+          <Tree :treeData="treeData" :currentPathFromRoot="currentPathFromRoot" />
         </div>
       </BaseDialog>
     </OverlayScreen>
@@ -39,6 +39,9 @@ export default {
     ...mapState('editable', {
       toRoot: 'toRoot',
     }),
+    currentPathFromRoot() {
+      return location.pathname
+    },
   },
   methods: {
     onOpenTreeDialog() {

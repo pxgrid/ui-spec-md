@@ -19,7 +19,7 @@
     <OverlayScreen v-show="isShowTreeDialog" @close="onCloseTreeDialog">
       <BaseDialog :overflowScroll="true" @close="onCloseTreeDialog">
         <div slot="main">
-          <Tree :treeData="treeData" :toRoot="toRoot" />
+          <Tree :treeData="treeData" :toRoot="toRoot" :currentPathFromRoot="currentPathFromRoot" />
         </div>
       </BaseDialog>
     </OverlayScreen>
@@ -62,6 +62,9 @@ export default {
       createdDate: 'createdDate',
       createdAuthorName: 'createdAuthorName',
     }),
+    currentPathFromRoot() {
+      return location.pathname
+    },
   },
   methods: {
     ...mapActions('editable', {

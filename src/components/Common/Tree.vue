@@ -10,6 +10,7 @@
         :filterWord="filterWord"
         :treeData="treeData"
         :toRoot="toRoot"
+        :currentPathFromRoot="currentPathFromRoot"
       />
     </ul>
   </div>
@@ -30,6 +31,10 @@ export default {
     toRoot: {
       type: String,
       required: true,
+    },
+    currentPathFromRoot: {
+      type: String,
+      required: false,
     },
   },
   data() {

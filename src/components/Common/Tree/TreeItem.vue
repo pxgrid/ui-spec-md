@@ -8,7 +8,7 @@
       <span v-else class="TreeItem_NodeIcon">└</span>
       <a
         class="TreeItem_Title"
-        :class="{ _match: !matchFilter }"
+        :class="{ _match: !matchFilter, _current: isCurrentPage(treeData.rootPath) }"
         :href="toRelative(treeData.rootPath)"
       >
         {{ treeData.title }}
@@ -22,6 +22,7 @@
         :filterWord="filterWord"
         :treeData="treeDataChild"
         :toRoot="toRoot"
+        :currentPathFromRoot="currentPathFromRoot"
         @expand="onExpand"
       >
       </TreeItem>
@@ -52,6 +53,10 @@ export default {
     toRoot: {
       type: String,
       required: true,
+    },
+    currentPathFromRoot: {
+      type: String,
+      required: false,
     },
   },
   data() {
@@ -84,6 +89,9 @@ export default {
     if (this.opened) {
       this.open = true
     }
+    if (this.currentPathFromRoot === this.treeData.rootPath) {
+      this.$emit('expand')
+    }
   },
   methods: {
     toggle() {
@@ -93,6 +101,9 @@ export default {
     },
     toRelative(rootPath) {
       return this.toRoot + rootPath.replace(/^\//, '')
+    },
+    isCurrentPage(rootPath) {
+      return this.currentPathFromRoot === rootPath
     },
     onExpand() {
       this.open = true
@@ -119,6 +130,9 @@ export default {
     }
     &._match {
       color: #bbbbbb;
+    }
+    &._current {
+      font-weight: bold;
     }
   }
   &_List {
