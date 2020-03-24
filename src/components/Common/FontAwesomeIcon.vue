@@ -13,6 +13,7 @@ import {
   faSearchPlus,
   faSearchMinus,
   faPlusSquare,
+  faLink,
   faMinusSquare,
   faTimes,
   faExpandArrowsAlt,
@@ -66,6 +67,8 @@ export default {
           return faSearchMinus
         case 'plus-square':
           return faPlusSquare
+        case 'link':
+          return faLink
         case 'minus-square':
           return faMinusSquare
         case 'expand-arrows-alt':
