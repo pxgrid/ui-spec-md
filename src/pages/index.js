@@ -8,7 +8,7 @@ import types from '../store/types'
 import Index from '../components/Pages/Index.vue'
 
 const storeInstance = store()
-Vue.config.productionTip = false
+Vue.config.devtools = true
 
 storeInstance.commit(types.SET_TREE_DATA, { treeData: SCREEN_SPEC_MD_TREE_DATA })
 new Vue({

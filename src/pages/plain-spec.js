@@ -11,7 +11,7 @@ import types from '../store/types'
 import editableTypes from '../store/modules/editable/types'
 
 const storeInstance = store()
-Vue.config.productionTip = false
+Vue.config.devtools = true
 
 storeInstance.commit(types.SET_TREE_DATA, { treeData: SCREEN_SPEC_MD_TREE_DATA })
 storeInstance.commit(`editable/${editableTypes.INIT_PAGE}`)
