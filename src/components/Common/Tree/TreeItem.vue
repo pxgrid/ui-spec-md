@@ -56,7 +56,7 @@ export default {
     },
     currentPathFromRoot: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   data() {
