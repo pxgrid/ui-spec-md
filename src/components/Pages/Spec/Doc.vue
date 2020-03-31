@@ -21,7 +21,11 @@
       <!-- eslint-enable vue/no-v-html -->
     </div>
     <div v-if="editable" v-show="showEditor" class="Doc_Editor">
-      <DocEditor class="Doc_DocEditor" @closeEditor="closeEditor"></DocEditor>
+      <DocEditor
+        class="Doc_DocEditor"
+        @openTreeDialog="openTreeDialog"
+        @closeEditor="closeEditor"
+      ></DocEditor>
     </div>
   </div>
 </template>
@@ -84,6 +88,9 @@ export default {
     },
     toggleShowEditor() {
       this.showEditor = !this.showEditor
+    },
+    openTreeDialog(callback) {
+      this.$emit('openTreeDialog', callback)
     },
     closeEditor() {
       this.showEditor = false

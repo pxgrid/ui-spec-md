@@ -23,12 +23,19 @@
         :updatedAuthorName="updatedAuthorName"
         :createdDate="createdDate"
         :createdAuthorName="createdAuthorName"
+        @openTreeDialog="onOpenTreeDialog"
       />
     </div>
     <OverlayScreen v-show="isShowTreeDialog" @close="onCloseTreeDialog">
       <BaseDialog :overflowScroll="true" @close="onCloseTreeDialog">
         <div slot="main">
-          <Tree :treeData="treeData" :toRoot="toRoot" :currentPathFromRoot="currentPathFromRoot" />
+          <Tree
+            :treeData="treeData"
+            :toRoot="toRoot"
+            :currentPathFromRoot="currentPathFromRoot"
+            :callback="callback"
+            @closeTreeDialog="onCloseTreeDialog"
+          />
         </div>
       </BaseDialog>
     </OverlayScreen>
@@ -94,6 +101,7 @@ export default {
       isShowScreenEditor: false,
       screenWidth: '50%',
       documentWidth: '50%',
+      callback: null,
     }
   },
   computed: {
@@ -123,7 +131,8 @@ export default {
       this.screenWidth = `${leftScreenRate * 100}%`
       this.documentWidth = `${(1 - leftScreenRate) * 100}%`
     },
-    onOpenTreeDialog() {
+    onOpenTreeDialog(callback) {
+      this.callback = callback
       this.isShowTreeDialog = true
     },
     onCloseTreeDialog() {

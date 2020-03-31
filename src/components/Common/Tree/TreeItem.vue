@@ -7,12 +7,21 @@
       </span>
       <span v-else class="TreeItem_NodeIcon">└</span>
       <a
+        v-if="!callback"
         class="TreeItem_Title"
         :class="{ _match: !matchFilter, _current: isCurrentPage(treeData.rootPath) }"
         :href="toRelative(treeData.rootPath)"
       >
         {{ treeData.title }}
       </a>
+      <span
+        v-if="callback"
+        class="TreeItem_Title"
+        :class="{ _match: !matchFilter, _current: isCurrentPage(treeData.rootPath) }"
+        @click="onClickTreeItem(treeData.title, treeData.rootPath)"
+      >
+        {{ treeData.title }}
+      </span>
     </div>
     <ul v-if="isDir" v-show="open" class="TreeItem_List">
       <TreeItem
@@ -23,7 +32,9 @@
         :treeData="treeDataChild"
         :toRoot="toRoot"
         :currentPathFromRoot="currentPathFromRoot"
+        :callback="callback"
         @expand="onExpand"
+        @closeTreeDialog="onCloseTreeDialog"
       >
       </TreeItem>
     </ul>
@@ -57,6 +68,11 @@ export default {
     currentPathFromRoot: {
       type: String,
       required: true,
+    },
+    callback: {
+      type: Function,
+      required: false,
+      default: null,
     },
   },
   data() {
@@ -108,6 +124,13 @@ export default {
     onExpand() {
       this.open = true
       this.$emit('expand')
+    },
+    onClickTreeItem(title, rootPath) {
+      this.callback(title, this.toRelative(rootPath))
+      this.$emit('closeTreeDialog')
+    },
+    onCloseTreeDialog() {
+      this.$emit('closeTreeDialog')
     },
   },
 }

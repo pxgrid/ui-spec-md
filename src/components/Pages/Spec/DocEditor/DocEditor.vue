@@ -2,6 +2,15 @@
   <div class="DocEditor">
     <DocEditorTabBar @activeWrite="activeWrite" @activePreview="activePreview" />
     <div class="DocEditor_InputContainer">
+      <div v-show="isActiveWrite" class="DocEditor_Toolbar">
+        <ul class="DocEditor_ToolbarList">
+          <li class="DocEditor_ToolbarListItem">
+            <button class="DocEditor_ToolbarIconButton" @click="onOpenTreeDialog">
+              <FontAwesomeIcon icon="link" size="1x" />
+            </button>
+          </li>
+        </ul>
+      </div>
       <div v-show="isActiveWrite" class="DocEditor_Markdown">
         <textarea ref="textarea" :value="markdown" class="DocEditor_MarkdownTextArea"></textarea>
       </div>
@@ -27,6 +36,7 @@ import CodeMirror from 'codemirror/lib/codemirror.js'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/markdown/markdown.js'
 import 'codemirror/addon/display/autorefresh.js'
+import FontAwesomeIcon from '../../../Common/FontAwesomeIcon.vue'
 
 import singleDTHandler from '../../../../modules/singleDataTransferHandler'
 
@@ -39,6 +49,7 @@ export default {
     ActionButton,
     DocEditorTabBar,
     DocEditorPreview,
+    FontAwesomeIcon,
   },
   props: {
     markdown: {
@@ -99,6 +110,12 @@ export default {
     uploadImage({ imageFile, imagePath, done }) {
       this.$emit('uploadImage', { imageFile, imagePath, done })
     },
+    onOpenTreeDialog() {
+      this.$emit('openTreeDialog', (pageTitle, path) => {
+        const cursorPosition = this.editor.getCursor()
+        this.editor.replaceRange(`[${pageTitle}](${path})`, cursorPosition)
+      })
+    },
     onWriteMarkdown() {
       this.$emit('writeMarkdown', { markdown: this.editor.getValue() })
       this.$emit('closeEditor')
@@ -131,31 +148,53 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../../../assets/variable.scss';
+$editorToolbarHeight: 30px;
+$actionBarHeight: 54px;
+
 .DocEditor {
-  display: grid;
-  grid-template-rows: 40px auto 50px;
-  grid-template-columns: auto;
   &_InputContainer {
-    height: 100%;
     border: 1px solid #e5e5e5;
     border-top-style: none;
   }
   &_Preview {
     box-sizing: border-box;
     padding: 20px;
-    height: calc(100vh - #{$documentEditorTabBarHeight} - #{$theHeaderHeight} - #{$navBarsHeight});
+    height: calc(100vh - #{$theHeaderHeight} - #{$navBarsHeight} - #{$documentEditorTabBarHeight});
     overflow: scroll;
   }
-  &_ActionBar {
-    padding: 10px;
+  &_Toolbar {
+    height: $editorToolbarHeight;
+    background-color: #eeeeee;
+    padding-left: 30px;
+    border-bottom: 1px solid #cccccc;
+  }
+  &_ToolbarList {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  &_ToolbarListItem {
+  }
+  &_ToolbarIconButton {
+    font-size: 12px;
+    appearance: none;
+    border: none;
+    background: none;
   }
   &_Markdown {
     position: relative;
     box-sizing: border-box;
     padding: 8px;
-    height: 100%;
+    height: calc(
+      100vh - #{$theHeaderHeight} - #{$navBarsHeight} - #{$documentEditorTabBarHeight} - #{$actionBarHeight} -
+        #{$editorToolbarHeight}
+    );
     /deep/ .CodeMirror {
-      height: 100%;
+      height: calc(
+        100vh - #{$theHeaderHeight} - #{$navBarsHeight} - #{$documentEditorTabBarHeight} - #{$actionBarHeight} -
+          #{$editorToolbarHeight}
+      );
       position: absolute;
       top: 0;
       left: 0;
@@ -166,10 +205,16 @@ export default {
     font-size: 14px;
     padding: 8px;
     width: 100%;
-    height: 100%;
+    height: calc(
+      100vh - #{$theHeaderHeight} - #{$navBarsHeight} - #{$documentEditorTabBarHeight} - #{$actionBarHeight}
+    );
     resize: none;
     border: 1px solid #e5e5e5;
     border-radius: 2px;
+  }
+  &_ActionBar {
+    height: $actionBarHeight;
+    padding: 10px;
   }
 }
 </style>
