@@ -14,12 +14,20 @@
         :updatedDate="updatedDate"
         :createdDate="createdDate"
         :createdAuthorName="createdAuthorName"
+        :callback="callback"
+        @openTreeDialog="onOpenTreeDialog"
       />
     </div>
     <OverlayScreen v-show="isShowTreeDialog" @close="onCloseTreeDialog">
       <BaseDialog :overflowScroll="true" @close="onCloseTreeDialog">
         <div slot="main">
-          <Tree :treeData="treeData" :toRoot="toRoot" :currentPathFromRoot="currentPathFromRoot" />
+          <Tree
+            :treeData="treeData"
+            :toRoot="toRoot"
+            :currentPathFromRoot="currentPathFromRoot"
+            :callback="callback"
+            @closeTreeDialog="onCloseTreeDialog"
+          />
         </div>
       </BaseDialog>
     </OverlayScreen>
@@ -47,6 +55,7 @@ export default {
   data() {
     return {
       isShowTreeDialog: false,
+      callback: null,
     }
   },
   computed: {
@@ -70,7 +79,8 @@ export default {
     ...mapActions('editable', {
       createNewFile: editableTypes.CREATE_NEW_FILE,
     }),
-    onOpenTreeDialog() {
+    onOpenTreeDialog(callback) {
+      this.callback = callback
       this.isShowTreeDialog = true
     },
     onCloseTreeDialog() {

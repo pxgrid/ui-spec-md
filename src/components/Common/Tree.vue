@@ -11,6 +11,8 @@
         :treeData="treeData"
         :toRoot="toRoot"
         :currentPathFromRoot="currentPathFromRoot"
+        :callback="callback"
+        @closeTreeDialog="onCloseTreeDialog"
       />
     </ul>
   </div>
@@ -36,6 +38,11 @@ export default {
       type: String,
       required: true,
     },
+    callback: {
+      type: Function,
+      required: false,
+      default: null,
+    },
   },
   data() {
     return {
@@ -45,6 +52,9 @@ export default {
   methods: {
     onKeyUpFilter(e) {
       this.filterWord = e.target.value
+    },
+    onCloseTreeDialog() {
+      this.$emit('closeTreeDialog')
     },
   },
 }

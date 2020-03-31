@@ -5,7 +5,7 @@
       <div v-show="isActiveWrite" class="DocEditor_Toolbar">
         <ul class="DocEditor_ToolbarList">
           <li class="DocEditor_ToolbarListItem">
-            <button class="DocEditor_ToolbarIconButton">
+            <button class="DocEditor_ToolbarIconButton" @click="onOpenTreeDialog">
               <FontAwesomeIcon icon="link" size="1x" />
             </button>
           </li>
@@ -109,6 +109,12 @@ export default {
     },
     uploadImage({ imageFile, imagePath, done }) {
       this.$emit('uploadImage', { imageFile, imagePath, done })
+    },
+    onOpenTreeDialog() {
+      this.$emit('openTreeDialog', (pageTitle, path) => {
+        const cursorPosition = this.editor.getCursor()
+        this.editor.replaceRange(`[${pageTitle}](${path})`, cursorPosition)
+      })
     },
     onWriteMarkdown() {
       this.$emit('writeMarkdown', { markdown: this.editor.getValue() })
