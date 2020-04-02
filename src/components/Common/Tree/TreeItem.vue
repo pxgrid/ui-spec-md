@@ -43,6 +43,7 @@
 
 <script>
 import FontAwesomeIcon from '../FontAwesomeIcon.vue'
+import changeRootPathToRelative from '../../../modules/changeRootPathToRelative'
 export default {
   name: 'TreeItem',
   components: {
@@ -116,7 +117,7 @@ export default {
       }
     },
     toRelative(rootPath) {
-      return this.toRoot + rootPath.replace(/^\//, '')
+      return changeRootPathToRelative(location.pathname, rootPath)
     },
     isCurrentPage(rootPath) {
       return this.currentPathFromRoot === rootPath
