@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import FontAwesomeIcon from '../../Common/FontAwesomeIcon.vue'
+import FontAwesomeIcon from '../Common/FontAwesomeIcon.vue'
 import ScreenToolbar from './Screen/ScreenToolbar.vue'
 
 const ZOOM_MAX = 200
@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/variable.scss';
+@import '../../assets/variable.scss';
 .Screen {
   flex-direction: column;
   width: 50%;

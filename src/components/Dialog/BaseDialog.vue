@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import FontAwesomeIcon from './FontAwesomeIcon.vue'
+import FontAwesomeIcon from '../Common/FontAwesomeIcon.vue'
 export default {
   name: 'BaseDialog',
   components: {

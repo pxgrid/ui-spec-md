@@ -5,7 +5,7 @@ import store from '../store'
 import PortalVue from 'portal-vue'
 Vue.use(PortalVue)
 
-import ScreenSpec from '../components/Pages/ScreenSpec.vue'
+import ScreenSpec from '../components/ScreenSpec.vue'
 import types from '../store/types'
 import editableTypes from '../store/modules/editable/types'
 

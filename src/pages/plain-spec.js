@@ -6,7 +6,7 @@ import '../assets/style.scss'
 import Vue from 'vue'
 import store from '../store'
 
-import PlainSpec from '../components/Pages/PlainSpec.vue'
+import PlainSpec from '../components/PlainSpec.vue'
 import types from '../store/types'
 import editableTypes from '../store/modules/editable/types'
 

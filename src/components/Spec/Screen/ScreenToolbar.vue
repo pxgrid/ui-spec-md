@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import FontAwesomeIcon from '../../../Common/FontAwesomeIcon.vue'
+import FontAwesomeIcon from '../../Common/FontAwesomeIcon.vue'
 
 export default {
   name: 'ScreenToolbar',
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../assets/variable.scss';
+@import '../../../assets/variable.scss';
 .ScreenToolbar {
   margin: 0;
   padding: 0;

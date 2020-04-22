@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import TreeItem from './Tree/TreeItem.vue'
+import TreeItem from './TreeItem.vue'
 export default {
   name: 'Tree',
   components: {

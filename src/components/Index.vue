@@ -14,10 +14,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import TheHeader from '../TheHeader.vue'
-import OverlayScreen from '../Common/OverlayScreen.vue'
-import BaseDialog from '../Common/BaseDialog.vue'
-import Tree from '../Common/Tree.vue'
+import TheHeader from './Common/TheHeader.vue'
+import OverlayScreen from './Common/OverlayScreen.vue'
+import BaseDialog from './Dialog/BaseDialog.vue'
+import Tree from './Tree/Tree.vue'
 
 export default {
   name: 'Index',
@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/variable.scss';
+@import '../assets/variable.scss';
 .Index {
   display: flex;
   max-height: calc(100vh - #{$theHeaderHeight});
