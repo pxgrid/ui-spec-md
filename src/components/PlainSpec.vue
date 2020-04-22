@@ -40,7 +40,7 @@ import TheHeader from './Common/TheHeader.vue'
 import OverlayScreen from './Common/OverlayScreen.vue'
 import BaseDialog from './Dialog/BaseDialog.vue'
 import Tree from './Tree/Tree.vue'
-import Doc from './Spec/Doc.vue'
+import Doc from './UISpec/Doc.vue'
 import editableTypes from '../store/modules/editable/types'
 
 export default {
