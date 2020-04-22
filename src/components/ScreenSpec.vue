@@ -76,7 +76,7 @@ import Screen from './UISpec/Screen.vue'
 import Separator from './UISpec/Separator.vue'
 import Doc from './UISpec/Doc.vue'
 import ActionButton from './Button/ActionButton.vue'
-import ScreenEditor from './ScreenEditor/ScreenEditor.vue'
+import ScreenEditor from './UISpec/ScreenEditor/ScreenEditor.vue'
 
 export default {
   name: 'ScreenSpec',

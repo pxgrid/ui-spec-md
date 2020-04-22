@@ -30,7 +30,7 @@
 <script>
 import Toolbar from './Toolbar.vue'
 import ViewPort from './ViewPort.vue'
-import ScreenEditorManager from '../../class/ScreenEditorManager'
+import ScreenEditorManager from '../../../class/ScreenEditorManager'
 export default {
   name: 'ScreenEditor',
   components: {
