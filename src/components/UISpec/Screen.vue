@@ -37,7 +37,7 @@
 
 <script>
 import FontAwesomeIcon from '../Common/FontAwesomeIcon.vue'
-import ScreenToolbar from './Screen/ScreenToolbar.vue'
+import ScreenToolbar from './ScreenToolbar.vue'
 
 const ZOOM_MAX = 200
 const ZOOM_MIN = 25
