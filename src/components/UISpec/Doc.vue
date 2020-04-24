@@ -17,12 +17,13 @@
     </nav>
     <div v-show="!showEditor" class="Doc_Inner">
       <!-- eslint-disable vue/no-v-html -->
-      <div class="UISP-Md" v-html="convertedHtml"></div>
+      <div ref="doc" class="UISP-Md" v-html="convertedHtml"></div>
       <!-- eslint-enable vue/no-v-html -->
     </div>
     <div v-if="editable" v-show="showEditor" class="Doc_Editor">
       <DocEditor
         class="Doc_DocEditor"
+        :headlineIndex="headlineIndexToEdit"
         @openTreeDialog="openTreeDialog"
         @closeEditor="closeEditor"
       ></DocEditor>
@@ -72,6 +73,21 @@ export default {
   data() {
     return {
       showEditor: false,
+      headlineIndexToEdit: -1,
+    }
+  },
+  watch: {
+    convertedHtml() {
+      if (this.editable) {
+        this.$nextTick(() => {
+          this.addEditButtonToHeadline()
+        })
+      }
+    },
+  },
+  mounted() {
+    if (this.editable) {
+      this.addEditButtonToHeadline()
     }
   },
   methods: {
@@ -92,13 +108,51 @@ export default {
     openTreeDialog(callback) {
       this.$emit('openTreeDialog', callback)
     },
+    onClickEditByHeadline(e) {
+      this.headlineIndexToEdit = parseInt(e.currentTarget.dataset.headingIndex)
+      this.showEditor = true
+    },
     closeEditor() {
       this.showEditor = false
+      this.headlineIndexToEdit = -1
+    },
+    addEditButtonToHeadline() {
+      const buttonClassName = 'edit-by-headline'
+      this.$refs.doc.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((element, index) => {
+        element.insertAdjacentHTML(
+          'beforeend',
+          `<button class="${buttonClassName}" data-heading-index="${index}"><i class="fa fa-edit" /></button>`,
+        )
+        element
+          .querySelector(`button.${buttonClassName}`)
+          .addEventListener('click', this.onClickEditByHeadline, true)
+      })
     },
   },
 }
 </script>
 
+<style lang="scss">
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  button.edit-by-headline {
+    display: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    margin: 0 0 0 10px;
+    padding: 0;
+  }
+  &:hover button.edit-by-headline {
+    display: inline-block;
+  }
+}
+</style>
 <style lang="scss" scoped>
 @import '../../assets/variable.scss';
 .Doc {

@@ -1,7 +1,4 @@
 const changeRootPathToRelative = (from, to) => {
-  console.log('from', from)
-  console.log('to', to)
-
   const fromDirs = from.split('/').filter(dirName => dirName !== '')
   const toDirs = to.split('/').filter(dirName => dirName !== '')
 
