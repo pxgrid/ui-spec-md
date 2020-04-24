@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import FontAwesomeIcon from './Common/FontAwesomeIcon.vue'
+import FontAwesomeIcon from './FontAwesomeIcon.vue'
 export default {
   name: 'TheHeader',
   components: {
@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/variable.scss';
+@import '../../assets/variable.scss';
 .TheHeader {
   display: grid;
   grid-template-rows: $theHeaderHeight;

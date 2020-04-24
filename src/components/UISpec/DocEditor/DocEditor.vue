@@ -36,13 +36,14 @@ import CodeMirror from 'codemirror/lib/codemirror.js'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/markdown/markdown.js'
 import 'codemirror/addon/display/autorefresh.js'
-import FontAwesomeIcon from '../../../Common/FontAwesomeIcon.vue'
+import FontAwesomeIcon from '../../Common/FontAwesomeIcon.vue'
 
-import singleDTHandler from '../../../../modules/singleDataTransferHandler'
+import singleDTHandler from '../../../modules/singleDataTransferHandler'
 
-import ActionButton from '../../../Common/Buttons/ActionButton.vue'
+import ActionButton from '../../Button/ActionButton.vue'
 import DocEditorTabBar from './DocEditorTabBar.vue'
 import DocEditorPreview from './DocEditorPreview.vue'
+import splitMarkdownByHeadlineIndex from '../../../modules/splitMarkdownByHeadlineIndex'
 export default {
   name: 'DocEditor',
   components: {
@@ -64,11 +65,17 @@ export default {
       type: String,
       default: '',
     },
+    headlineIndex: {
+      type: Number,
+      required: true,
+    },
   },
   data() {
     return {
       isActiveWrite: true,
       editor: null,
+      aboveMarkdown: '',
+      belowMarkdown: '',
     }
   },
   watch: {
@@ -80,6 +87,17 @@ export default {
       const markdown = this.editor.getValue()
       const replacedMarkdown = markdown.replace(/\nscreen\:(.+)\n/, `\nscreen: ${newVal}\n`)
       this.editor.setValue(replacedMarkdown)
+    },
+    headlineIndex: function(newVal, oldVal) {
+      if (newVal < 0) return
+      const markdown = this.editor.getValue()
+      const [aboveMarkdown, targetMarkdown, belowMarkdown] = splitMarkdownByHeadlineIndex(
+        markdown,
+        newVal,
+      )
+      this.aboveMarkdown = aboveMarkdown
+      this.belowMarkdown = belowMarkdown
+      this.editor.setValue(targetMarkdown)
     },
   },
   mounted() {
@@ -113,11 +131,18 @@ export default {
     onOpenTreeDialog() {
       this.$emit('openTreeDialog', (pageTitle, path) => {
         const cursorPosition = this.editor.getCursor()
-        this.editor.replaceRange(`[${pageTitle}](${path})`, cursorPosition)
+        const link = `[${pageTitle}](${path})`
+        this.editor.replaceRange(link, cursorPosition)
+        this.editor.focus()
+        this.editor.setCursor({ line: cursorPosition.line, ch: link.length })
       })
     },
     onWriteMarkdown() {
-      this.$emit('writeMarkdown', { markdown: this.editor.getValue() })
+      const markdown =
+        this.headlineIndex !== -1
+          ? `${this.aboveMarkdown}\n${this.editor.getValue()}\n${this.belowMarkdown}`
+          : this.editor.getValue()
+      this.$emit('writeMarkdown', { markdown })
       this.$emit('closeEditor')
     },
     cancelEditMarkdown() {
@@ -147,7 +172,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../assets/variable.scss';
+@import '../../../assets/variable.scss';
 $editorToolbarHeight: 30px;
 $actionBarHeight: 54px;
 
@@ -191,6 +216,7 @@ $actionBarHeight: 54px;
         #{$editorToolbarHeight}
     );
     /deep/ .CodeMirror {
+      width: 100%;
       height: calc(
         100vh - #{$theHeaderHeight} - #{$navBarsHeight} - #{$documentEditorTabBarHeight} - #{$actionBarHeight} -
           #{$editorToolbarHeight}

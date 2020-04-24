@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import FontAwesomeIcon from '../FontAwesomeIcon.vue'
-import changeRootPathToRelative from '../../../modules/changeRootPathToRelative'
+import FontAwesomeIcon from '../Common/FontAwesomeIcon.vue'
+import changeRootPathToRelative from '../../modules/changeRootPathToRelative'
 export default {
   name: 'TreeItem',
   components: {

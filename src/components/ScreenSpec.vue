@@ -67,16 +67,16 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import editableTypes from '../../store/modules/editable/types'
-import TheHeader from '../TheHeader.vue'
-import OverlayScreen from '../Common/OverlayScreen.vue'
-import BaseDialog from '../Common/BaseDialog.vue'
-import Tree from '../Common/Tree.vue'
-import Screen from './Spec/Screen.vue'
-import Separator from './Spec/Separator.vue'
-import Doc from './Spec/Doc.vue'
-import ActionButton from '../Common/Buttons/ActionButton.vue'
-import ScreenEditor from '../ScreenEditor.vue'
+import editableTypes from '../store/modules/editable/types'
+import TheHeader from './Common/TheHeader.vue'
+import OverlayScreen from './Common/OverlayScreen.vue'
+import BaseDialog from './Dialog/BaseDialog.vue'
+import Tree from './Tree/Tree.vue'
+import Screen from './UISpec/Screen.vue'
+import Separator from './UISpec/Separator.vue'
+import Doc from './UISpec/Doc.vue'
+import ActionButton from './Button/ActionButton.vue'
+import ScreenEditor from './UISpec/ScreenEditor/ScreenEditor.vue'
 
 export default {
   name: 'ScreenSpec',
@@ -182,7 +182,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/variable.scss';
+@import '../assets/variable.scss';
 .Spec {
   display: flex;
   max-height: calc(100vh - #{$theHeaderHeight});

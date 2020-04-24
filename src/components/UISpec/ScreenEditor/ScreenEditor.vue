@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import Toolbar from './ScreenEditor/Toolbar.vue'
-import ViewPort from './ScreenEditor/ViewPort.vue'
-import ScreenEditorManager from '../class/ScreenEditorManager'
+import Toolbar from './Toolbar.vue'
+import ViewPort from './ViewPort.vue'
+import ScreenEditorManager from '../../../class/ScreenEditorManager'
 export default {
   name: 'ScreenEditor',
   components: {

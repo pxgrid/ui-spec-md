@@ -1,8 +1,11 @@
 import { connect } from 'vuex-connect'
 import DocEditor from './DocEditor.vue'
-import editableTypes from '../../../../store/modules/editable/types'
+import editableTypes from '../../../store/modules/editable/types'
 import { stateToProps, actionsToEvents } from 'vuex-connect-namespace-helper'
 export default connect({
+  props: {
+    headlineIndex: 'headlineIndex',
+  },
   stateToProps: {
     ...stateToProps('editable', {
       markdown: 'markdown',

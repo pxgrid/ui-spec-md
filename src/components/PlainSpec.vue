@@ -36,12 +36,12 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import TheHeader from '../TheHeader.vue'
-import OverlayScreen from '../Common/OverlayScreen.vue'
-import BaseDialog from '../Common/BaseDialog.vue'
-import Tree from '../Common/Tree.vue'
-import Doc from './Spec/Doc.vue'
-import editableTypes from '../../store/modules/editable/types'
+import TheHeader from './Common/TheHeader.vue'
+import OverlayScreen from './Common/OverlayScreen.vue'
+import BaseDialog from './Dialog/BaseDialog.vue'
+import Tree from './Tree/Tree.vue'
+import Doc from './UISpec/Doc.vue'
+import editableTypes from '../store/modules/editable/types'
 
 export default {
   name: 'PlainSpec',
@@ -97,7 +97,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/variable.scss';
+@import '../assets/variable.scss';
 .PlainSpec {
   display: flex;
   max-height: calc(100vh - #{$theHeaderHeight});

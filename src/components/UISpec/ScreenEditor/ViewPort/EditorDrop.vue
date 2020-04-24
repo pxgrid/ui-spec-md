@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import loadImage from '../../../modules/loadImage'
-import singleDTHandler from '../../../modules/singleDataTransferHandler'
+import loadImage from '../../../../modules/loadImage'
+import singleDTHandler from '../../../../modules/singleDataTransferHandler'
 export default {
   name: 'EditorDrop',
   methods: {

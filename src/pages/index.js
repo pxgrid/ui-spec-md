@@ -5,7 +5,7 @@
 import Vue from 'vue'
 import store from '../store'
 import types from '../store/types'
-import Index from '../components/Pages/Index.vue'
+import Index from '../components/Index.vue'
 
 const storeInstance = store()
 Vue.config.devtools = true
