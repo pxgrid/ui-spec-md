@@ -131,7 +131,10 @@ export default {
     onOpenTreeDialog() {
       this.$emit('openTreeDialog', (pageTitle, path) => {
         const cursorPosition = this.editor.getCursor()
-        this.editor.replaceRange(`[${pageTitle}](${path})`, cursorPosition)
+        const link = `[${pageTitle}](${path})`
+        this.editor.replaceRange(link, cursorPosition)
+        this.editor.focus()
+        this.editor.setCursor({ line: cursorPosition.line, ch: link.length })
       })
     },
     onWriteMarkdown() {
