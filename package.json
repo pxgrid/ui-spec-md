@@ -70,7 +70,7 @@
     "multer": "^1.4.1",
     "ncp": "^2.0.0",
     "node-sass": "^4.13.1",
-    "portal-vue": "^2.1.6",
+    "portal-vue": "^2.1.7",
     "prettier": "^1.16.3",
     "prismjs": "^1.17.1",
     "raw-loader": "^0.5.1",

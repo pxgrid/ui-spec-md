@@ -28,6 +28,36 @@
         <span @click="onWriteMarkdown()">Save</span>
       </ActionButton>
     </div>
+
+    <Portal to="imageUploadDialog">
+      <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
+        <BaseDialog
+          class="ImageUploadDialog"
+          :overflowScroll="false"
+          @close="closeImageUploadDialog"
+        >
+          <div slot="main">
+            <label class="ImageUploadDialog_PathLabel" for="image-path-to-upload">
+              Path to upload:
+            </label>
+            <input
+              id="image-path-to-upload"
+              v-model="imagePath"
+              type="text"
+              class="ImageUploadDialog_Path"
+            />
+          </div>
+          <div slot="footer" class="ImageUploadDialog_Footer">
+            <ActionButton :sub="true">
+              <span @click="closeImageUploadDialog">Cancel</span>
+            </ActionButton>
+            <ActionButton>
+              <span @click="uploadImage">OK</span>
+            </ActionButton>
+          </div>
+        </BaseDialog>
+      </OverlayScreen>
+    </Portal>
   </div>
 </template>
 
@@ -40,13 +70,18 @@ import FontAwesomeIcon from '../../Common/FontAwesomeIcon.vue'
 
 import singleDTHandler from '../../../modules/singleDataTransferHandler'
 
+import OverlayScreen from '../../../components/Common/OverlayScreen.vue'
+import BaseDialog from '../../../components/Dialog/BaseDialog.vue'
 import ActionButton from '../../Button/ActionButton.vue'
 import DocEditorTabBar from './DocEditorTabBar.vue'
 import DocEditorPreview from './DocEditorPreview.vue'
 import splitMarkdownByHeadlineIndex from '../../../modules/splitMarkdownByHeadlineIndex'
+import loadImage from '../../../modules/loadImage'
 export default {
   name: 'DocEditor',
   components: {
+    OverlayScreen,
+    BaseDialog,
     ActionButton,
     DocEditorTabBar,
     DocEditorPreview,
@@ -76,6 +111,14 @@ export default {
       editor: null,
       aboveMarkdown: '',
       belowMarkdown: '',
+      isShowImageUploadDialog: false,
+      temporaryFileData: {
+        imageFile: null,
+        imageBase64: null,
+        width: null,
+        height: null,
+      },
+      imagePath: '',
     }
   },
   watch: {
@@ -110,14 +153,20 @@ export default {
       lineWrapping: true,
       autoRefresh: true,
     })
-    this.editor.on('drop', (codeMirror, e) => {
-      this._insertImage(e.dataTransfer, codeMirror)
+    this.editor.on('drop', async (codeMirror, e) => {
+      await this._insertImage(e.dataTransfer)
     })
-    this.editor.on('paste', (codeMirror, e) => {
-      this._insertImage(e.clipboardData, codeMirror)
+    this.editor.on('paste', async (codeMirror, e) => {
+      await this._insertImage(e.clipboardData)
     })
   },
   methods: {
+    openImageUploadDialog() {
+      this.isShowImageUploadDialog = true
+    },
+    closeImageUploadDialog() {
+      this.isShowImageUploadDialog = false
+    },
     activeWrite() {
       this.isActiveWrite = true
     },
@@ -125,7 +174,14 @@ export default {
       this.$emit('fetchConvertedHtml', { markdown: this.editor.getValue() })
       this.isActiveWrite = false
     },
-    uploadImage({ imageFile, imagePath, done }) {
+    uploadImage() {
+      const imageFile = this.temporaryFileData.imageFile
+      const imagePath = this.imagePath
+      const done = () => {
+        const cursorPosition = this.editor.getCursor()
+        this.editor.replaceRange(`![${imagePath}](${imagePath})`, cursorPosition)
+        this.closeImageUploadDialog()
+      }
       this.$emit('uploadImage', { imageFile, imagePath, done })
     },
     onOpenTreeDialog() {
@@ -150,22 +206,24 @@ export default {
       this.$emit('closeEditor')
     },
 
-    _insertImage(dataTransfer, codeMirror) {
+    async _insertImage(dataTransfer) {
       if (!singleDTHandler.isSingleImageFile(dataTransfer)) return false
-      const imageFile = singleDTHandler.getAsSingleFile(dataTransfer)
-      const imagePath = prompt(
-        'Please enter the image file path. If the width is specified, specify as \'! [./img/foo.png] (./img/foo.png "=100x")\'.',
-        './img/undefined.png',
-      )
-      if (imagePath === null) return false
-      this.uploadImage({
+      await this._setTemporaryTransferData(dataTransfer)
+      this.imagePath = `./img/undefined.png`
+      // ! [./img/foo.png] (./img/foo.png "=100x")
+      this.openImageUploadDialog()
+    },
+
+    async _setTemporaryTransferData(imageDataToUpload) {
+      const imageFile = singleDTHandler.getAsSingleFile(imageDataToUpload)
+      const imageBase64 = await singleDTHandler.readBase64(imageDataToUpload)
+      const { width, height } = await loadImage(imageBase64)
+      this.temporaryFileData = {
         imageFile,
-        imagePath,
-        done: () => {
-          const cursorPosition = codeMirror.getCursor()
-          codeMirror.replaceRange(`![${imagePath}](${imagePath})`, cursorPosition)
-        },
-      })
+        imageBase64,
+        width,
+        height,
+      }
     },
   },
 }

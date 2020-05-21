@@ -17,15 +17,71 @@
       </svg>
       Drag an image or paste clipboard image here.
     </div>
+
+    <Portal to="imageUploadDialog">
+      <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
+        <BaseDialog
+          class="ImageUploadDialog"
+          :overflowScroll="false"
+          @close="closeImageUploadDialog"
+        >
+          <div slot="main">
+            <label class="ImageUploadDialog_PathLabel" for="image-path-to-upload">
+              Path to upload:
+            </label>
+            <input
+              id="image-path-to-upload"
+              v-model="imagePath"
+              type="text"
+              class="ImageUploadDialog_Path"
+            />
+          </div>
+          <div slot="footer" class="ImageUploadDialog_Footer">
+            <ActionButton :sub="true">
+              <span @click="closeImageUploadDialog">Cancel</span>
+            </ActionButton>
+            <ActionButton>
+              <span @click="uploadImage">OK</span>
+            </ActionButton>
+          </div>
+        </BaseDialog>
+      </OverlayScreen>
+    </Portal>
   </div>
 </template>
 
 <script>
+import OverlayScreen from '../../../../components/Common/OverlayScreen.vue'
+import BaseDialog from '../../../../components/Dialog/BaseDialog.vue'
+import ActionButton from '../../../../components/Button/ActionButton.vue'
 import loadImage from '../../../../modules/loadImage'
 import singleDTHandler from '../../../../modules/singleDataTransferHandler'
 export default {
   name: 'EditorDrop',
+  components: {
+    OverlayScreen,
+    BaseDialog,
+    ActionButton,
+  },
+  data() {
+    return {
+      isShowImageUploadDialog: false,
+      temporaryFileData: {
+        imageFile: null,
+        imageBase64: null,
+        width: null,
+        height: null,
+      },
+      imagePath: '',
+    }
+  },
   methods: {
+    openImageUploadDialog() {
+      this.isShowImageUploadDialog = true
+    },
+    closeImageUploadDialog() {
+      this.isShowImageUploadDialog = false
+    },
     onKeyDown(e) {
       // allow only paste
       if (!e.ctrlKey && !e.metaKey) {
@@ -39,42 +95,42 @@ export default {
     onDragOver(e) {},
     onDragLeave(e) {},
     async onDrop(e) {
-      const dataTransfer = e.dataTransfer
-      if (!singleDTHandler.isSingleImageFile(dataTransfer)) return true
-      const imagePath = prompt(
-        'Please enter the image file path.',
-        `./img/${this._getImageFileName()}`,
-      )
-      if (imagePath === null) return false
-      await this._setImage(dataTransfer, imagePath)
+      if (!singleDTHandler.isSingleImageFile(e.dataTransfer)) return true
+      await this._setTemporaryTransferData(e.dataTransfer)
+      this.imagePath = `./img/${this._getImageFileName()}`
+      this.openImageUploadDialog()
     },
     async onPaste(e) {
-      const clipboardData = e.clipboardData
-      if (!singleDTHandler.isSingleImageFile(clipboardData)) return true
-      const imagePath = prompt(
-        'Please enter the image file path.',
-        `./img/${this._getImageFileName()}`,
-      )
-      if (imagePath === null) return false
-      await this._setImage(clipboardData, imagePath)
+      if (!singleDTHandler.isSingleImageFile(e.clipboardData)) return true
+      await this._setTemporaryTransferData(e.clipboardData)
+      this.imagePath = `./img/${this._getImageFileName()}`
+      this.openImageUploadDialog()
     },
-    async _setImage(dataTransfer, imagePath) {
-      const imageFile = singleDTHandler.getAsSingleFile(dataTransfer)
-      const imageBase64 = await singleDTHandler.readBase64(dataTransfer)
-      const { width, height } = await loadImage(imageBase64)
+    async uploadImage() {
       this.$emit(
         'setImage',
         {
-          src: imageBase64,
-          filename: imagePath,
-          width,
-          height,
+          src: this.temporaryFileData.imageBase64,
+          filename: this.imagePath,
+          width: this.temporaryFileData.width,
+          height: this.temporaryFileData.height,
         },
         {
-          fileToUpload: imageFile,
+          fileToUpload: this.temporaryFileData.imageFile,
         },
       )
-      return true
+      this.closeImageUploadDialog()
+    },
+    async _setTemporaryTransferData(imageDataToUpload) {
+      const imageFile = singleDTHandler.getAsSingleFile(imageDataToUpload)
+      const imageBase64 = await singleDTHandler.readBase64(imageDataToUpload)
+      const { width, height } = await loadImage(imageBase64)
+      this.temporaryFileData = {
+        imageFile,
+        imageBase64,
+        width,
+        height,
+      }
     },
     _getImageFileName() {
       const fileName = location.pathname.split('/').pop()
@@ -121,6 +177,18 @@ export default {
     display: block;
     margin: 0 auto 20px;
     fill: #92b0b3;
+  }
+}
+.ImageUploadDialog {
+  min-width: 500px;
+  &_PathLabel {
+    display: block;
+  }
+  &_Path {
+    width: 100%;
+  }
+  &_Footer {
+    margin-top: 10px;
   }
 }
 </style>
