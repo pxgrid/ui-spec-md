@@ -46,6 +46,15 @@
               type="text"
               class="ImageUploadDialog_Path"
             />
+            <label class="ImageUploadDialog_WidthLabel" for="image-width">
+              width:
+            </label>
+            <input
+              id="image-width"
+              v-model="imageWidth"
+              type="number"
+              class="ImageUploadDialog_Width"
+            />px
           </div>
           <div slot="footer" class="ImageUploadDialog_Footer">
             <ActionButton :sub="true">
@@ -119,6 +128,7 @@ export default {
         height: null,
       },
       imagePath: '',
+      imageWidth: '',
     }
   },
   watch: {
@@ -177,9 +187,10 @@ export default {
     uploadImage() {
       const imageFile = this.temporaryFileData.imageFile
       const imagePath = this.imagePath
+      const imageWidth = this.imageWidth ? ` "=${this.imageWidth}x"` : ''
       const done = () => {
         const cursorPosition = this.editor.getCursor()
-        this.editor.replaceRange(`![${imagePath}](${imagePath})`, cursorPosition)
+        this.editor.replaceRange(`![${imagePath}](${imagePath}${imageWidth})`, cursorPosition)
         this.closeImageUploadDialog()
       }
       this.$emit('uploadImage', { imageFile, imagePath, done })
