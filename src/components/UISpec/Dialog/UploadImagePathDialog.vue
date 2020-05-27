@@ -54,9 +54,15 @@ export default {
     ActionButton,
     BaseDialog,
   },
+  props: {
+    defaultImagePath: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
-      imagePath: './img/undefined.png',
+      imagePath: this.defaultImagePath ? this.defaultImagePath : './img/undefined.png',
       imageWidth: '',
       debounceInputUploadPath: () => {},
       warnMessage: '',
