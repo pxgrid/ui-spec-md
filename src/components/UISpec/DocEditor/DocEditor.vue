@@ -155,7 +155,7 @@ export default {
     },
     uploadImage({ imagePath, imageWidth }) {
       const imageFile = this.temporaryFileData.imageFile
-      const widthMarkup = imageWidth ? ` "=${imageWidth}x"` : ''
+      const widthMarkup = imageWidth ? ` "=x${imageWidth}"` : ''
       const done = () => {
         const cursorPosition = this.editor.getCursor()
         this.editor.replaceRange(`![${imagePath}](${imagePath}${widthMarkup})`, cursorPosition)
