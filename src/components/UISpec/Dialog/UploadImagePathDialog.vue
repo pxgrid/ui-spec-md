@@ -87,13 +87,17 @@ export default {
   },
   mounted() {
     this.debounceInputUploadPath = debounce(this.inputUploadPath, 500)
+    this.validateInputUploadPath(this.imagePath)
   },
   methods: {
     ...mapActions('editable', {
       validateUploadPath: editableTypes.VALIDATE_UPLOAD_PATH,
     }),
-    async inputUploadPath(e) {
+    inputUploadPath(e) {
       const uploadPath = e.target.value
+      this.validateInputUploadPath(uploadPath)
+    },
+    async validateInputUploadPath(uploadPath) {
       const locationPathName = location.pathname
       const result = await this.validateUploadPath({ uploadPath, locationPathName })
       const { invalid, exists } = result.data
