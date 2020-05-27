@@ -31,81 +31,37 @@
 
     <Portal to="uploadDocumentImageDialog">
       <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
-        <BaseDialog
-          class="ImageUploadDialog"
-          :overflowScroll="false"
-          @close="closeImageUploadDialog"
-        >
-          <div slot="main">
-            <div>
-              <label class="ImageUploadDialog_PathLabel" for="image-path-to-upload">
-                Path to upload:
-              </label>
-              <input
-                id="image-path-to-upload"
-                v-model="imagePath"
-                type="text"
-                class="ImageUploadDialog_Path"
-                @input="debounceInputUploadPath"
-              />
-              <label class="ImageUploadDialog_WidthLabel" for="image-width">
-                width:
-              </label>
-              <input
-                id="image-width"
-                v-model="imageWidth"
-                type="number"
-                class="ImageUploadDialog_Width"
-              />px
-            </div>
-            <ul v-show="imageUploadWarnMessage || imageUploadErrorMessage">
-              <li v-show="imageUploadWarnMessage">{{ imageUploadWarnMessage }}</li>
-              <li v-show="imageUploadErrorMessage">{{ imageUploadErrorMessage }}</li>
-            </ul>
-          </div>
-          <div slot="footer" class="ImageUploadDialog_Footer">
-            <ActionButton :sub="true">
-              <span @click="closeImageUploadDialog">Cancel</span>
-            </ActionButton>
-            <ActionButton :disabled="imageUploadErrorMessage !== ''">
-              <span @click="uploadImage">OK</span>
-            </ActionButton>
-          </div>
-        </BaseDialog>
+        <UploadImagePathDialog @apply="uploadImage" @close="closeImageUploadDialog" />
       </OverlayScreen>
     </Portal>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { debounce } from 'lodash'
-
 import CodeMirror from 'codemirror/lib/codemirror.js'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/markdown/markdown.js'
 import 'codemirror/addon/display/autorefresh.js'
 import FontAwesomeIcon from '../../Common/FontAwesomeIcon.vue'
 
-import singleDTHandler from '../../../modules/singleDataTransferHandler'
-
-import editableTypes from '../../../store/modules/editable/types'
 import OverlayScreen from '../../../components/Common/OverlayScreen.vue'
-import BaseDialog from '../../../components/Dialog/BaseDialog.vue'
 import ActionButton from '../../Button/ActionButton.vue'
 import DocEditorTabBar from './DocEditorTabBar.vue'
 import DocEditorPreview from './DocEditorPreview.vue'
+import UploadImagePathDialog from '../Dialog/UploadImagePathDialog.vue'
+
+import singleDTHandler from '../../../modules/singleDataTransferHandler'
 import splitMarkdownByHeadlineIndex from '../../../modules/splitMarkdownByHeadlineIndex'
 import loadImage from '../../../modules/loadImage'
 export default {
   name: 'DocEditor',
   components: {
+    FontAwesomeIcon,
     OverlayScreen,
-    BaseDialog,
     ActionButton,
     DocEditorTabBar,
     DocEditorPreview,
-    FontAwesomeIcon,
+    UploadImagePathDialog,
   },
   props: {
     markdown: {
@@ -138,11 +94,6 @@ export default {
         width: null,
         height: null,
       },
-      imagePath: '',
-      imageWidth: '',
-      imageUploadWarnMessage: '',
-      imageUploadErrorMessage: '',
-      debounceInputUploadPath: null,
     }
   },
   watch: {
@@ -168,7 +119,6 @@ export default {
     },
   },
   mounted() {
-    this.debounceInputUploadPath = debounce(this.inputUploadPath, 500)
     this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
       mode: {
         name: 'gfm',
@@ -186,9 +136,6 @@ export default {
     })
   },
   methods: {
-    ...mapActions('editable', {
-      validateUploadPath: editableTypes.VALIDATE_UPLOAD_PATH,
-    }),
     openImageUploadDialog() {
       this.isShowImageUploadDialog = true
     },
@@ -202,21 +149,12 @@ export default {
       this.$emit('fetchConvertedHtml', { markdown: this.editor.getValue() })
       this.isActiveWrite = false
     },
-    async inputUploadPath(e) {
-      const uploadPath = e.target.value
-      const locationPathName = location.pathname
-      const result = await this.validateUploadPath({ uploadPath, locationPathName })
-      const { invalid, exists } = result.data
-      this.imageUploadWarnMessage = exists ? 'ファイルは既に存在するため上書きされます' : ''
-      this.imageUploadErrorMessage = invalid ? '不正なパスです' : ''
-    },
-    uploadImage() {
+    uploadImage({ imagePath, imageWidth }) {
       const imageFile = this.temporaryFileData.imageFile
-      const imagePath = this.imagePath
-      const imageWidth = this.imageWidth ? ` "=${this.imageWidth}x"` : ''
+      const widthMarkup = imageWidth ? ` "=${imageWidth}x"` : ''
       const done = () => {
         const cursorPosition = this.editor.getCursor()
-        this.editor.replaceRange(`![${imagePath}](${imagePath}${imageWidth})`, cursorPosition)
+        this.editor.replaceRange(`![${imagePath}](${imagePath}${widthMarkup})`, cursorPosition)
         this.closeImageUploadDialog()
       }
       this.$emit('uploadImage', { imageFile, imagePath, done })
@@ -246,9 +184,6 @@ export default {
     async _insertImage(dataTransfer) {
       if (!singleDTHandler.isSingleImageFile(dataTransfer)) return false
       await this._setTemporaryTransferData(dataTransfer)
-      this.imagePath = `./img/undefined.png`
-      this.imageUploadWarnMessage = ''
-      this.imageUploadErrorMessage = ''
       this.openImageUploadDialog()
     },
 
