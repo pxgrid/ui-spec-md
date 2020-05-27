@@ -18,7 +18,7 @@
       Drag an image or paste clipboard image here.
     </div>
 
-    <Portal to="imageUploadDialog">
+    <Portal to="uploadScreenImageDialog">
       <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
         <BaseDialog
           class="ImageUploadDialog"
