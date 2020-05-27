@@ -31,7 +31,11 @@
 
     <Portal to="uploadDocumentImageDialog">
       <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
-        <UploadImagePathDialog @apply="uploadImage" @close="closeImageUploadDialog" />
+        <UploadImagePathDialog
+          :isAvailableWidth="true"
+          @apply="uploadImage"
+          @close="closeImageUploadDialog"
+        />
       </OverlayScreen>
     </Portal>
   </div>

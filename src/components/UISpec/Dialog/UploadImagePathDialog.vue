@@ -6,25 +6,29 @@
   >
     <div slot="main">
       <div>
-        <label class="UploadImagePathDialog_PathLabel" for="image-path-to-upload">
-          Path to upload:
-        </label>
-        <input
-          id="image-path-to-upload"
-          v-model="imagePath"
-          type="text"
-          class="UploadImagePathDialog_Path"
-          @input="debounceInputUploadPath"
-        />
-        <label class="UploadImagePathDialog_WidthLabel" for="image-width">
-          width:
-        </label>
-        <input
-          id="image-width"
-          v-model="imageWidth"
-          type="number"
-          class="UploadImagePathDialog_Width"
-        />px
+        <div class="UploadImagePathDialog_PathContainer">
+          <label class="UploadImagePathDialog_PathLabel" for="image-path-to-upload">
+            Path to upload:
+          </label>
+          <input
+            id="image-path-to-upload"
+            v-model="imagePath"
+            type="text"
+            class="UploadImagePathDialog_Path"
+            @input="debounceInputUploadPath"
+          />
+        </div>
+        <div v-if="isAvailableWidth" class="UploadImagePathDialog_PathContainer">
+          <label class="UploadImagePathDialog_WidthLabel" for="image-width">
+            width:
+          </label>
+          <input
+            id="image-width"
+            v-model="imageWidth"
+            type="number"
+            class="UploadImagePathDialog_Width"
+          />px
+        </div>
       </div>
       <ul v-show="isShowMessages">
         <li v-show="warnMessage">{{ warnMessage }}</li>
@@ -58,6 +62,10 @@ export default {
     defaultImagePath: {
       type: String,
       default: '',
+    },
+    isAvailableWidth: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -101,3 +109,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.UploadImagePathDialog {
+  &_PathContainer {
+    display: inline-block;
+  }
+}
+</style>
