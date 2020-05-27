@@ -66,4 +66,8 @@ export default {
   async [types.CREATE_NEW_FILE]({ commit }, { newFilePath }) {
     return api.createNewFile({ newFilePath })
   },
+
+  async [types.VALIDATE_UPLOAD_PATH]({ commit }, { uploadPath, locationPathName }) {
+    return api.validateUploadPath({ uploadPath, locationPathName })
+  },
 }

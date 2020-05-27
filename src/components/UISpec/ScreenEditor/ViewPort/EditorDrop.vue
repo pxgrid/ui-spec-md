@@ -18,33 +18,13 @@
       Drag an image or paste clipboard image here.
     </div>
 
-    <Portal to="imageUploadDialog">
+    <Portal to="uploadScreenImageDialog">
       <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
-        <BaseDialog
-          class="ImageUploadDialog"
-          :overflowScroll="false"
+        <UploadImagePathDialog
+          :defaultImagePath="defaultImagePath"
+          @apply="uploadImage"
           @close="closeImageUploadDialog"
-        >
-          <div slot="main">
-            <label class="ImageUploadDialog_PathLabel" for="image-path-to-upload">
-              Path to upload:
-            </label>
-            <input
-              id="image-path-to-upload"
-              v-model="imagePath"
-              type="text"
-              class="ImageUploadDialog_Path"
-            />
-          </div>
-          <div slot="footer" class="ImageUploadDialog_Footer">
-            <ActionButton :sub="true">
-              <span @click="closeImageUploadDialog">Cancel</span>
-            </ActionButton>
-            <ActionButton>
-              <span @click="uploadImage">OK</span>
-            </ActionButton>
-          </div>
-        </BaseDialog>
+        />
       </OverlayScreen>
     </Portal>
   </div>
@@ -52,16 +32,15 @@
 
 <script>
 import OverlayScreen from '../../../../components/Common/OverlayScreen.vue'
-import BaseDialog from '../../../../components/Dialog/BaseDialog.vue'
-import ActionButton from '../../../../components/Button/ActionButton.vue'
+import UploadImagePathDialog from '../../Dialog/UploadImagePathDialog.vue'
+
 import loadImage from '../../../../modules/loadImage'
 import singleDTHandler from '../../../../modules/singleDataTransferHandler'
 export default {
   name: 'EditorDrop',
   components: {
     OverlayScreen,
-    BaseDialog,
-    ActionButton,
+    UploadImagePathDialog,
   },
   data() {
     return {
@@ -72,8 +51,12 @@ export default {
         width: null,
         height: null,
       },
-      imagePath: '',
     }
+  },
+  computed: {
+    defaultImagePath() {
+      return `./img/${this._getImageFileName()}`
+    },
   },
   methods: {
     openImageUploadDialog() {
@@ -97,21 +80,19 @@ export default {
     async onDrop(e) {
       if (!singleDTHandler.isSingleImageFile(e.dataTransfer)) return true
       await this._setTemporaryTransferData(e.dataTransfer)
-      this.imagePath = `./img/${this._getImageFileName()}`
       this.openImageUploadDialog()
     },
     async onPaste(e) {
       if (!singleDTHandler.isSingleImageFile(e.clipboardData)) return true
       await this._setTemporaryTransferData(e.clipboardData)
-      this.imagePath = `./img/${this._getImageFileName()}`
       this.openImageUploadDialog()
     },
-    async uploadImage() {
+    async uploadImage({ imagePath }) {
       this.$emit(
         'setImage',
         {
           src: this.temporaryFileData.imageBase64,
-          filename: this.imagePath,
+          filename: imagePath,
           width: this.temporaryFileData.width,
           height: this.temporaryFileData.height,
         },

@@ -29,42 +29,13 @@
       </ActionButton>
     </div>
 
-    <Portal to="imageUploadDialog">
+    <Portal to="uploadDocumentImageDialog">
       <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
-        <BaseDialog
-          class="ImageUploadDialog"
-          :overflowScroll="false"
+        <UploadImagePathDialog
+          :isAvailableWidth="true"
+          @apply="uploadImage"
           @close="closeImageUploadDialog"
-        >
-          <div slot="main">
-            <label class="ImageUploadDialog_PathLabel" for="image-path-to-upload">
-              Path to upload:
-            </label>
-            <input
-              id="image-path-to-upload"
-              v-model="imagePath"
-              type="text"
-              class="ImageUploadDialog_Path"
-            />
-            <label class="ImageUploadDialog_WidthLabel" for="image-width">
-              width:
-            </label>
-            <input
-              id="image-width"
-              v-model="imageWidth"
-              type="number"
-              class="ImageUploadDialog_Width"
-            />px
-          </div>
-          <div slot="footer" class="ImageUploadDialog_Footer">
-            <ActionButton :sub="true">
-              <span @click="closeImageUploadDialog">Cancel</span>
-            </ActionButton>
-            <ActionButton>
-              <span @click="uploadImage">OK</span>
-            </ActionButton>
-          </div>
-        </BaseDialog>
+        />
       </OverlayScreen>
     </Portal>
   </div>
@@ -77,24 +48,24 @@ import 'codemirror/mode/markdown/markdown.js'
 import 'codemirror/addon/display/autorefresh.js'
 import FontAwesomeIcon from '../../Common/FontAwesomeIcon.vue'
 
-import singleDTHandler from '../../../modules/singleDataTransferHandler'
-
 import OverlayScreen from '../../../components/Common/OverlayScreen.vue'
-import BaseDialog from '../../../components/Dialog/BaseDialog.vue'
 import ActionButton from '../../Button/ActionButton.vue'
 import DocEditorTabBar from './DocEditorTabBar.vue'
 import DocEditorPreview from './DocEditorPreview.vue'
+import UploadImagePathDialog from '../Dialog/UploadImagePathDialog.vue'
+
+import singleDTHandler from '../../../modules/singleDataTransferHandler'
 import splitMarkdownByHeadlineIndex from '../../../modules/splitMarkdownByHeadlineIndex'
 import loadImage from '../../../modules/loadImage'
 export default {
   name: 'DocEditor',
   components: {
+    FontAwesomeIcon,
     OverlayScreen,
-    BaseDialog,
     ActionButton,
     DocEditorTabBar,
     DocEditorPreview,
-    FontAwesomeIcon,
+    UploadImagePathDialog,
   },
   props: {
     markdown: {
@@ -127,8 +98,6 @@ export default {
         width: null,
         height: null,
       },
-      imagePath: '',
-      imageWidth: '',
     }
   },
   watch: {
@@ -184,13 +153,12 @@ export default {
       this.$emit('fetchConvertedHtml', { markdown: this.editor.getValue() })
       this.isActiveWrite = false
     },
-    uploadImage() {
+    uploadImage({ imagePath, imageWidth }) {
       const imageFile = this.temporaryFileData.imageFile
-      const imagePath = this.imagePath
-      const imageWidth = this.imageWidth ? ` "=${this.imageWidth}x"` : ''
+      const widthMarkup = imageWidth ? ` "=x${imageWidth}"` : ''
       const done = () => {
         const cursorPosition = this.editor.getCursor()
-        this.editor.replaceRange(`![${imagePath}](${imagePath}${imageWidth})`, cursorPosition)
+        this.editor.replaceRange(`![${imagePath}](${imagePath}${widthMarkup})`, cursorPosition)
         this.closeImageUploadDialog()
       }
       this.$emit('uploadImage', { imageFile, imagePath, done })
@@ -220,8 +188,6 @@ export default {
     async _insertImage(dataTransfer) {
       if (!singleDTHandler.isSingleImageFile(dataTransfer)) return false
       await this._setTemporaryTransferData(dataTransfer)
-      this.imagePath = `./img/undefined.png`
-      // ! [./img/foo.png] (./img/foo.png "=100x")
       this.openImageUploadDialog()
     },
 

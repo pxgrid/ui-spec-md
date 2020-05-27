@@ -18,6 +18,12 @@ const localPathToMdPath = (mdDir, destDir, serverRootDir, localPath) => {
   return absolutePath.replace(destDir, absoluteMdDirPath)
 }
 
+const toRelativeDirPath = pathName => {
+  return /\.html$/.test(pathName)
+    ? path.dirname(pathName).replace(/^\//, '') //ex. /path/to/index.html => path/to/
+    : pathName.replace(/^\//, '') //ex. /path/to/foo => path/to/foo
+}
+
 const editable = (app, mdDir, destDir, serverRootDir, port) => {
   app.use(express.json())
   const uploads = multer({ dest: path.join(__dirname, '__uploads/') })
@@ -27,9 +33,7 @@ const editable = (app, mdDir, destDir, serverRootDir, port) => {
     // TODO: ファイルタイプのチェック req.file.mimetype => "image/png"
     const uploadedPath = req.file.path
     const { filePath, imagePath } = req.body
-    const dirPath = /\.html$/.test(filePath)
-      ? path.dirname(filePath).replace(/^\//, '') //ex. /path/to/index.html => path/to/
-      : filePath.replace(/^\//, '') //ex. /path/to/foo => path/to/foo
+    const dirPath = toRelativeDirPath(filePath)
     const absoluteDirPath = localPathToMdPath(mdDir, destDir, serverRootDir, dirPath)
     const pathToMove = path.resolve(absoluteDirPath, imagePath)
 
@@ -179,6 +183,24 @@ screen: ./img/${imageFileName}
       const html = await md2html(mdSourceWithoutMeta)
       res.json({ html: html })
     })().catch(next)
+  })
+
+  app.post('/__validateUploadPath', (req, res, next) => {
+    const { uploadPath, locationPathName } = req.body
+    const pageDirPath = toRelativeDirPath(locationPathName)
+    const absoluteDirPath = localPathToMdPath(mdDir, destDir, serverRootDir, pageDirPath)
+    const pathToUpload = path.resolve(absoluteDirPath, uploadPath)
+
+    const regExp = new RegExp(`^${process.cwd()}`)
+    const invalidRoot = !regExp.test(pathToUpload)
+    let isExists
+    try {
+      fs.accessSync(pathToUpload)
+      isExists = true
+    } catch (err) {
+      isExists = false
+    }
+    res.json({ invalid: invalidRoot, exists: isExists })
   })
 }
 

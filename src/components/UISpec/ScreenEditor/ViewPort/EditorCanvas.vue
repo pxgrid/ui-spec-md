@@ -84,7 +84,6 @@ export default {
     },
     _handleKeyDown(e) {
       if (e.keyCode === 8) {
-        e.preventDefault()
         this.removeHighlight()
       }
     },
