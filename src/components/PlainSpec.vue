@@ -31,6 +31,7 @@
         </div>
       </BaseDialog>
     </OverlayScreen>
+    <PortalTarget name="uploadDocumentImageDialog"></PortalTarget>
   </div>
 </template>
 

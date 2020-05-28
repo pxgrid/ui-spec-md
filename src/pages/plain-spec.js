@@ -5,6 +5,8 @@ import '../assets/style.scss'
 
 import Vue from 'vue'
 import store from '../store'
+import PortalVue from 'portal-vue'
+Vue.use(PortalVue)
 
 import PlainSpec from '../components/PlainSpec.vue'
 import types from '../store/types'
