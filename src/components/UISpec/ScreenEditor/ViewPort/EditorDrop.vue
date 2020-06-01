@@ -21,7 +21,7 @@
     <Portal to="uploadScreenImageDialog">
       <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
         <UploadImagePathDialog
-          :defaultImagePath="defaultImagePath"
+          :defaultImageFileName="defaultImageFileName"
           @apply="uploadImage"
           @close="closeImageUploadDialog"
         />
@@ -54,8 +54,8 @@ export default {
     }
   },
   computed: {
-    defaultImagePath() {
-      return `./img/${this._getImageFileName()}`
+    defaultImageFileName() {
+      return this._getImageFileName()
     },
   },
   methods: {

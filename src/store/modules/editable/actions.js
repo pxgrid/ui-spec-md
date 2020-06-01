@@ -70,4 +70,8 @@ export default {
   async [types.VALIDATE_UPLOAD_PATH]({ commit }, { uploadPath, locationPathName }) {
     return api.validateUploadPath({ uploadPath, locationPathName })
   },
+
+  async [types.FETCH_SERIAL_FILE_NAME]({ commit }, { uploadDir, locationPathName }) {
+    return api.fetchSerialFileName({ uploadDir, locationPathName })
+  },
 }

@@ -185,8 +185,8 @@ screen: ./img/${imageFileName}
     })().catch(next)
   })
 
-  app.post('/__validateUploadPath', (req, res, next) => {
-    const { uploadPath, locationPathName } = req.body
+  app.get('/__validateUploadPath', (req, res, next) => {
+    const { uploadPath, locationPathName } = req.query
     const pageDirPath = toRelativeDirPath(locationPathName)
     const absoluteDirPath = localPathToMdPath(mdDir, destDir, serverRootDir, pageDirPath)
     const pathToUpload = path.resolve(absoluteDirPath, uploadPath)
@@ -201,6 +201,27 @@ screen: ./img/${imageFileName}
       isExists = false
     }
     res.json({ invalid: invalidRoot, exists: isExists })
+  })
+
+  app.get('/__fetchSerialFileName', (req, res, next) => {
+    const { uploadDir, locationPathName, imageExtension } = req.query
+    const pageDirPath = toRelativeDirPath(locationPathName)
+    const absoluteMdDirPath = localPathToMdPath(mdDir, destDir, serverRootDir, pageDirPath)
+    const absoluteImageDirPath = path.resolve(absoluteMdDirPath, uploadDir)
+    const baseName = path.basename(locationPathName, '.html')
+
+    const getSerialFileName = (absoluteDirPath, baseName, index = 1) => {
+      const fileName = `${baseName}-${index}.${imageExtension}`
+      const absoluteFilePath = path.resolve(absoluteDirPath, fileName)
+      try {
+        fs.accessSync(absoluteFilePath)
+        return getSerialFileName(absoluteDirPath, baseName, index + 1)
+      } catch (err) {
+        return `${uploadDir}${fileName}`
+      }
+    }
+
+    res.send(getSerialFileName(absoluteImageDirPath, baseName))
   })
 }
 

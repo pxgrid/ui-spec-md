@@ -33,6 +33,8 @@
       <OverlayScreen v-show="isShowImageUploadDialog" @close="closeImageUploadDialog">
         <UploadImagePathDialog
           :isAvailableWidth="true"
+          :isAvailableSerial="true"
+          :defaultImageFileName="defaultImageFileName"
           @apply="uploadImage"
           @close="closeImageUploadDialog"
         />
@@ -92,6 +94,7 @@ export default {
       aboveMarkdown: '',
       belowMarkdown: '',
       isShowImageUploadDialog: false,
+      defaultImageFileName: '',
       temporaryFileData: {
         imageFile: null,
         imageBase64: null,
@@ -133,9 +136,12 @@ export default {
       autoRefresh: true,
     })
     this.editor.on('drop', async (codeMirror, e) => {
+      const uploadFileName = e.dataTransfer.files[0].name
+      this.defaultImageFileName = uploadFileName
       await this._insertImage(e.dataTransfer)
     })
     this.editor.on('paste', async (codeMirror, e) => {
+      this.defaultImageFileName = ''
       await this._insertImage(e.clipboardData)
     })
   },

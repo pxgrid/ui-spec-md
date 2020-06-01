@@ -111,10 +111,21 @@ class API {
     const url = '/__validateUploadPath'
     return this._request({
       url,
-      method: 'POST',
-      data: {
+      params: {
         uploadPath,
         locationPathName,
+      },
+    })
+  }
+
+  fetchSerialFileName({ uploadDir, locationPathName }) {
+    const url = '/__fetchSerialFileName'
+    return this._request({
+      url,
+      params: {
+        uploadDir,
+        locationPathName,
+        imageExtension: 'png',
       },
     })
   }
