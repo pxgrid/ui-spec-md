@@ -202,6 +202,27 @@ screen: ./img/${imageFileName}
     }
     res.json({ invalid: invalidRoot, exists: isExists })
   })
+
+  app.get('/__fetchSerialFileName', (req, res, next) => {
+    const { uploadDir, locationPathName, imageExtension } = req.query
+    const pageDirPath = toRelativeDirPath(locationPathName)
+    const absoluteMdDirPath = localPathToMdPath(mdDir, destDir, serverRootDir, pageDirPath)
+    const absoluteImageDirPath = path.resolve(absoluteMdDirPath, uploadDir)
+    const baseName = path.basename(locationPathName, '.html')
+
+    const getSerialFileName = (absoluteDirPath, baseName, index = 1) => {
+      const fileName = `${baseName}-${index}.${imageExtension}`
+      const absoluteFilePath = path.resolve(absoluteDirPath, fileName)
+      try {
+        fs.accessSync(absoluteFilePath)
+        return getSerialFileName(absoluteDirPath, baseName, index + 1)
+      } catch (err) {
+        return `${uploadDir}${fileName}`
+      }
+    }
+
+    res.send(getSerialFileName(absoluteImageDirPath, baseName))
+  })
 }
 
 const devEditable = app => {

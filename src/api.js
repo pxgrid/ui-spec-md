@@ -118,6 +118,18 @@ class API {
       },
     })
   }
+
+  fetchSerialFileName({ uploadDir, locationPathName }) {
+    const url = '/__fetchSerialFileName'
+    return this._request({
+      url,
+      params: {
+        uploadDir,
+        locationPathName,
+        imageExtension: 'png',
+      },
+    })
+  }
 }
 
 export default new API()

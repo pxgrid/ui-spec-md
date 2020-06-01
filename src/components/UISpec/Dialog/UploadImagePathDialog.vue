@@ -5,7 +5,7 @@
     @close="closeUploadImagePathDialog"
   >
     <div slot="main">
-      <div>
+      <div class="UploadImagePathDialog_Container">
         <div class="UploadImagePathDialog_PathContainer">
           <label class="UploadImagePathDialog_PathLabel" for="image-path-to-upload">
             Path to upload:
@@ -30,6 +30,11 @@
           />px
         </div>
       </div>
+      <div v-if="isAvailableSerial" class="UploadImagePathDialog_Container">
+        <div class="UploadImagePathDialog_PathContainer">
+          <button @click="inputSerialFileName">画面名+連番を取得</button>
+        </div>
+      </div>
       <ul v-show="isShowMessages">
         <li v-show="warnMessage">{{ warnMessage }}</li>
         <li v-show="errorMessage">{{ errorMessage }}</li>
@@ -52,6 +57,11 @@ import BaseDialog from '../../Dialog/BaseDialog.vue'
 import { debounce } from 'lodash'
 import { mapActions } from 'vuex'
 import editableTypes from '../../../store/modules/editable/types'
+
+const isValidImagePath = imagePath => {
+  return /.+\.(png|jpg|jpeg|svg|gif|webp)$/.test(imagePath)
+}
+
 export default {
   name: 'UploadImagePathDialog',
   components: {
@@ -59,7 +69,11 @@ export default {
     BaseDialog,
   },
   props: {
-    defaultImagePath: {
+    defaultDirectoryPath: {
+      type: String,
+      default: './img/',
+    },
+    defaultImageFileName: {
       type: String,
       default: '',
     },
@@ -67,10 +81,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    isAvailableSerial: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      imagePath: this.defaultImagePath ? this.defaultImagePath : './img/undefined.png',
+      imagePath: `${this.defaultDirectoryPath}${this.defaultImageFileName}`,
       imageWidth: '',
       debounceInputUploadPath: () => {},
       warnMessage: '',
@@ -85,6 +103,12 @@ export default {
       return this.errorMessage !== ''
     },
   },
+  watch: {
+    defaultImageFileName(newVal) {
+      this.imagePath = `${this.defaultDirectoryPath}${newVal}`
+      this.validateInputUploadPath(this.imagePath)
+    },
+  },
   mounted() {
     this.debounceInputUploadPath = debounce(this.inputUploadPath, 500)
     this.validateInputUploadPath(this.imagePath)
@@ -92,17 +116,33 @@ export default {
   methods: {
     ...mapActions('editable', {
       validateUploadPath: editableTypes.VALIDATE_UPLOAD_PATH,
+      fetchSerialFileName: editableTypes.FETCH_SERIAL_FILE_NAME,
     }),
     inputUploadPath(e) {
       const uploadPath = e.target.value
       this.validateInputUploadPath(uploadPath)
     },
     async validateInputUploadPath(uploadPath) {
+      this.warnMessage = ''
+      this.errorMessage = ''
+      if (!isValidImagePath(uploadPath)) {
+        this.errorMessage = '画像ファイルのパスを指定してください'
+        return
+      }
       const locationPathName = location.pathname
       const result = await this.validateUploadPath({ uploadPath, locationPathName })
       const { invalid, exists } = result.data
       this.warnMessage = exists ? 'ファイルは既に存在するため上書きされます' : ''
       this.errorMessage = invalid ? '不正なパスです' : ''
+    },
+    async inputSerialFileName() {
+      const locationPathName = location.pathname
+      const result = await this.fetchSerialFileName({
+        uploadDir: this.defaultDirectoryPath,
+        locationPathName,
+      })
+      this.imagePath = result.data
+      await this.validateInputUploadPath(this.imagePath)
     },
     closeUploadImagePathDialog() {
       this.$emit('close')
@@ -116,6 +156,9 @@ export default {
 
 <style lang="scss" scoped>
 .UploadImagePathDialog {
+  &_Container {
+    margin-top: 10px;
+  }
   &_PathContainer {
     display: inline-block;
   }
