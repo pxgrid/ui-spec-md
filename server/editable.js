@@ -185,8 +185,8 @@ screen: ./img/${imageFileName}
     })().catch(next)
   })
 
-  app.post('/__validateUploadPath', (req, res, next) => {
-    const { uploadPath, locationPathName } = req.body
+  app.get('/__validateUploadPath', (req, res, next) => {
+    const { uploadPath, locationPathName } = req.query
     const pageDirPath = toRelativeDirPath(locationPathName)
     const absoluteDirPath = localPathToMdPath(mdDir, destDir, serverRootDir, pageDirPath)
     const pathToUpload = path.resolve(absoluteDirPath, uploadPath)

@@ -111,8 +111,7 @@ class API {
     const url = '/__validateUploadPath'
     return this._request({
       url,
-      method: 'POST',
-      data: {
+      params: {
         uploadPath,
         locationPathName,
       },
