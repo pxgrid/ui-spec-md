@@ -20,7 +20,7 @@
     <div class="Screen_Main">
       <div class="Screen_MainInner">
         <div v-if="isImageNotFound" class="Screen_ImageNotFound">
-          <div class="Screen_ImageNotFoundWarn">{{ imageFilePath }}<br />Not Found</div>
+          <div class="Screen_ImageNotFoundWarn">{{ imageFilePath }}<br />Image Not Found</div>
         </div>
         <!-- eslint-disable vue/no-v-html -->
         <div
