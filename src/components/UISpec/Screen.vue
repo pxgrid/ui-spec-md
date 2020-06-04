@@ -19,8 +19,12 @@
     </nav>
     <div class="Screen_Main">
       <div class="Screen_MainInner">
+        <div v-if="isImageNotFound" class="Screen_ImageNotFound">
+          <div class="Screen_ImageNotFoundWarn">{{ imageFilePath }}<br />Image Not Found</div>
+        </div>
         <!-- eslint-disable vue/no-v-html -->
         <div
+          v-else
           ref="svgWrapper"
           :class="{
             'UISP-Screen--fit': isScreenFit,
@@ -36,6 +40,7 @@
 </template>
 
 <script>
+import { isSvgCanvasHtmlEmpty } from '../../modules/isSvgCanvasHtmlEmpty'
 import FontAwesomeIcon from '../Common/FontAwesomeIcon.vue'
 import ScreenToolbar from './ScreenToolbar.vue'
 
@@ -72,6 +77,14 @@ export default {
       isHighlight: true,
       zoomValue: 100,
     }
+  },
+  computed: {
+    imageFilePath() {
+      return this.screen.replace(/\?(.*)$/, '')
+    },
+    isImageNotFound() {
+      return isSvgCanvasHtmlEmpty(this.svgCanvasHtml)
+    },
   },
   methods: {
     onZoomFit() {
@@ -175,6 +188,15 @@ export default {
       left: 0;
       padding: 0;
     }
+  }
+  &_ImageNotFound {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  &_ImageNotFoundWarn {
+    text-align: center;
   }
 }
 </style>

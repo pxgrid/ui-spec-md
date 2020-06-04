@@ -39,7 +39,7 @@
         </div>
       </BaseDialog>
     </OverlayScreen>
-    <OverlayScreen v-if="isShowScreenEditor" @close="onCloseScreenEditor">
+    <OverlayScreen v-show="isShowScreenEditor" @close="onCloseScreenEditor">
       <BaseDialog
         class="Spec_ScreenEditorDialog"
         :overflowScroll="true"

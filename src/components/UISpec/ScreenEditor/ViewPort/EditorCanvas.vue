@@ -12,6 +12,8 @@
       :width="editScreen.width"
       :height="editScreen.height"
       class="EditorCanvas_Image"
+      @load="onLoadImage"
+      @error="onErrorImage"
     />
     <Highlight
       v-for="(coordinate, index) in coordinates"
@@ -73,6 +75,12 @@ export default {
     document.removeEventListener('keydown', this._handleKeyDown)
   },
   methods: {
+    onLoadImage() {
+      this.$emit('loadImage')
+    },
+    onErrorImage() {
+      this.$emit('errorImage')
+    },
     onSelectHighlight(order) {
       this.$emit('selectHighlight', order)
     },

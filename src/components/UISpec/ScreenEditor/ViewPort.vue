@@ -2,12 +2,14 @@
   <div class="Viewport">
     <div class="Viewport_Inner">
       <EditorCanvas
-        v-if="editScreen.src || editScreen.srcBase64"
+        v-if="isShowImage"
         :editScreen="editScreen"
         :coordinates="coordinates"
         :zoomedWidth="zoomedWidth"
         :zoomedHeight="zoomedHeight"
         :viewbox="viewbox"
+        @loadImage="onLoadImage"
+        @errorImage="onErrorImage"
         @addHighlight="onAddHighlight"
         @selectHighlight="onSelectHighlight"
         @setCoordinates="onSetCoordinates"
@@ -49,11 +51,28 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      isImageLoaded: true,
+    }
+  },
+  computed: {
+    isShowImage() {
+      return (!!this.editScreen.src || !!this.editScreen.srcBase64) && this.isImageLoaded
+    },
+  },
   methods: {
+    onLoadImage() {
+      this.isImageLoaded = true
+    },
+    onErrorImage() {
+      this.isImageLoaded = false
+    },
     onAddHighlight(svgCoordinate) {
       this.$emit('addHighlight', svgCoordinate)
     },
     onSetImage({ src, filename, width, height }, { fileToUpload }) {
+      this.isImageLoaded = true
       this.$emit('setImage', { src, filename, width, height }, { fileToUpload })
     },
     onSelectHighlight(order) {
