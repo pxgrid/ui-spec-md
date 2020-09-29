@@ -10,6 +10,10 @@ export default class ScreenEditorManager {
   // setter
   set setImage({ width, height, src, filename }) {
     Object.assign(this._editScreen, { width, height, src, filename })
+    if (this._backupCoordinates && this._backupCoordinates.length > 0) {
+      this.initCoordinates = { coordinateArrayList: [...this._backupCoordinates] }
+    }
+    this._backupCoordinates = []
   }
   set setFileToUpload(fileToUpload) {
     this._fileToUpload = fileToUpload
@@ -119,6 +123,7 @@ export default class ScreenEditorManager {
       selectedItem: -1, // zero start, -1 is indicates that item is not selected
       zoom: 1.0,
     }
+    this._backupCoordinates = this._coordinates ? [...this._coordinates] : []
     this._coordinates = [] // [[x, y, w, h], [x, y, w, h],...]
     this._fileToUpload = null
   }
